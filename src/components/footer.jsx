@@ -14,6 +14,12 @@ import { ReactNode } from "react";
 const Logo = () => {
   return (
     <Text fontWeight="bold" fontSize="xl">
+      <img 
+        src="https://cdn-icons-png.flaticon.com/512/25/25694.png" 
+        alt="logo"
+        width="40"
+        height="40"
+        style={{ display: "inline", verticalAlign: "middle", marginRight: "8px" }}/>
       MiSitio
     </Text>
   );
@@ -46,8 +52,8 @@ const SocialButton = ({ children, label, href }) => {
 const SimpleFooter = () => {
   return (
     <Box
-      bg={useColorModeValue("gray.100", "gray.900")}
-      color={useColorModeValue("gray.700", "gray.200")}
+      bg={useColorModeValue("red.100", "red.900")}
+      color={useColorModeValue("blue.700", "blue.200")}
       mt={10}
     >
       <Container
@@ -61,16 +67,18 @@ const SimpleFooter = () => {
         <Logo />
         <Stack direction={"row"} spacing={6}>
           <a href="#">Inicio</a>
-          <a href="#">Nosotros</a>
-          <a href="#">Servicios</a>
-          <a href="#">Contacto</a>
+          <a href="#">Hoteles</a>
+          <a href="#">Reservaciones</a>
+          <a href="#">Eventos</a>
+          <a href="#">Favoritos</a>
+          <a href="#">Manual de Usuario</a>
         </Stack>
       </Container>
 
       <Box
         borderTopWidth={1}
         borderStyle={"solid"}
-        borderColor={useColorModeValue("gray.200", "gray.700")}
+        borderColor={useColorModeValue("red.200", "red.700")}
       >
         <Container
           as={Stack}
