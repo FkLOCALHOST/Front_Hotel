@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import { Navbar } from "./components/navbar.jsx";
 import VideoFondo from "./components/home/video.jsx";
-import { Block } from "./components/footer.jsx";
+import  SimpleFooter  from "./components/footer.jsx";
 
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
         <Navbar />
         <VideoFondo />
         <h1>   Mundo</h1>
-        <Block />
+        <SimpleFooter />
     </>
   );
 } 
