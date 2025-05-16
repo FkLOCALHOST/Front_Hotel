@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom";
-import Login from "../src/components/auth/login";
+import Login from "./components/auth/loginCard";
 import Register from "../src/components/auth/register";
 import Dashboard from "../src/pages/dashboard.jsx";
 import Categorias from "../src/pages/home/categoriaPage.jsx";
