@@ -1,7 +1,7 @@
 import React from "react";
 import Sidebar from "../../components/sideBar.jsx";
-import SimpleFooter from "./components/footer.jsx";
-import HotelCard from "../../components/hotel/HotelCard.jsx";
+import SimpleFooter from "../../components/footer.jsx";
+import HotelCard from "../../components/hotels/hotelCard.jsx";
 // import { useHoteles } from "../../shared/hooks/useHoteles.jsx";
 
 const FavoritosHotelesPage = () => {
@@ -17,13 +17,6 @@ const FavoritosHotelesPage = () => {
       ) : (
       hotels.map((hotel) => (
       <HotelCard
-        key={hotel.id}
-        id={hotel.id}
-        hotelName={hotel.hotelName}
-        starts={hotel.starts}
-        address={hotel.address}
-        price={hotel.price}
-        imageUrl={hotel.imageUrl}
       />
       )) )}
       <SimpleFooter />
