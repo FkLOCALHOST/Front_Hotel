@@ -4,6 +4,7 @@ import Register from "../src/components/auth/register";
 import Dashboard from "../src/pages/dashboard.jsx";
 import Categorias from "../src/pages/home/categoriaPage.jsx";
 import FavoritosPage from "./pages/home/favoritosPage.jsx";
+import NotFound from "./pages/error/NotFound";
 const PrivateRoute = ({ element }) => {
   const userDetails = localStorage.getItem("user");
 
@@ -32,6 +33,6 @@ export const routes = [
   },
   {
     path: "*",
-    element: <Navigate to="/auth/login" replace />,
+    element: <NotFound />, 
   },
 ];
