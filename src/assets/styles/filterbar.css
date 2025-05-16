@@ -1,0 +1,33 @@
+.filter-bar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin: 70px auto 32px;
+  width: 80%;
+  max-width: 1000px;
+  height: auto;
+  z-index: 1001;
+  gap: 12px;
+}
+
+.filter-bar input::-webkit-input-placeholder {
+  color: #000;
+}
+.filter-bar input::-moz-placeholder {
+  color: #000;
+}
+.filter-bar input:-ms-input-placeholder {
+  color: #000;
+}
+.filter-bar input::placeholder {
+  color: #000;
+}
+
+.filter-bar input,
+.filter-bar label {
+  color: #000;
+}
