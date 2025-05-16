@@ -11,8 +11,11 @@ const VideoFondo = () => {
       <div className="content">
         <h1>Bienvenidos</h1>
         <p>
-          Explora experiencias únicas, reserva hoteles y descubre eventos
-          inolvidables.
+          Vive, explora y recuerda. Con LocalHotel, cada viaje se convierte en
+          una historia que vale la pena contar. Descubre hoteles con encanto,
+          experiencias auténticas y eventos que te conectan con lo mejor de cada
+          destino en LocalHotel te ayudamos a transformar tus momentos en
+          recuerdos eternos.
         </p>
         <button>Explorar</button>
       </div>

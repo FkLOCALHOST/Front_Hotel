@@ -3,40 +3,20 @@ import {
   Container,
   Stack,
   Text,
-  useColorModeValue,
   VisuallyHidden,
   chakra,
-  IconButton,
 } from "@chakra-ui/react";
 import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
-import { ReactNode } from "react";
+import "../assets/styles/footer.css";
+import logoConTexto from "../assets/images/logo_con_texto.svg";
 
 const Logo = () => {
-  return (
-    <Text fontWeight="bold" fontSize="xl">
-      MiSitio
-    </Text>
-  );
+  return <img src={logoConTexto} alt="HostHotels" className="logo" />;
 };
 
 const SocialButton = ({ children, label, href }) => {
   return (
-    <chakra.button
-      bg={useColorModeValue("blackAlpha.100", "whiteAlpha.100")}
-      rounded="full"
-      w={8}
-      h={8}
-      cursor="pointer"
-      as="a"
-      href={href}
-      display="inline-flex"
-      alignItems="center"
-      justifyContent="center"
-      transition="background 0.3s ease"
-      _hover={{
-        bg: useColorModeValue("blackAlpha.200", "whiteAlpha.200"),
-      }}
-    >
+    <chakra.button as="a" href={href} className="social-button">
       <VisuallyHidden>{label}</VisuallyHidden>
       {children}
     </chakra.button>
@@ -45,21 +25,10 @@ const SocialButton = ({ children, label, href }) => {
 
 const SimpleFooter = () => {
   return (
-    <Box
-      bg={useColorModeValue("gray.100", "gray.900")}
-      color={useColorModeValue("gray.700", "gray.200")}
-      mt={10}
-    >
-      <Container
-        as={Stack}
-        maxW={"6xl"}
-        py={4}
-        spacing={4}
-        justify={"center"}
-        align={"center"}
-      >
+    <Box className="footer">
+      <Container className="footer-container">
         <Logo />
-        <Stack direction={"row"} spacing={6}>
+        <Stack direction="row" spacing={6} className="nav-links">
           <a href="#">Inicio</a>
           <a href="#">Nosotros</a>
           <a href="#">Servicios</a>
@@ -67,35 +36,24 @@ const SimpleFooter = () => {
         </Stack>
       </Container>
 
-      <Box
-        borderTopWidth={1}
-        borderStyle={"solid"}
-        borderColor={useColorModeValue("gray.200", "gray.700")}
-      >
-        <Container
-          as={Stack}
-          maxW={"6xl"}
-          py={4}
-          direction={{ base: "column", md: "row" }}
-          spacing={4}
-          justify={{ base: "center", md: "space-between" }}
-          align={{ base: "center", md: "center" }}
-        >
-          <Text>
-            © {new Date().getFullYear()} MiSitio. Todos los derechos reservados.
-          </Text>
-          <Stack direction={"row"} spacing={6}>
-            <SocialButton label={"Twitter"} href={"#"}>
-              <FaTwitter />
-            </SocialButton>
-            <SocialButton label={"YouTube"} href={"#"}>
-              <FaYoutube />
-            </SocialButton>
-            <SocialButton label={"Instagram"} href={"#"}>
-              <FaInstagram />
-            </SocialButton>
-          </Stack>
-        </Container>
+      <Box className="footer-bottom">
+        <Text fontSize="sm">
+          © {new Date().getFullYear()} LocalHost. Todos los derechos reservados.
+        </Text>
+        <Stack direction="row" spacing={6} className="social-buttons">
+          <SocialButton label="Twitter" href="#">
+            <FaTwitter />
+          </SocialButton>
+          <SocialButton label="YouTube" href="#">
+            <FaYoutube />
+          </SocialButton>
+          <SocialButton
+            label="Instagram"
+            href="https://www.instagram.com/evelinaava?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw== "
+          >
+            <FaInstagram />
+          </SocialButton>
+        </Stack>
       </Box>
     </Box>
   );
