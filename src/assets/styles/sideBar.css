@@ -1,0 +1,48 @@
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.2);
+  display: none;
+  z-index: 2000;
+}
+.sidebar-overlay.open {
+  display: block;
+}
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 270px;
+  height: 100%;
+  background: #181818;
+  color: #fff;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  animation: slideIn 0.3s;
+}
+@keyframes slideIn {
+  from {
+    right: -300px;
+  }
+  to {
+    right: 0;
+  }
+}
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  padding: 0.5rem 0.7rem;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+.sidebar-item:hover {
+  background: #232323;
+}
