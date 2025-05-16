@@ -4,8 +4,9 @@ import Register from "../src/components/auth/register";
 import Dashboard from "../src/pages/dashboard.jsx";
 import Categorias from "../src/pages/home/categoriaPage.jsx";
 import FavoritosPage from "./pages/home/favoritosPage.jsx";
+
 const PrivateRoute = ({ element }) => {
-  const userDetails = localStorage.getItem("user");
+  const userDetails = localStorage.getItem("User");
 
   if (!userDetails) {
     return <Navigate to="/auth/login" replace />;
