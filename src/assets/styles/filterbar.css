@@ -31,3 +31,31 @@
 .filter-bar label {
   color: #000;
 }
+
+
+.filter-bar button {
+  background-color: #FF2929 !important;  
+  color: #fff !important;
+}
+
+
+@media (max-width: 768px) {
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+ 
+  .filter-bar > * {
+    width: 100% !important;
+  }
+
+  .filter-bar input,
+  .filter-bar .chakra-numberinput,
+  .filter-bar button {
+    width: 100% !important;
+  }
+
+  .filter-bar > *:not(:last-child) {
+    margin-bottom: 8px;
+  }
+}

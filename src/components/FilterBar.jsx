@@ -80,7 +80,7 @@ const FilterBar = () => {
         </NumberInput>
       </FormControl>
       {}
-      <Button size="md" colorScheme="blue" alignSelf="flex-end" px={6} py={2}>
+      <Button size="md" alignSelf="flex-end" px={8} py={5}>
         Buscar
       </Button>
     </Flex>
