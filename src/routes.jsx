@@ -1,5 +1,7 @@
 import { Navigate } from "react-router-dom";
-import FavoritosHotelesPage from "./pages/hotel/hotel";
+import HotelPage from "./pages/hotel/hotel";
+import Home from "./pages/Home";
+
 const PrivateRoute = ({ element }) => {
   const userDetails = localStorage.getItem("user");
 
@@ -10,28 +12,12 @@ const PrivateRoute = ({ element }) => {
 };
 
 export const routes = [
-  // {
-  //   path: "/",
-  //   element: <Navigate to="/auth/login" replace />,
-  // },
-  // {
-  //   path: "/auth",
-  //   children: [
-  //     { path: "", element: <Navigate to="login" replace /> },
-  //     { path: "login", element: <Login /> },
-  //     { path: "register", element: <Register /> },
-  //   ],
-  // },
-  // {
-  //   path: "/dashboard",
-  //   element:  <Navigate to="/dashboard" replace />,
-  // },
-  // {
-  //   path: "*",
-  //   element: <Navigate to="/auth/login" replace />,
-  // },
   {
-    path: "/hotel",
-    element: <FavoritosHotelesPage/>
-  }
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/hoteles",
+    element: <HotelPage />,
+  },
 ];

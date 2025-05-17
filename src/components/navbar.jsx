@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 export const Navbar = () => {
   const [showNavbar, setShowNavbar] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const lastScrollY = useRef(0);
 
   const handleScroll = () => {
@@ -35,14 +35,20 @@ export const Navbar = () => {
         style={{ top: showNavbar ? "0" : "-150px" }}
       >
         <div className="logoNav">
-          <Link to="/home">
+          <Link to="/">
             <img src={logoSinTexto} alt="logo" />
           </Link>
         </div>
         <div className="rutasNav">
-          <Link to="/hotel" className="nav-link">Hoteles</Link>
-          <Link to="/" className="nav-link">Reservaciones</Link>
-          <Link to="/favoritos" className="nav-link">Eventos</Link>
+          <Link to="/hoteles" className="nav-link">
+            Hoteles
+          </Link>
+          <Link to="/reservaciones" className="nav-link">
+            Reservaciones
+          </Link>
+          <Link to="/eventos" className="nav-link">
+            Eventos
+          </Link>
           <div
             onClick={() => setSidebarOpen(true)}
             style={{ cursor: "pointer" }}
