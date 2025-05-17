@@ -1,34 +1,18 @@
 import React from "react";
-import Sidebar from "../../components/sideBar.jsx";
-import SimpleFooter from "./components/footer.jsx";
-import HotelCard from "../../components/hotel/HotelCard.jsx";
-// import { useHoteles } from "../../shared/hooks/useHoteles.jsx";
+import { Navbar } from "../../components/navbar.jsx";
+import VideoFondo from "../../components/home/video.jsx";
+import SimpleFooter from "../../components/footer.jsx";
+import HotelCard from "../../components/hotels/hotelCard";
 
-const FavoritosHotelesPage = () => {
-  const { hoteles, isFetching } = useHoteles();
-
-  if (isFetching) return <div>Cargando hoteles...</div>;
-
+const HotelPage = () => {
   return (
     <div>
-      <Sidebar />
-      {hotels.length === 0 ? (
-        <div>No hay hoteles</div>
-      ) : (
-      hotels.map((hotel) => (
-      <HotelCard
-        key={hotel.id}
-        id={hotel.id}
-        hotelName={hotel.hotelName}
-        starts={hotel.starts}
-        address={hotel.address}
-        price={hotel.price}
-        imageUrl={hotel.imageUrl}
-      />
-      )) )}
+      <Navbar />
+      <VideoFondo />
+      <HotelCard />
       <SimpleFooter />
     </div>
   );
 };
 
-export default FavoritosHotelesPage;
+export default HotelPage;
