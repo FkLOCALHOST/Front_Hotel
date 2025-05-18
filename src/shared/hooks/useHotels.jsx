@@ -10,8 +10,6 @@ const useHotels = () => {
     const fetchHotels = async () => {
       try {
         const response = await getHotels();
-        console.log(response);
-        
         if (!response.error) {
           setHotels(response.data.hotels || []);
         }

@@ -18,16 +18,20 @@ const Home = () => {
         {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
 
         <div className="hotel-grid">
-          {hotels.map((hotel) => (
-            <HotelCard
-              key={hotel._id}
-              id={hotel._id}
-              hotelName={hotel.name}
-              department={hotel.department}
-              starts={parseInt(hotel.category)}
-              imageUrl={hotel.image}
-            />
-          ))}
+          {hotels
+            .slice() 
+            .sort((a, b) => parseInt(b.category) - parseInt(a.category))
+            .slice(0, 4)
+            .map((hotel, idx) => (
+              <HotelCard
+                key={hotel._id || `hotel-${idx}`}
+                id={hotel._id}
+                hotelName={hotel.name}
+                department={hotel.department}
+                starts={parseInt(hotel.category)}
+                imageUrl={hotel.image}
+              />
+            ))}
         </div>
       </section>
 

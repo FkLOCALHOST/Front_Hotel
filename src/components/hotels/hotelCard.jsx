@@ -31,7 +31,6 @@ const HotelCard = ({ id, hotelName, department, starts, address, price, imageUrl
 };
 
 HotelCard.propTypes = {
-  id: PropTypes.string.isRequired,
   hotelName: PropTypes.string.isRequired,
   department: PropTypes.string.isRequired,
   starts: PropTypes.number.isRequired,
