@@ -6,7 +6,7 @@
   background-color: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  margin: 70px auto 32px;
+  margin: 150px auto 32px;
   width: 80%;
   max-width: 1000px;
   height: auto;
@@ -30,4 +30,32 @@
 .filter-bar input,
 .filter-bar label {
   color: #000;
+}
+
+
+.filter-bar button {
+  background-color: #FF2929 !important;  
+  color: #fff !important;
+}
+
+
+@media (max-width: 768px) {
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+ 
+  .filter-bar > * {
+    width: 100% !important;
+  }
+
+  .filter-bar input,
+  .filter-bar .chakra-numberinput,
+  .filter-bar button {
+    width: 100% !important;
+  }
+
+  .filter-bar > *:not(:last-child) {
+    margin-bottom: 8px;
+  }
 }

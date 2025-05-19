@@ -1,34 +1,58 @@
-import React from "react";
-import Sidebar from "../../components/sideBar.jsx";
-import SimpleFooter from "./components/footer.jsx";
-import HotelCard from "../../components/hotel/HotelCard.jsx";
-// import { useHoteles } from "../../shared/hooks/useHoteles.jsx";
+import React, { useState } from "react";
+import { Navbar } from "../../components/navbar.jsx";
+import FilterBar from "../../components/FilterBar.jsx";
+import SimpleFooter from "../../components/footer.jsx";
+import HotelCard from "../../components/hotels/hotelCard";
+import useHotels from "../../shared/hooks/useHotels.jsx";
+import Paginacion from "../../components/paginacion.jsx";
 
-const FavoritosHotelesPage = () => {
-  const { hoteles, isFetching } = useHoteles();
+const HotelPage = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8; // Debemos de cambiar el limite por el que usemos al final
 
-  if (isFetching) return <div>Cargando hoteles...</div>;
+  const { hotels, errorMessage, toggleOrder, orderBy, totalItems } = useHotels({
+    page: currentPage,
+    limit: itemsPerPage,
+  });
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   return (
     <div>
-      <Sidebar />
-      {hotels.length === 0 ? (
-        <div>No hay hoteles</div>
-      ) : (
-      hotels.map((hotel) => (
-      <HotelCard
-        key={hotel.id}
-        id={hotel.id}
-        hotelName={hotel.hotelName}
-        starts={hotel.starts}
-        address={hotel.address}
-        price={hotel.price}
-        imageUrl={hotel.imageUrl}
+      <Navbar />
+      <div className="hotel-header">
+        <br />
+        <br />
+        <div className="filter-wrapper">
+          <FilterBar />
+        </div>
+      </div>
+
+      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+
+      <div className="hotel-grid">
+        {(hotels || []).map((hotel, idx) => (
+          <HotelCard
+            key={hotel._id || `hotel-${idx}`}
+            id={hotel._id}
+            hotelName={hotel.name}
+            department={hotel.department}
+            starts={parseInt(hotel.category)}
+            imageUrl={hotel.image}
+          />
+        ))}
+      </div>
+      <Paginacion
+        totalItems={totalItems}
+        itemsPerPage={itemsPerPage}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
       />
-      )) )}
       <SimpleFooter />
     </div>
   );
 };
 
-export default FavoritosHotelesPage;
+export default HotelPage;

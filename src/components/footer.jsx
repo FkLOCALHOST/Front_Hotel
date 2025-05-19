@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import "../assets/styles/footer.css";
-import logoConTexto from "../assets/images/logo_con_texto.svg";
+import logoConTexto from "../assets/images/logo_blanco.png";
 
 const Logo = () => {
   return <img src={logoConTexto} alt="HostHotels" className="logo" />;
