@@ -3,14 +3,6 @@ import Login from "./components/auth/loginCard";
 import HotelPage from "./pages/hotel/hotel";
 import Home from "./pages/Home";
 
-const PrivateRoute = ({ element }) => {
-  const userDetails = localStorage.getItem("user");
-
-  if (!userDetails) {
-    return <Navigate to="/auth/login" replace />;
-  }
-  return element;
-};
 
 export const routes = [
   {
@@ -20,5 +12,9 @@ export const routes = [
   {
     path: "/hoteles",
     element: <HotelPage />,
+  },
+  {
+    path: "/auth/login",
+    element: <Login />,
   },
 ];

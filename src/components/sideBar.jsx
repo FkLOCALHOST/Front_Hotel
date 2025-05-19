@@ -15,7 +15,9 @@ const SideBar = ({ open, onClose }) => {
       <div className="sidebar" onClick={e => e.stopPropagation()}>
         <div className="sidebar-item">
           <User size={20} />
-          <span>Perfil</span>
+          <span onClick={() => window.location.href = "/auth/login"}>
+            Iniciar Sesion
+          </span>
         </div>
         <div className="sidebar-item">
           <Star size={20} />
