@@ -11,7 +11,7 @@ apiHotel.interceptors.request.use(
     if (
       !config.url.includes("/auth/login") &&
       !config.url.includes("/auth/register")&&
-        !config.url.includes("/hotel/getHotels")
+        !config.url.includes("/hotel/getHotels") && !config.url.includes("/hotel/searchHotels")
     ) {
       const userDetails = localStorage.getItem("User");
 
@@ -192,7 +192,6 @@ export const deleteHotel = async (uid) => {
   }
 };
 
-// Search hotels by name or department with pagination
 export const searchHotelsService = async ({ search = "", page = 1, limit = 8 }) => {
   try {
     const desde = (page - 1) * limit;

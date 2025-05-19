@@ -19,7 +19,7 @@ const SearchBar = ({ onSearch }) => {
         </FormLabel>
         <Input
           size="sm"
-          placeholder="Ciudad, hotel o destino"
+          placeholder="Buscar"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyPress={handleKeyPress}
