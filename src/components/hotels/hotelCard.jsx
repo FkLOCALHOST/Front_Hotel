@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import "../../assets/styles/hotel/hotelCard.css";
 import { Star } from "lucide-react";
 
-const HotelCard = ({ id, hotelName, department, starts, address, price, imageUrl }) => {
+const HotelCard = ({ hotelName, department, starts, imageUrl, onClick }) => {
   const [liked, setLiked] = useState(false);
 
   const toggleLike = () => {
@@ -11,7 +11,7 @@ const HotelCard = ({ id, hotelName, department, starts, address, price, imageUrl
   };
 
   return (
-    <div className="hotel-card">
+    <div className="hotel-card" onClick={onClick} style={{ cursor: "pointer" }}>
       <img
         src={imageUrl}
         alt={`Imagen de ${hotelName}`}
@@ -45,6 +45,7 @@ HotelCard.propTypes = {
   address: PropTypes.string,
   price: PropTypes.string,
   imageUrl: PropTypes.string,
+  onClick: PropTypes.func,
 };
 
 export default HotelCard;
