@@ -4,11 +4,11 @@ import HotelPage from "./pages/hotel/hotel";
 import Home from "./pages/Home";
 
 const PrivateRoute = ({ element }) => {
-  // const userDetails = localStorage.getItem("user");
+  const userDetails = localStorage.getItem("user");
 
-  // if (!userDetails) {
-  //   return <Navigate to="/hoteles" replace />;
-  // }
+  if (!userDetails) {
+    return <Navigate to="/auth/login" replace />;
+  }
   return element;
 };
 
