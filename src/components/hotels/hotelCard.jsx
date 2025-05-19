@@ -20,7 +20,15 @@ const HotelCard = ({ id, hotelName, department, starts, address, price, imageUrl
       <div className="hotel-info">
         <h2 className="hotel-name"> {hotelName }</h2>
         <p className="hotel-detail">
-          <Star size={16} style={{ marginRight: "6px" }} /> {starts} estrellas
+          {[...Array(starts)].map((_, i) => (
+            <Star
+              key={i}
+              size={16}
+              style={{ marginRight: "2px", color: "#FFD700", verticalAlign: "middle" }}
+              fill="#FFD700"
+            />
+          ))}
+          <span style={{ marginLeft: "6px" }}>{starts} estrellas</span>
         </p>
         <p className="hotel-detail">
           <span style={{ fontWeight: "bold" }}>Departamento:</span> {department}
