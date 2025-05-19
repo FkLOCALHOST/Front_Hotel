@@ -1,22 +1,7 @@
 import React, { useState } from "react";
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import "../../assets/styles/auth/login.css";
-
-const login = async ({ email, password }) => {
-   try {
-      const response = await login({ email, password });
-      if (response.error) {
-        setError('Inicio de sesión fallido. Verifica tus credenciales.');
-      } else {
-        setSuccess('¡Inicio de sesión exitoso!');
-        localStorage.setItem('Trabajador', JSON.stringify(response.data));
-        onLoginSuccess(); 
-        }
-    }catch(err) {
-      setError('Ocurrió un error inesperado. Intenta de nuevo.');
-    }
-};
-
+import { login as loginService } from "../../services/api"; 
 const Login = ({ onLoginSuccess }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,13 +15,14 @@ const Login = ({ onLoginSuccess }) => {
     setSuccess('');
 
     try {
-      const response = await login({ email, password });
+      const response = await loginService({ email, password });
       if (response.error) {
         setError('Inicio de sesión fallido. Verifica tus credenciales.');
       } else {
         setSuccess('¡Inicio de sesión exitoso!');
-        localStorage.setItem('Trabajador', JSON.stringify(response.data));
+        localStorage.setItem('User', JSON.stringify(response.data));
         if (onLoginSuccess) onLoginSuccess();
+        window.location.href = "/";
       }
     } catch (err) {
       setError('Ocurrió un error inesperado. Intenta de nuevo.');
