@@ -18,7 +18,7 @@ const HotelCard = ({ id, hotelName, department, starts, address, price, imageUrl
         className="hotel-image"
       />
       <div className="hotel-info">
-        <h2 className="hotel-name">{hotelName }</h2>
+        <h2 className="hotel-name"> {hotelName }</h2>
         <p className="hotel-detail">
           <Star size={16} style={{ marginRight: "6px" }} /> {starts} estrellas
         </p>

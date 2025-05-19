@@ -18,8 +18,8 @@ const Home = () => {
         {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
 
         <div className="hotel-grid">
-          {hotels
-            .slice() 
+          {(hotels || [])
+            .slice()
             .sort((a, b) => parseInt(b.category) - parseInt(a.category))
             .slice(0, 4)
             .map((hotel, idx) => (

@@ -8,7 +8,7 @@ import Paginacion from "../../components/paginacion.jsx";
 
 const HotelPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 8; // Debemos de cambiar el limite por el que usemos al final
 
   const { hotels, errorMessage, toggleOrder, orderBy, totalItems } = useHotels({
     page: currentPage,
@@ -33,7 +33,7 @@ const HotelPage = () => {
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
 
       <div className="hotel-grid">
-        {hotels.map((hotel, idx) => (
+        {(hotels || []).map((hotel, idx) => (
           <HotelCard
             key={hotel._id || `hotel-${idx}`}
             id={hotel._id}
