@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Navbar } from "../../components/navbar.jsx";
-import FilterBar from "../../components/FilterBar.jsx";
+import FilterBar from "../../components/SearchBar.jsx";
 import SimpleFooter from "../../components/footer.jsx";
 import HotelCard from "../../components/hotels/hotelCard";
 import useHotels from "../../shared/hooks/useHotels.jsx";

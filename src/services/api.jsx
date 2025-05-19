@@ -192,6 +192,20 @@ export const deleteHotel = async (uid) => {
   }
 };
 
+// Search hotels by name or department with pagination
+export const searchHotelsService = async ({ search = "", page = 1, limit = 8 }) => {
+  try {
+    const desde = (page - 1) * limit;
+    const params = new URLSearchParams();
+    params.append('search', search);
+    params.append('desde', desde.toString());
+    params.append('limite', limit.toString());
+    return await apiHotel.get(`/hotel/searchHotels?${params.toString()}`);
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+};
+
 // User
 export const getUserById = async (uid) => {
   try {
