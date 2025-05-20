@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import "../../assets/styles/hotel/hotelCard.css";
 import { Star } from "lucide-react";
 
-const HotelCard = ({ id, hotelName, department, starts, address, price, imageUrl }) => {
+const HotelCard = ({ hotelName, department, starts, imageUrl, onClick }) => {
   const [liked, setLiked] = useState(false);
 
   const toggleLike = () => {
@@ -11,7 +11,7 @@ const HotelCard = ({ id, hotelName, department, starts, address, price, imageUrl
   };
 
   return (
-    <div className="hotel-card">
+    <div className="hotel-card" onClick={onClick} style={{ cursor: "pointer" }}>
       <img
         src={imageUrl}
         alt={`Imagen de ${hotelName}`}
@@ -20,7 +20,15 @@ const HotelCard = ({ id, hotelName, department, starts, address, price, imageUrl
       <div className="hotel-info">
         <h2 className="hotel-name"> {hotelName }</h2>
         <p className="hotel-detail">
-          <Star size={16} style={{ marginRight: "6px" }} /> {starts} estrellas
+          {[...Array(starts)].map((_, i) => (
+            <Star
+              key={i}
+              size={16}
+              style={{ marginRight: "2px", color: "#FFD700", verticalAlign: "middle" }}
+              fill="#FFD700"
+            />
+          ))}
+          <span style={{ marginLeft: "6px" }}>{starts} estrellas</span>
         </p>
         <p className="hotel-detail">
           <span style={{ fontWeight: "bold" }}>Departamento:</span> {department}
@@ -37,6 +45,7 @@ HotelCard.propTypes = {
   address: PropTypes.string,
   price: PropTypes.string,
   imageUrl: PropTypes.string,
+  onClick: PropTypes.func,
 };
 
 export default HotelCard;

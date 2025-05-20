@@ -3,15 +3,15 @@ import { Navbar } from "../../components/navbar.jsx";
 import SearchBar from "../../components/SearchBar.jsx";
 import SimpleFooter from "../../components/footer.jsx";
 import HotelCard from "../../components/hotels/hotelCard";
+import ViewHotel from "../../components/hotels/viewHotel";
 import useHotels from "../../shared/hooks/useHotels.jsx";
 import useSearchHotels from "../../shared/hooks/useSearchHotels.jsx";
 import Paginacion from "../../components/paginacion.jsx";
 
 const HotelPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState("");
-  const itemsPerPage = 8; // Debemos de cambiar el limite por el que usemos al final
-
+  const [selectedHotel, setSelectedHotel] = useState(null);
+  const itemsPerPage = 8;
   const defaultResult = useHotels({ page: currentPage, limit: itemsPerPage });
 
   const searchResult = useSearchHotels({
@@ -29,6 +29,14 @@ const HotelPage = () => {
   const handleSearch = (value) => {
     setSearchTerm(value);
     setCurrentPage(1);
+  };
+
+  const handleCardClick = (hotel) => {
+    setSelectedHotel(hotel);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedHotel(null);
   };
 
   return (
@@ -53,7 +61,8 @@ const HotelPage = () => {
             hotelName={hotel.name}
             department={hotel.department}
             starts={parseInt(hotel.category)}
-            imageUrl={hotel.image}
+            imageUrl={hotel.imageHotel}
+            onClick={() => handleCardClick(hotel)}
           />
         ))}
       </div>
@@ -64,6 +73,49 @@ const HotelPage = () => {
         onPageChange={handlePageChange}
       />
       <SimpleFooter />
+
+      {selectedHotel && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 2000,
+          }}
+          onClick={handleCloseModal}
+        >
+          <div onClick={(e) => e.stopPropagation()}>
+            <button
+              style={{
+                position: "absolute",
+                top: 20,
+                right: 40,
+                zIndex: 1001,
+                background: "#transparent",
+                border: "none",
+                fontSize: 64,
+                cursor: "pointer",
+              }}
+              onClick={handleCloseModal}
+            >
+              &times;
+            </button>
+            <ViewHotel
+              hotelName={selectedHotel.name}
+              department={selectedHotel.department}
+              starts={parseInt(selectedHotel.category)}
+              address={selectedHotel.address}
+              price={selectedHotel.price}
+              imageUrl={selectedHotel.imageHotel}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
