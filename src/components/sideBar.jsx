@@ -8,8 +8,12 @@ import {
   Edit,
   LogOut,
 } from "lucide-react";
+import logout from "../shared/hooks/useLogout.jsx";
 
 const SideBar = ({ open, onClose }) => {
+  
+  const user = localStorage.getItem("User"); 
+
   return (
     <div className={`sidebar-overlay ${open ? "open" : ""}`} onClick={onClose}>
       <div className="sidebar" onClick={e => e.stopPropagation()}>
@@ -35,10 +39,13 @@ const SideBar = ({ open, onClose }) => {
           <Edit size={20} />
           <span>Editar Perfil</span>
         </div>
-        <div className="sidebar-item">
-          <LogOut size={20} />
-          <span>Salir</span>
-        </div>
+
+        {user && (
+          <div className="sidebar-item" onClick={logout}>
+            <LogOut size={20} />
+            <span>Salir</span>
+          </div>
+        )}
       </div>
     </div>
   );
