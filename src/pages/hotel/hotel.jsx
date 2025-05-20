@@ -10,7 +10,8 @@ import Paginacion from "../../components/paginacion.jsx";
 
 const HotelPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedHotel, setSelectedHotel] = useState(null);
+  const [selectedHotel, setSelectedHotel] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const itemsPerPage = 8;
   const defaultResult = useHotels({ page: currentPage, limit: itemsPerPage });
 
