@@ -1,24 +1,34 @@
 import React, { useState } from "react";
 import { Navbar } from "../../components/navbar.jsx";
-import FilterBar from "../../components/FilterBar.jsx";
+import SearchBar from "../../components/SearchBar.jsx";
 import SimpleFooter from "../../components/footer.jsx";
 import HotelCard from "../../components/hotels/hotelCard";
 import ViewHotel from "../../components/hotels/viewHotel";
 import useHotels from "../../shared/hooks/useHotels.jsx";
+import useSearchHotels from "../../shared/hooks/useSearchHotels.jsx";
 import Paginacion from "../../components/paginacion.jsx";
 
 const HotelPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedHotel, setSelectedHotel] = useState(null);
   const itemsPerPage = 8;
+  const defaultResult = useHotels({ page: currentPage, limit: itemsPerPage });
 
-  const { hotels, errorMessage, toggleOrder, orderBy, totalItems } = useHotels({
+  const searchResult = useSearchHotels({
     page: currentPage,
     limit: itemsPerPage,
+    search: searchTerm,
   });
+  const isSearch = searchTerm.trim() !== "";
+  const { hotels, totalItems, errorMessage } = isSearch ? searchResult : defaultResult;
+  const loading = isSearch ? searchResult.loading : defaultResult.loading || false;
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+  };
+  const handleSearch = (value) => {
+    setSearchTerm(value);
+    setCurrentPage(1);
   };
 
   const handleCardClick = (hotel) => {
@@ -36,11 +46,12 @@ const HotelPage = () => {
         <br />
         <br />
         <div className="filter-wrapper">
-          <FilterBar />
+          <SearchBar onSearch={handleSearch} />
         </div>
       </div>
 
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+      {loading && <p>Cargando hoteles...</p>}
 
       <div className="hotel-grid">
         {(hotels || []).map((hotel, idx) => (

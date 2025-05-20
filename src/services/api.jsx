@@ -11,7 +11,7 @@ apiHotel.interceptors.request.use(
     if (
       !config.url.includes("/auth/login") &&
       !config.url.includes("/auth/register")&&
-        !config.url.includes("/hotel/getHotels")
+        !config.url.includes("/hotel/getHotels") && !config.url.includes("/hotel/searchHotels")
     ) {
       const userDetails = localStorage.getItem("User");
 
@@ -187,6 +187,19 @@ export const updateHotel = async (uid, data) => {
 export const deleteHotel = async (uid) => {
   try {
     return await apiHotel.patch(`/hotel/deleteHotel/${uid}`);
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+};
+
+export const searchHotelsService = async ({ search = "", page = 1, limit = 8 }) => {
+  try {
+    const desde = (page - 1) * limit;
+    const params = new URLSearchParams();
+    params.append('search', search);
+    params.append('desde', desde.toString());
+    params.append('limite', limit.toString());
+    return await apiHotel.get(`/hotel/searchHotels?${params.toString()}`);
   } catch (error) {
     return { error: true, message: error.message };
   }
