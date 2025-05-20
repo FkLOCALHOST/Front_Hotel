@@ -100,7 +100,7 @@ const HotelPage = () => {
               starts={parseInt(selectedHotel.category)}
               address={selectedHotel.address}
               price={selectedHotel.price}
-              imageUrl={selectedHotel.image}
+              imageUrl={selectedHotel.imageHotel}
             />
           </div>
         </div>
