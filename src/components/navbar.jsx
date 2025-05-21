@@ -43,8 +43,8 @@ export const Navbar = () => {
           <Link to="/hoteles" className="nav-link">
             Hoteles
           </Link>
-          <Link to="/reservaciones" className="nav-link">
-            Reservaciones
+          <Link to="/habitaciones" className="nav-link">
+            Habitaciones
           </Link>
           <Link to="/eventos" className="nav-link">
             Eventos
