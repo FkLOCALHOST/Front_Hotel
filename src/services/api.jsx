@@ -34,7 +34,7 @@ apiHotel.interceptors.request.use(
             } catch (e) {
               localStorage.clear();
               console.error("Error al decodificar el token", e);
-            //   window.location.href = "/auth/login";
+              //   window.location.href = "/auth/login";
               return Promise.reject(new Error("Token inválido"));
             }
           }
@@ -260,9 +260,9 @@ export const updatePictureProfile = async (uid, data) => {
   }
 };
 
-export const getRooms = async () => {
+export const getRooms = async ({ desde = 0, limit = 10 } = {}) => {
   try {
-    return await apiHotel.get("/room/getRooms");
+    return await apiHotel.get(`/room/getRooms?limite=${limit}&desde=${desde}`);
   } catch (error) {
     return { error: true, message: error.message };
   }
