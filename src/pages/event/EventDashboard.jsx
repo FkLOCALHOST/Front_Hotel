@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Navbar } from "../../components/navbar.jsx";
-import FilterBar from "../../components/FilterBar.jsx";
+import SearchBar from "../../components/SearchBar.jsx";
 import SimpleFooter from "../../components/footer.jsx";
 import EventCard from "../../components/events/EventCard.jsx";
 import useEvents from "../../shared/hooks/event/useGetEvent.jsx";
@@ -9,15 +9,31 @@ import Paginacion from "../../components/paginacion.jsx";
 const EventDashboard = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedEvent, setSelectedEvent] = useState(null);
+    const [searchTerm, setSearchTerm] = useState("");
     const itemsPerPage = 8;
 
-    const { events, errorMessage, totalItems } = useEvents({
+    const defaultResult = useEvents({
         page: currentPage,
         limit: itemsPerPage,
     });
 
+    const searchResult = useEvents({
+        page: currentPage,
+        limit: itemsPerPage,
+        search: searchTerm,
+    });
+
+    const isSearch = searchTerm.trim() !== "";
+    const { events, errorMessage, totalItems } = isSearch ? searchResult : defaultResult;
+    const loading = isSearch ? searchResult.loading : defaultResult.loading || false;
+
     const handlePageChange = (page) => {
         setCurrentPage(page);
+    };
+
+    const handleSearch = (value) => {
+        setSearchTerm(value);
+        setCurrentPage(1);
     };
 
     const handleCardClick = (event) => {
@@ -35,11 +51,12 @@ const EventDashboard = () => {
                 <br />
                 <br />
                 <div className="filter-wrapper">
-                    <FilterBar />
+                    <SearchBar onSearch={handleSearch} />
                 </div>
             </div>
 
             {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+            {loading && <p>Cargando eventos...</p>}
 
             <div className="hotel-grid">
                 {(events || []).map((event, idx) => (
@@ -97,7 +114,6 @@ const EventDashboard = () => {
                         >
                             &times;
                         </button>
-                        <ViewEvent event={selectedEvent} />
                     </div>
                 </div>
             )}
