@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiHotel = axios.create({
-  baseURL: "http://localhost:3005/hotelManagerSystem/v1",
+  baseURL: "http://127.0.0.1:3005/hotelManagerSystem/v1",
   timeout: 3000,
 });
 
@@ -33,7 +33,8 @@ apiHotel.interceptors.request.use(
               }
             } catch (e) {
               localStorage.clear();
-              //   window.location.href = "/auth/login";
+              console.error("Error al decodificar el token", e);
+            //   window.location.href = "/auth/login";
               return Promise.reject(new Error("Token inválido"));
             }
           }
