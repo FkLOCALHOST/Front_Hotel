@@ -6,7 +6,7 @@ const SearchBar = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && onSearch) {
       onSearch(searchTerm);
     }
   };
@@ -25,7 +25,7 @@ const SearchBar = ({ onSearch }) => {
           onKeyPress={handleKeyPress}
         />
       </FormControl>
-      <Button size="sm" ml={2} onClick={() => onSearch(searchTerm)}>
+      <Button size="sm" ml={2} onClick={() => onSearch && onSearch(searchTerm)}>
         Buscar
       </Button>
     </Flex>
