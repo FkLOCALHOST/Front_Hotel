@@ -8,7 +8,9 @@ const useRooms = () => {
   useEffect(() => {
     const fetchRooms = async () => {
       try {
+        console.log("Llamando a getRooms...");
         const response = await getRooms();
+        console.log("Respuesta de getRooms:", response);
         setRooms(response.data || []);
         setErrorMessage("");
       } catch (error) {
