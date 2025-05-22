@@ -22,7 +22,7 @@ const EventCard = ({ name, description, price, date, place, image, type, onClick
                     <strong>Lugar:</strong>&nbsp;{place}
                 </p>
                 <p className="hotel-detail">
-                    <strong>Fecha:</strong>&nbsp;{new Date(date).toLocaleDateString()}
+                    <strong>Fecha:</strong>&nbsp;{date ? date.slice(0, 10) : ""}
                 </p>
                 <p className="hotel-detail">
                     <strong>Precio:</strong>&nbsp;Q{price.toFixed(2)}
