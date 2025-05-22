@@ -53,7 +53,7 @@ const HotelCard = ({ id, hotelName, department, starts, imageUrl, onClick, isFav
         title={liked ? "Quitar de favoritos" : "Guardar como favorito"}
         style={{
           position: "absolute",
-          top: "16px",
+          top: "300px",
           right: "16px",
           fontSize: "1.6rem",
           cursor: "pointer",
