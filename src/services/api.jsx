@@ -267,3 +267,11 @@ export const getRooms = async ({ desde = 0, limit = 10 } = {}) => {
     return { error: true, message: error.message };
   }
 };
+
+export const addFavHotel = async (uid, favHotel) => {
+  try {
+    return await apiHotel.patch(`/user/addFavHotel/${uid}`, { favHotel })
+  }catch (error) {
+    return { error: true, message: error.message };
+  }
+};

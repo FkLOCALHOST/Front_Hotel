@@ -41,6 +41,9 @@ const HotelPage = () => {
     setSelectedHotel(null);
   };
 
+  const userData = JSON.parse(localStorage.getItem("User"));
+const favHotels = userData?.userDetails?.favHotel || [];
+
   return (
     <div>
       <Navbar />
@@ -56,17 +59,21 @@ const HotelPage = () => {
       {loading && <p>Cargando hoteles...</p>}
 
       <div className="hotel-grid">
-        {(hotels || []).map((hotel, idx) => (
-          <HotelCard
-            key={hotel._id || `hotel-${idx}`}
-            id={hotel._id}
-            hotelName={hotel.name}
-            department={hotel.department}
-            starts={parseInt(hotel.category)}
-            imageUrl={hotel.imageHotel}
-            onClick={() => handleCardClick(hotel)}
-          />
-        ))}
+        {(hotels || []).map((hotel, idx) => {
+          const isFavorite = favHotels.includes(hotel.uid);
+      return (
+      <HotelCard
+        key={hotel.uid || `hotel-${idx}`}
+        id={hotel.uid}
+        hotelName={hotel.name}
+        department={hotel.department}
+        starts={parseInt(hotel.category)}
+        imageUrl={hotel.imageHotel}
+        onClick={() => handleCardClick(hotel)}
+        isFavorite={isFavorite}
+      />
+    );
+  })}
       </div>
       <Paginacion
         totalItems={totalItems}
