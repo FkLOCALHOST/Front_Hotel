@@ -1,11 +1,17 @@
 import PropTypes from "prop-types";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "../../assets/styles/hotel/hotelCard.css";
 import { Star, Edit, Trash2 } from "lucide-react";
+import { FaHeart } from "react-icons/fa";
 import useDeleteHotel from "../../shared/hooks/useDeleteHotel";
+import { addFavHotel } from "../../services/api";
 
 const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, onDelete, id, onDeleted }) => {
-  const [liked, setLiked] = useState(false);
+  const userData = JSON.parse(localStorage.getItem("User"));
+  const favHotels = userData?.userDetails?.favHotel || [];
+  const isFavorite = favHotels.includes(id);
+
+  const [liked, setLiked] = useState(isFavorite);
   const { removeHotel, loading } = useDeleteHotel();
 
   let isAdmin = false;
@@ -20,37 +26,30 @@ const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, o
     isAdmin = false;
   }
 
-  useEffect(() => {
-    setLiked(isFavorite);
-  }, [isFavorite]);
-
   const toggleLike = async (e) => {
-  e.stopPropagation();
-  if (!liked) {
-    const userData = JSON.parse(localStorage.getItem("User"));
-    const uid = userData?.userDetails?._id;
-    if (!uid) {
+    e.stopPropagation();
+    if (!userData?.userDetails?._id) {
       alert("Debes iniciar sesión para guardar favoritos.");
       return;
     }
-
-    if(!liked){
+    const uid = userData.userDetails._id;
+    if (!liked) {
       const response = await addFavHotel(uid, id);
-    if (response.data && response.data.success) {
-      setLiked(true);
-      const favs = userData.userDetails.favHotel || [];
-      localStorage.setItem("user", JSON.stringify(userData));
+      if (response.data && response.data.success) {
+        setLiked(true);
+        const favs = userData.userDetails.favHotel || [];
+        userData.userDetails.favHotel = [...favs, id];
+        localStorage.setItem("User", JSON.stringify(userData));
+      } else {
+        alert("No se pudo guardar como favorito.");
+      }
     } else {
-      alert("No se pudo guardar como favorito.");
-    }  
-  } else {
-    setLiked(false);
-    const favs = userData.userDetails.favHotel || [];
+      setLiked(false);
+      const favs = userData.userDetails.favHotel || [];
       userData.userDetails.favHotel = favs.filter(favId => favId !== id);
       localStorage.setItem("User", JSON.stringify(userData));
     }
-  }
-};
+  };
 
   const handleDelete = async (e) => {
     e.stopPropagation();
@@ -68,7 +67,7 @@ const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, o
       {isAdmin && (
         <div className="hotel-card-actions">
           <Edit
-            size={40}
+            size={35}
             className="hotel-card-action-icon"
             title="Editar"
             onClick={e => {
