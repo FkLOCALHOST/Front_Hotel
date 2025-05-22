@@ -186,7 +186,7 @@ const EventForm = () => {
               >
                 <option value="">Selecciona un hotel</option>
                 {hotels.map((hotel) => (
-                  <option key={hotel._id} value={hotel._id}>
+                  <option key={hotel._id} value={hotel.uid}>
                     {hotel.name}
                   </option>
                 ))}
@@ -202,7 +202,7 @@ const EventForm = () => {
               >
                 <option value="">Selecciona una habitación</option>
                 {rooms.map((room) => (
-                  <option key={room._id} value={room._id}>
+                  <option key={room._id} value={room.uid}>
                     {room.name || `Habitación ${room.number}`}
                   </option>
                 ))}
