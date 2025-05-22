@@ -11,7 +11,9 @@ const useRooms = () => {
         console.log("Llamando a getRooms...");
         const response = await getRooms();
         console.log("Respuesta de getRooms:", response);
-        setRooms(response.data || []);
+
+        const habitaciones = response.data?.rooms || [];
+        setRooms(habitaciones);
         setErrorMessage("");
       } catch (error) {
         setErrorMessage("Error al obtener las habitaciones");
@@ -23,4 +25,5 @@ const useRooms = () => {
 
   return { rooms, errorMessage };
 };
+
 export default useRooms;

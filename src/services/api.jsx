@@ -7,44 +7,41 @@ const apiHotel = axios.create({
 
 apiHotel.interceptors.request.use(
   (config) => {
-    // Excluir login y registro
     if (
       !config.url.includes("/auth/login") &&
       !config.url.includes("/auth/register") &&
       !config.url.includes("/hotel/getHotels") &&
       !config.url.includes("/hotel/searchHotels")
     ) {
-      const userDetails = localStorage.getItem("User");
+      const userStr = localStorage.getItem("User");
 
-      if (userDetails) {
-        const token = JSON.parse(userDetails).token;
+      if (!userStr) return Promise.reject(new Error("No autorizado"));
 
-        if (token) {
-          // Verificamos si está expirado
-          const [, payloadBase64] = token.split(".");
-          if (payloadBase64) {
-            try {
-              const payload = JSON.parse(atob(payloadBase64));
-              const now = Math.floor(Date.now() / 1000);
-              if (payload.exp < now) {
-                localStorage.clear();
-                // window.location.href = "/auth/login";
-                return Promise.reject(new Error("Token expirado"));
-              }
-            } catch (e) {
-              localStorage.clear();
-              console.error("Error al decodificar el token", e);
-            //   window.location.href = "/auth/login";
-              return Promise.reject(new Error("Token inválido"));
-            }
-          }
-          config.headers["Authorization"] = `Bearer ${token}`;
+      try {
+        const user = JSON.parse(userStr);
+        const token = user.userDetails?.token;
+
+        if (!token) return Promise.reject(new Error("No autorizado"));
+
+        const parts = token.split(".");
+        if (parts.length !== 3) throw new Error("Token inválido");
+
+        const payload = JSON.parse(atob(parts[1]));
+        const now = Math.floor(Date.now() / 1000);
+
+        if (payload.exp < now) {
+          localStorage.clear();
+          return Promise.reject(new Error("Token expirado"));
         }
-      } else {
-        // window.location.href = "/auth/login";
-        return Promise.reject(new Error("No autorizado"));
+
+        config.headers["Authorization"] = `Bearer ${token}`;
+      } catch (error) {
+        localStorage.clear();
+        console.log(`error: ${error}`);
+        return Promise.reject(new Error("Token inválido"));
       }
     }
+
     return config;
   },
   (error) => Promise.reject(error)
@@ -267,3 +264,11 @@ export const getRooms = async () => {
     return { error: true, message: error.message };
   }
 };
+
+export const getReservation = async() =>{
+  try {
+    return await apiHotel.get("/reservation/getReservations");
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+}
