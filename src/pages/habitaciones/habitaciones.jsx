@@ -6,10 +6,9 @@ import useRooms from "../../shared/hooks/rooms/useRooms.jsx";
 import Paginacion from "../../components/paginacion.jsx";
 import SearchBar from "../../components/SearchBar.jsx";
 
-const itemsPerPage = 10;
-
 const HabitacionesPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
   const { rooms, totalItems, errorMessage, loading } = useRooms({
     page: currentPage,
     limit: itemsPerPage,

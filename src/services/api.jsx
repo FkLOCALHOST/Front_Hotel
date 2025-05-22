@@ -257,9 +257,14 @@ export const updatePictureProfile = async (uid, data) => {
   }
 };
 
-export const getRooms = async ({ desde = 0, limit = 10 } = {}) => {
+export const getRooms = async ({ page = 1, limit = 10 } = {}) => {
   try {
-    return await apiHotel.get(`/room/getRooms?limite=${limit}&desde=${desde}`);
+    const desde = (page - 1) * limit;
+    const params = new URLSearchParams();
+    params.append("limite", limit);
+    params.append("desde", desde);
+    const response = await apiHotel.get(`/room/getRooms?${params.toString()}`);
+    return response;
   } catch (error) {
     return { error: true, message: error.message };
   }
