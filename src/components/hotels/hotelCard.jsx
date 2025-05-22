@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../../assets/styles/hotel/hotelCard.css";
 import { Star, Edit, Trash2 } from "lucide-react";
 import useDeleteHotel from "../../shared/hooks/useDeleteHotel";
@@ -20,9 +20,37 @@ const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, o
     isAdmin = false;
   }
 
-  const toggleLike = () => {
-    setLiked(!liked);
-  };
+  useEffect(() => {
+    setLiked(isFavorite);
+  }, [isFavorite]);
+
+  const toggleLike = async (e) => {
+  e.stopPropagation();
+  if (!liked) {
+    const userData = JSON.parse(localStorage.getItem("User"));
+    const uid = userData?.userDetails?._id;
+    if (!uid) {
+      alert("Debes iniciar sesión para guardar favoritos.");
+      return;
+    }
+
+    if(!liked){
+      const response = await addFavHotel(uid, id);
+    if (response.data && response.data.success) {
+      setLiked(true);
+      const favs = userData.userDetails.favHotel || [];
+      localStorage.setItem("user", JSON.stringify(userData));
+    } else {
+      alert("No se pudo guardar como favorito.");
+    }  
+  } else {
+    setLiked(false);
+    const favs = userData.userDetails.favHotel || [];
+      userData.userDetails.favHotel = favs.filter(favId => favId !== id);
+      localStorage.setItem("User", JSON.stringify(userData));
+    }
+  }
+};
 
   const handleDelete = async (e) => {
     e.stopPropagation();
@@ -56,13 +84,30 @@ const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, o
           />
         </div>
       )}
+
       <img
         src={imageUrl}
         alt={`Imagen de ${hotelName}`}
         className="hotel-image"
       />
+      <span
+        className={`like-button${liked ? " liked" : ""}`}
+        onClick={toggleLike}
+        title={liked ? "Quitar de favoritos" : "Guardar como favorito"}
+        style={{
+          position: "absolute",
+          top: "16px",
+          right: "16px",
+          fontSize: "1.6rem",
+          cursor: "pointer",
+          transition: "color 0.2s",
+          zIndex: 2
+        }}
+      >
+        <FaHeart />
+      </span>
       <div className="hotel-info">
-        <h2 className="hotel-name"> {hotelName }</h2>
+        <h2 className="hotel-name">{hotelName}</h2>
         <p className="hotel-detail">
           {[...Array(starts)].map((_, i) => (
             <Star
@@ -86,8 +131,6 @@ HotelCard.propTypes = {
   hotelName: PropTypes.string.isRequired,
   department: PropTypes.string.isRequired,
   starts: PropTypes.number.isRequired,
-  address: PropTypes.string,
-  price: PropTypes.string,
   imageUrl: PropTypes.string,
   onClick: PropTypes.func,
   onEdit: PropTypes.func,

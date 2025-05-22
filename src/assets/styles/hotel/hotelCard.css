@@ -50,7 +50,7 @@
 
 .like-button {
   position: absolute;
-  top: -24px;
+  top: 16px;
   right: 16px;
   background: #1c1c1c;
   border: 2px solid #fff;
@@ -58,11 +58,13 @@
   padding: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
+  color: #fff;
 }
 
 .like-button.liked {
   border-color: #ff2929;
-  background-color: #ff2929;
+  background-color: #fff;
+  color: #ff2929 !important;
 }
 
 .like-button:hover {

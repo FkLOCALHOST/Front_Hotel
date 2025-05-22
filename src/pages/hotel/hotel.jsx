@@ -45,6 +45,9 @@ const HotelPage = () => {
     setSelectedHotel(null);
   };
 
+  const userData = JSON.parse(localStorage.getItem("User"));
+const favHotels = userData?.userDetails?.favHotel || [];
+
   return (
     <div>
       <Navbar />
@@ -72,6 +75,7 @@ const HotelPage = () => {
             onDeleted={() => setCurrentPage(currentPage)}
           />
         ))}
+
       </div>
       <Paginacion
         totalItems={totalItems}
