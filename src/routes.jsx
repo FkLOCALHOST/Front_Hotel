@@ -3,8 +3,10 @@ import HotelPage from "./pages/hotel/hotel";
 import Home from "./pages/Home";
 import HabitacionesPage from "./pages/habitaciones/habitaciones";
 import EventDashboard from "./pages/event/EventDashboard";
+import Favoritos from "./pages/favoritos/favoritos"
 import EventForm from "./components/forms/EventForm";
 import ReservacionesPage from "./pages/reservations/reservaciones";
+
 
 export const routes = [
   {
@@ -25,7 +27,11 @@ export const routes = [
   },
   {
     path: "/habitaciones",
-    element: <HabitacionesPage />,
+    element: < HabitacionesPage/>,
+  },
+  {
+    path: "/favoritos",
+    element: < Favoritos/>,
   },
   {
     path: "/eventos/registrar-evento",
