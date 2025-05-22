@@ -4,6 +4,7 @@ import HotelPage from "./pages/hotel/hotel";
 import Home from "./pages/Home";
 import HabitacionesPage from "./pages/habitaciones/habitaciones"
 import EventDashboard from "./pages/event/EventDashboard";
+import Favoritos from "./pages/favoritos/favoritos"
 
 export const routes = [
   {
@@ -25,5 +26,9 @@ export const routes = [
   {
     path: "/habitaciones",
     element: < HabitacionesPage/>,
+  },
+  {
+    path: "/favoritos",
+    element: < Favoritos/>,
   }
 ];

@@ -21,7 +21,8 @@ const SideBar = ({ open, onClose }) => {
         </div>
         <div className="sidebar-item">
           <Star size={20} />
-          <span>Favoritos</span>
+          <span onClick={() => window.location.href= "/favoritos"}>
+            Favoritos</span>
         </div>
         <div className="sidebar-item">
           <CalendarCheck size={20} />
