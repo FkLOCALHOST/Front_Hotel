@@ -257,9 +257,9 @@ export const updatePictureProfile = async (uid, data) => {
   }
 };
 
-export const getRooms = async () => {
+export const getRooms = async ({ desde = 0, limit = 10 } = {}) => {
   try {
-    return await apiHotel.get("/room/getRooms");
+    return await apiHotel.get(`/room/getRooms?limite=${limit}&desde=${desde}`);
   } catch (error) {
     return { error: true, message: error.message };
   }

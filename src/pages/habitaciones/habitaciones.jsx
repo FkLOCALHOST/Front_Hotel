@@ -1,18 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import { Navbar } from "../../components/navbar.jsx";
 import SimpleFooter from "../../components/footer.jsx";
 import RoomCard from "../../components/rooms/RoomCard.jsx";
 import useRooms from "../../shared/hooks/rooms/useRooms.jsx";
+import Paginacion from "../../components/paginacion.jsx";
+import SearchBar from "../../components/SearchBar.jsx";
+
+const itemsPerPage = 10;
 
 const HabitacionesPage = () => {
-  const { rooms, errorMessage } = useRooms();
+  const [currentPage, setCurrentPage] = useState(1);
+  const { rooms, totalItems, errorMessage, loading } = useRooms({
+    page: currentPage,
+    limit: itemsPerPage,
+  });
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   return (
     <div>
       <Navbar />
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "24px", justifyContent: "center", minHeight: "60vh" }}>
+      <br />
+      <br />
+      <div className="filter-wrapper">
+        <SearchBar />
+      </div>
+      <div className="room-grid">
         {errorMessage && <p>{errorMessage}</p>}
-        {!errorMessage && rooms && rooms.length > 0 ? (
+        {loading && <p>Cargando habitaciones...</p>}
+        {!errorMessage && !loading && rooms && rooms.length > 0 ? (
           rooms.map((room) => (
             <RoomCard
               key={room.uid || room._id || room.number}
@@ -24,10 +42,16 @@ const HabitacionesPage = () => {
               status={room.status}
             />
           ))
-        ) : !errorMessage ? (
+        ) : !errorMessage && !loading ? (
           <p>No hay habitaciones disponibles.</p>
         ) : null}
       </div>
+      <Paginacion
+        totalItems={totalItems}
+        itemsPerPage={itemsPerPage}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+      />
       <SimpleFooter />
     </div>
   );

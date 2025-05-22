@@ -7,6 +7,7 @@ import ViewHotel from "../../components/hotels/viewHotel";
 import useHotels from "../../shared/hooks/useHotels.jsx";
 import useSearchHotels from "../../shared/hooks/useSearchHotels.jsx";
 import Paginacion from "../../components/paginacion.jsx";
+import "../../assets/styles/hotel/hotelPage.css";
 
 const HotelPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -77,35 +78,16 @@ const HotelPage = () => {
 
       {selectedHotel && (
         <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 2000,
-          }}
+          className="hotel-modal-overlay"
           onClick={handleCloseModal}
         >
-          <div onClick={(e) => e.stopPropagation()}>
-            <button
-              style={{
-                position: "absolute",
-                top: 20,
-                right: 40,
-                zIndex: 1001,
-                background: "#transparent",
-                border: "none",
-                fontSize: 64,
-                cursor: "pointer",
-              }}
-              onClick={handleCloseModal}
-            >
-              &times;
-            </button>
+          <button
+            className="hotel-modal-close"
+            onClick={handleCloseModal}
+          >
+            &times;
+          </button>
+          <div className="hotel-modal-content" onClick={(e) => e.stopPropagation()}>
             <ViewHotel
               hotelName={selectedHotel.name}
               department={selectedHotel.department}
