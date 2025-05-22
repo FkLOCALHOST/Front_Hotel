@@ -1,10 +1,12 @@
-import { Navigate } from "react-router-dom";
 import Login from "./components/auth/loginCard";
 import HotelPage from "./pages/hotel/hotel";
 import Home from "./pages/Home";
-import HabitacionesPage from "./pages/habitaciones/habitaciones"
+import HabitacionesPage from "./pages/habitaciones/habitaciones";
 import EventDashboard from "./pages/event/EventDashboard";
-import ReservacionesPage from "./pages/reservations/reservaciones"
+import Favoritos from "./pages/favoritos/favoritos"
+import EventForm from "./components/forms/EventForm";
+import ReservacionesPage from "./pages/reservations/reservaciones";
+
 
 export const routes = [
   {
@@ -21,14 +23,22 @@ export const routes = [
   },
   {
     path: "/eventos",
-    element: <EventDashboard/>
+    element: <EventDashboard />,
   },
   {
     path: "/habitaciones",
     element: < HabitacionesPage/>,
   },
   {
+    path: "/favoritos",
+    element: < Favoritos/>,
+  },
+  {
+    path: "/eventos/registrar-evento",
+    element: <EventForm />,
+  },
+  {
     path: "/reservaciones",
-    element: <ReservacionesPage/>,
+    element: < ReservacionesPage />,
   }
 ];

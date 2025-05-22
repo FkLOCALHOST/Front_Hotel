@@ -1,65 +1,65 @@
 .reservation-card {
-  width: 100%;
-  max-width: 360px;
-  border-radius: 12px;
-  overflow: hidden;
-  background-color: #000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  font-family: "Arial", sans-serif;
-  transition: transform 0.3s ease;
+    width: 100%;
+    max-width: 360px;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    font-family: "Arial", sans-serif;
+    transition: transform 0.3s ease;
 }
 
 .reservation-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
 .reservation-card:active {
-  transform: scale(0.98);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transform: scale(0.98);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .reservation-info {
-  background-color: #1c1c1c;
-  padding: 16px;
-  color: #fff;
-  position: relative;
+    background-color: #1c1c1c;
+    padding: 16px;
+    color: #fff;
+    position: relative;
 }
 
 .reservation-title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 12px;
-  color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: #fff;
 }
 
 .reservation-detail {
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-  color: #ccc;
-  margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #ccc;
+    margin-bottom: 6px;
 }
 
 .reservation-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-  padding: 40px 20px;
-  margin: 0 30px 40px 30px;
-  justify-items: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    padding: 40px 20px;
+    margin: 0 30px 40px 30px;
+    justify-items: center;
 }
 
 .reservation-title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 8px;
-  color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #fff;
 }
 
 .reservation-id {
-  font-size: 14px;
-  font-weight: bold;
-  color: #ff3c3c;
-  margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #ff3c3c;
+    margin-bottom: 12px;
 }
