@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { getRooms } from "../../../services/api.jsx";
 
-const useRooms = ({ page = 1, limit = 8, search = "" } = {}) => {
+const useRooms = ({ page = 1, limit = 10 } = {}) => {
   const [rooms, setRooms] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
@@ -11,9 +11,7 @@ const useRooms = ({ page = 1, limit = 8, search = "" } = {}) => {
     const fetchRooms = async () => {
       setLoading(true);
       try {
-        const desde = (page - 1) * limit;
-        const response = await getRooms({ desde, limit, search });
-
+        const response = await getRooms({ page, limit });
         if (response.data && Array.isArray(response.data.rooms)) {
           setRooms(response.data.rooms);
           setTotalItems(response.data.total || 0);
@@ -26,12 +24,11 @@ const useRooms = ({ page = 1, limit = 8, search = "" } = {}) => {
         setErrorMessage("Error al obtener las habitaciones");
         setRooms([]);
         setTotalItems(0);
-        console.error("Error al obtener las habitaciones:", error);
       }
       setLoading(false);
     };
     fetchRooms();
-  }, [page, limit, search]);
+  }, [page, limit]);
 
   return { rooms, totalItems, errorMessage, loading };
 };
