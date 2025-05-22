@@ -29,7 +29,7 @@ const Home = () => {
                 hotelName={hotel.name}
                 department={hotel.department}
                 starts={parseInt(hotel.category)}
-                imageUrl={hotel.image}
+                imageUrl={hotel.imageHotel}
               />
             ))}
         </div>

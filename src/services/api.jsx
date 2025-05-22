@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiHotel = axios.create({
-  baseURL: "http://localhost:3005/hotelManagerSystem/v1",
+  baseURL: "http://127.0.0.1:3005/hotelManagerSystem/v1",
   timeout: 3000,
 });
 
@@ -10,8 +10,9 @@ apiHotel.interceptors.request.use(
     // Excluir login y registro
     if (
       !config.url.includes("/auth/login") &&
-      !config.url.includes("/auth/register")&&
-        !config.url.includes("/hotel/getHotels")
+      !config.url.includes("/auth/register") &&
+      !config.url.includes("/hotel/getHotels") &&
+      !config.url.includes("/hotel/searchHotels")
     ) {
       const userDetails = localStorage.getItem("User");
 
@@ -32,7 +33,8 @@ apiHotel.interceptors.request.use(
               }
             } catch (e) {
               localStorage.clear();
-            //   window.location.href = "/auth/login";
+              console.error("Error al decodificar el token", e);
+              //   window.location.href = "/auth/login";
               return Promise.reject(new Error("Token inválido"));
             }
           }
@@ -192,6 +194,23 @@ export const deleteHotel = async (uid) => {
   }
 };
 
+export const searchHotelsService = async ({
+  search = "",
+  page = 1,
+  limit = 8,
+}) => {
+  try {
+    const desde = (page - 1) * limit;
+    const params = new URLSearchParams();
+    params.append("search", search);
+    params.append("desde", desde.toString());
+    params.append("limite", limit.toString());
+    return await apiHotel.get(`/hotel/searchHotels?${params.toString()}`);
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+};
+
 // User
 export const getUserById = async (uid) => {
   try {
@@ -240,8 +259,6 @@ export const updatePictureProfile = async (uid, data) => {
     return { error: true, message: error.message };
   }
 };
-<<<<<<< Updated upstream
-=======
 
 export const getRooms = async ({ desde = 0, limit = 10 } = {}) => {
   try {
@@ -250,7 +267,6 @@ export const getRooms = async ({ desde = 0, limit = 10 } = {}) => {
     return { error: true, message: error.message };
   }
 };
-
 
 export const getReservations = async ({ desde = 0, limit = 10 } = {}) => {
   try {
@@ -261,4 +277,3 @@ export const getReservations = async ({ desde = 0, limit = 10 } = {}) => {
     return { error: true, message: error.message };
   }
 }
->>>>>>> Stashed changes
