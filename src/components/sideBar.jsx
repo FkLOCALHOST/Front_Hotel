@@ -8,8 +8,10 @@ import {
   Edit,
   LogOut,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const SideBar = ({ open, onClose }) => {
+  const navigate = useNavigate();
   return (
     <div className={`sidebar-overlay ${open ? "open" : ""}`} onClick={onClose}>
       <div className="sidebar" onClick={e => e.stopPropagation()}>
@@ -23,7 +25,7 @@ const SideBar = ({ open, onClose }) => {
           <Star size={20} />
           <span>Favoritos</span>
         </div>
-        <div className="sidebar-item">
+        <div className="sidebar-item" onClick={() => navigate("/reservaciones")}>
           <CalendarCheck size={20} />
           <span>Mis Reservaciones</span>
         </div>

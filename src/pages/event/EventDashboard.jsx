@@ -5,6 +5,7 @@ import SimpleFooter from "../../components/footer.jsx";
 import EventCard from "../../components/events/EventCard.jsx";
 import useEvents from "../../shared/hooks/event/useGetEvent.jsx";
 import Paginacion from "../../components/paginacion.jsx";
+import { Button } from "@chakra-ui/react";
 
 const EventDashboard = () => {
     const [currentPage, setCurrentPage] = useState(1);
