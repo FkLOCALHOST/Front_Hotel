@@ -1,10 +1,14 @@
-import { Navigate } from "react-router-dom";
 import Login from "./components/auth/loginCard";
 import HotelPage from "./pages/hotel/hotel";
 import Home from "./pages/Home";
-import HabitacionesPage from "./pages/habitaciones/habitaciones"
+import HabitacionesPage from "./pages/habitaciones/habitaciones";
 import EventDashboard from "./pages/event/EventDashboard";
+<<<<<<< HEAD
 import Favoritos from "./pages/favoritos/favoritos"
+=======
+import EventForm from "./components/forms/EventForm";
+import ReservacionesPage from "./pages/reservations/reservaciones";
+>>>>>>> origin/cmorales-2021365
 
 export const routes = [
   {
@@ -21,14 +25,26 @@ export const routes = [
   },
   {
     path: "/eventos",
-    element: <EventDashboard/>
+    element: <EventDashboard />,
   },
   {
     path: "/habitaciones",
+<<<<<<< HEAD
     element: < HabitacionesPage/>,
   },
   {
     path: "/favoritos",
     element: < Favoritos/>,
+=======
+    element: <HabitacionesPage />,
+  },
+  {
+    path: "/eventos/registrar-evento",
+    element: <EventForm />,
+  },
+  {
+    path: "/reservaciones",
+    element: < ReservacionesPage />,
+>>>>>>> origin/cmorales-2021365
   }
 ];
