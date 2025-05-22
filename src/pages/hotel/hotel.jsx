@@ -22,8 +22,12 @@ const HotelPage = () => {
     search: searchTerm,
   });
   const isSearch = searchTerm.trim() !== "";
-  const { hotels, totalItems, errorMessage } = isSearch ? searchResult : defaultResult;
-  const loading = isSearch ? searchResult.loading : defaultResult.loading || false;
+  const { hotels, totalItems, errorMessage } = isSearch
+    ? searchResult
+    : defaultResult;
+  const loading = isSearch
+    ? searchResult.loading
+    : defaultResult.loading || false;
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -58,13 +62,14 @@ const HotelPage = () => {
       <div className="hotel-grid">
         {(hotels || []).map((hotel, idx) => (
           <HotelCard
-            key={hotel._id || `hotel-${idx}`}
-            id={hotel._id}
+            key={hotel.uid || `hotel-${idx}`}
+            id={hotel.uid} 
             hotelName={hotel.name}
             department={hotel.department}
             starts={parseInt(hotel.category)}
             imageUrl={hotel.imageHotel}
             onClick={() => handleCardClick(hotel)}
+            onDeleted={() => setCurrentPage(currentPage)}
           />
         ))}
       </div>
@@ -77,17 +82,14 @@ const HotelPage = () => {
       <SimpleFooter />
 
       {selectedHotel && (
-        <div
-          className="hotel-modal-overlay"
-          onClick={handleCloseModal}
-        >
-          <button
-            className="hotel-modal-close"
-            onClick={handleCloseModal}
-          >
+        <div className="hotel-modal-overlay" onClick={handleCloseModal}>
+          <button className="hotel-modal-close" onClick={handleCloseModal}>
             &times;
           </button>
-          <div className="hotel-modal-content" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="hotel-modal-content"
+            onClick={(e) => e.stopPropagation()}
+          >
             <ViewHotel
               hotelName={selectedHotel.name}
               department={selectedHotel.department}
