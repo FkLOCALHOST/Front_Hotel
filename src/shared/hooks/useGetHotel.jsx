@@ -11,7 +11,6 @@ const useGetHotel = () => {
             setLoading(true);
             try {
                 const res = await getHotels();
-                console.log("Respuesta getHotels:", res);
 
                 const hotelesApi = res.data?.hotels || [];
 

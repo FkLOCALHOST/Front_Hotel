@@ -27,6 +27,8 @@ const SearchBar = ({ onSearch }) => {
       navigate("registrar-evento");
     } else if (location.pathname.includes("/hoteles")) {
       console.log("Agregar hotel");
+    } else if (location.pathname.includes("/habitaciones")) {
+      console.log("Agregar habitacion");
     } else {
       console.log("Ruta no reconocida:", location.pathname);
     }
@@ -49,7 +51,7 @@ const SearchBar = ({ onSearch }) => {
       <Button size="sm" ml={2} onClick={handleSearch}>
         Buscar
       </Button>
-      <Button size="sm" ml={2} onClick={handleAddClick} >
+      <Button size="sm" ml={2} onClick={handleAddClick}>
         Agregar
       </Button>
     </Flex>
