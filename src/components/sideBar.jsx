@@ -8,11 +8,19 @@ import {
   Edit,
   LogOut,
 } from "lucide-react";
+<<<<<<< Updated upstream
 import logout from "../shared/hooks/useLogout.jsx";
 
 const SideBar = ({ open, onClose }) => {
   
   const user = localStorage.getItem("User"); 
+=======
+import { useNavigate } from "react-router-dom";
+
+const SideBar = ({ open, onClose }) => {
+
+  const navigate = useNavigate();
+>>>>>>> Stashed changes
 
   return (
     <div className={`sidebar-overlay ${open ? "open" : ""}`} onClick={onClose}>
@@ -25,7 +33,7 @@ const SideBar = ({ open, onClose }) => {
           <Star size={20} />
           <span>Favoritos</span>
         </div>
-        <div className="sidebar-item">
+        <div className="sidebar-item" onClick={() => navigate("/reservaciones")}>
           <CalendarCheck size={20} />
           <span>Mis Reservaciones</span>
         </div>

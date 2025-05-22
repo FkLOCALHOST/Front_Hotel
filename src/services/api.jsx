@@ -240,3 +240,25 @@ export const updatePictureProfile = async (uid, data) => {
     return { error: true, message: error.message };
   }
 };
+<<<<<<< Updated upstream
+=======
+
+export const getRooms = async ({ desde = 0, limit = 10 } = {}) => {
+  try {
+    return await apiHotel.get(`/room/getRooms?limite=${limit}&desde=${desde}`);
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+};
+
+
+export const getReservations = async ({ desde = 0, limit = 10 } = {}) => {
+  try {
+    return await apiHotel.get(
+      `/reservation/getReservations?limite=${limit}&desde=${desde}`
+    );
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+}
+>>>>>>> Stashed changes
