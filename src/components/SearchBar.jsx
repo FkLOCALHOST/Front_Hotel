@@ -1,13 +1,27 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { Flex, Input, Button, FormControl, FormLabel } from "@chakra-ui/react";
 import "../assets/styles/searchbar.css";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       onSearch(searchTerm);
+    }
+  };
+
+  const handleAddClick = () => {
+    if (location.pathname.includes("/eventos")) {
+      navigate("registrar-evento");
+    } else if (location.pathname.includes("/hoteles")) {
+      console.log("Agregar hotel");
+    } else {
+      console.log("Ruta no reconocida:", location.pathname);
     }
   };
 
@@ -27,6 +41,9 @@ const SearchBar = ({ onSearch }) => {
       </FormControl>
       <Button size="sm" ml={2} onClick={() => onSearch(searchTerm)}>
         Buscar
+      </Button>
+      <Button size="sm" ml={2} onClick={handleAddClick} >
+        Agregar
       </Button>
     </Flex>
   );

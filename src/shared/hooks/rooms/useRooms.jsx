@@ -37,4 +37,5 @@ const useRooms = ({ page = 1, limit = 8 } = {}) => {
 
   return { rooms, totalItems, errorMessage, loading };
 };
+
 export default useRooms;
