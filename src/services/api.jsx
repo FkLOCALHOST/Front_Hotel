@@ -177,6 +177,7 @@ export const getHotelById = async (uid) => {
 
 export const updateHotel = async (uid, data) => {
   try {
+    // PATCH es correcto para actualizar parcialmente
     return await apiHotel.patch(`/hotel/updateHotel/${uid}`, data);
   } catch (error) {
     return { error: true, message: error.message };
@@ -270,6 +271,16 @@ export const getRooms = async ({ page = 1, limit = 10 } = {}) => {
   }
 };
 
+export const createRoom = async (data) => {
+  try {
+    const response = await apiHotel.post("/room/createRoom", data);
+    return response.data; 
+  } catch (error) {
+    const message = error.response?.data?.message || error.message || "Error en la petición";
+    return { error: true, message };
+  }
+};
+
 export const getReservation = async() =>{
   try {
     return await apiHotel.get("/reservation/getReservations");
@@ -286,3 +297,10 @@ export const addFavHotel = async (uid, favHotel) => {
   }
 };
 
+export const getRoomById = async (uid) => {
+  try {
+    return await apiHotel.get(`/room/getRoomById/${uid}`);
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+};
