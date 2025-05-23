@@ -296,3 +296,11 @@ export const addFavHotel = async (uid, favHotel) => {
   }
 };
 
+export const removeFavHotel = async (uid, favHotel) => {
+  try {
+    return await apiHotel.patch(`/user/removeFavHotel/${uid}`, { favHotel })
+  }catch (error) {
+    return { error: true, message: error.message };
+  }
+};
+

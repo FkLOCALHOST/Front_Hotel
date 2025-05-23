@@ -4,7 +4,7 @@ import "../../assets/styles/hotel/hotelCard.css";
 import { Star, Edit, Trash2 } from "lucide-react";
 import { FaHeart } from "react-icons/fa";
 import useDeleteHotel from "../../shared/hooks/useDeleteHotel";
-import { addFavHotel } from "../../services/api";
+import { addFavHotel, removeFavHotel } from "../../services/api";
 
 const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, onDelete, id, onDeleted }) => {
   const userData = JSON.parse(localStorage.getItem("User"));
@@ -44,10 +44,15 @@ const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, o
         alert("No se pudo guardar como favorito.");
       }
     } else {
+      const response = await removeFavHotel(uid, id);
+    if (response.data && response.data.success) {
       setLiked(false);
       const favs = userData.userDetails.favHotel || [];
       userData.userDetails.favHotel = favs.filter(favId => favId !== id);
       localStorage.setItem("User", JSON.stringify(userData));
+    } else {
+      alert("No se pudo quitar de favoritos.");
+    }
     }
   };
 
