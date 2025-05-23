@@ -10,6 +10,7 @@ import ReservacionesPage from "./pages/reservations/reservaciones";
 import RoomForm from "./components/forms/RoomForm";
 import Register from "./components/auth/registerCard";
 import RoomDetails from "./components/rooms/RoomDetails";
+import Perfil from "./pages/user/Perfil"
 
 export const routes = [
   {
@@ -59,5 +60,9 @@ export const routes = [
   {
     path: "/*",
     element: <Home />,
+  },
+  {
+    path: "/perfil",
+    element: <Perfil />,
   }
 ];

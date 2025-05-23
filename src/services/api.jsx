@@ -258,6 +258,15 @@ export const updatePictureProfile = async (uid, data) => {
   }
 };
 
+export const getUserLogged = async () => {
+  try{
+    return await apiHotel.get("/user/getUserLog")
+
+  }catch (error) {
+    return {error: true, message: error.message};
+  }
+}
+
 export const getRooms = async ({ page = 1, limit = 10 } = {}) => {
   try {
     const desde = (page - 1) * limit;
