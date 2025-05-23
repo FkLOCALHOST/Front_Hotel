@@ -25,6 +25,7 @@ const EventCard = ({
     }
   } catch (e) {
     isAdmin = false;
+    console.log("Error Parsing User from Local Storage", e)
   }
 
   return (
