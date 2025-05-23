@@ -3,13 +3,14 @@ import { useParams } from "react-router-dom";
 import useGetRoomById from "../../shared/hooks/rooms/useGetRoomById";
 import Navbar from "../navbar";
 import SimpleFooter from "../footer";
-import "../../assets/styles/room/roomDetails.css"
+import "../../assets/styles/room/roomDetails.css";
+import Calendary from "../calendary/Calendary";
 
 const RoomDetails = () => {
     const { id } = useParams();
     const { room, errorMessage, loading } = useGetRoomById(id);
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [selectedDate, setSelectedDate] = useState("");
+    const [selectedDate, setSelectedDate] = useState(null); // ahora es Date
 
     if (loading) return <p>Cargando habitación...</p>;
     if (errorMessage) return <p>{errorMessage}</p>;
@@ -28,12 +29,10 @@ const RoomDetails = () => {
             alert("Selecciona una fecha primero.");
             return;
         }
-        // Aquí podrías agregar la lógica para consultar si está disponible en esa fecha
-        alert(`(Simulado) Verificando disponibilidad para: ${selectedDate}`);
+        alert(`(Simulado) Verificando disponibilidad para: ${selectedDate.toLocaleDateString()}`);
     };
 
     const handleReservation = () => {
-        // Aquí iría la lógica para iniciar proceso de reserva
         alert("Reservar (simulado)");
     };
 
@@ -57,6 +56,7 @@ const RoomDetails = () => {
                         </div>
                     )}
                 </div>
+
                 <div className="room-info">
                     <h2>{room.name}</h2>
                     <p><span>Número:</span> {room.number}</p>
@@ -66,16 +66,16 @@ const RoomDetails = () => {
                     <p className={room.status ? "availability" : "availability unavailable"}>
                         <span>Estado:</span> {room.status ? "Disponible" : "No disponible"}
                     </p>
+
                     <div className="availability-section">
-                        <label htmlFor="fecha">Fecha de reserva:</label>
-                        <input
-                            id="fecha"
-                            type="date"
-                            value={selectedDate}
-                            onChange={(e) => setSelectedDate(e.target.value)}
+                        <Calendary
+                            roomId={id}
+                            selectedDate={selectedDate}
+                            onSelect={setSelectedDate}
                         />
                         <button onClick={handleCheckAvailability}>Verificar disponibilidad</button>
                     </div>
+
                     <button className="reserve-button" onClick={handleReservation}>
                         Reservar
                     </button>
