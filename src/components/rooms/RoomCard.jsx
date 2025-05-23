@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useState } from "react";
 import { Star, Edit, Trash2 } from "lucide-react";
 
 import "../../assets/styles/room/roomCard.css";
@@ -9,12 +9,14 @@ const RoomCard = ({
   price,
   description,
   capacity,
-  preView,
+  preView = [],
   status,
   onClick,
   onEdit,
   onDelete,
 }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
   let isAdmin = false;
   try {
     const userStr = localStorage.getItem("User");
@@ -25,9 +27,25 @@ const RoomCard = ({
     }
   } catch (e) {
     isAdmin = false;
+    console.log(e)
   }
+
+  const handleNext = (e) => {
+    e.stopPropagation();
+    setCurrentIndex((prev) => (prev + 1) % preView.length);
+  };
+
+  const handlePrev = (e) => {
+    e.stopPropagation();
+    setCurrentIndex((prev) => (prev - 1 + preView.length) % preView.length);
+  };
+
   return (
-    <div className="room-card" onClick={onClick} style={{ cursor: "pointer", position: "relative" }}>
+    <div
+      className="room-card"
+      onClick={onClick}
+      style={{ cursor: "pointer", position: "relative" }}
+    >
       {isAdmin && (
         <div className="room-card-actions">
           <Edit
@@ -50,15 +68,25 @@ const RoomCard = ({
           />
         </div>
       )}
-      <img
-        src={
-          preView && preView.length > 0
-            ? preView[0]
-            : "https://via.placeholder.com/300x200?text=Sin+Imagen"
-        }
-        alt={`Imagen de habitación ${number}`}
-        className="room-image"
-      />
+
+      <div className="slider-container">
+        <img
+          src={
+            preView && preView.length > 0
+              ? preView[currentIndex]
+              : "https://via.placeholder.com/300x200?text=Sin+Imagen"
+          }
+          alt={`Imagen ${currentIndex + 1} de habitación ${number}`}
+          className="room-image"
+        />
+        {preView.length > 1 && (
+          <div className="slider-controls">
+            <button onClick={handlePrev}>&lt;</button>
+            <button onClick={handleNext}>&gt;</button>
+          </div>
+        )}
+      </div>
+
       <div className="room-info">
         <h2 className="room-name">Habitación {number}</h2>
         <p className="room-detail">
@@ -71,8 +99,8 @@ const RoomCard = ({
           <span style={{ fontWeight: "bold" }}>Descripción:</span> {description}
         </p>
         <p className="room-detail">
-          <span style={{ fontWeight: "bold" }}>Estado: </span>{" "}
-          {status ? " Disponible" : " No disponible"}
+          <span style={{ fontWeight: "bold" }}>Estado:</span>{" "}
+          {status ? "Disponible" : "No disponible"}
         </p>
       </div>
     </div>
