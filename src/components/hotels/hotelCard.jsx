@@ -7,7 +7,7 @@ import useDeleteHotel from "../../shared/hooks/useDeleteHotel";
 import { addFavHotel, removeFavHotel } from "../../services/api";
 import { useNavigate } from "react-router-dom";
 
-const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, onDelete, id }) => {
+const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, onDelete, id, showLike = true }) => {
   const userData = JSON.parse(localStorage.getItem("User"));
   const favHotels = userData?.userDetails?.favHotel || [];
   const isFavorite = favHotels.includes(id);
@@ -104,22 +104,24 @@ const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, o
         alt={`Imagen de ${hotelName}`}
         className="hotel-image"
       />
-      <span
-        className={`like-button${liked ? " liked" : ""}`}
-        onClick={toggleLike}
-        title={liked ? "Quitar de favoritos" : "Guardar como favorito"}
-        style={{
-          position: "absolute",
-          top: "300px",
-          right: "16px",
-          fontSize: "1.6rem",
-          cursor: "pointer",
-          transition: "color 0.2s",
-          zIndex: 2
-        }}
-      >
-        <FaHeart />
-      </span>
+      {showLike !== false && (
+        <span
+          className={`like-button${liked ? " liked" : ""}`}
+          onClick={toggleLike}
+          title={liked ? "Quitar de favoritos" : "Guardar como favorito"}
+          style={{
+            position: "absolute",
+            top: "300px",
+            right: "16px",
+            fontSize: "1.6rem",
+            cursor: "pointer",
+            transition: "color 0.2s",
+            zIndex: 2
+          }}
+        >
+          <FaHeart />
+        </span>
+      )}
       <div className="hotel-info">
         <h2 className="hotel-name">{hotelName}</h2>
         <p className="hotel-detail">
@@ -150,6 +152,7 @@ HotelCard.propTypes = {
   onEdit: PropTypes.func,
   onDelete: PropTypes.func,
   onDeleted: PropTypes.func,
+  showLike: PropTypes.bool,
 };
 
 export default HotelCard;
