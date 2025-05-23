@@ -177,6 +177,7 @@ export const getHotelById = async (uid) => {
 
 export const updateHotel = async (uid, data) => {
   try {
+    // PATCH es correcto para actualizar parcialmente
     return await apiHotel.patch(`/hotel/updateHotel/${uid}`, data);
   } catch (error) {
     return { error: true, message: error.message };

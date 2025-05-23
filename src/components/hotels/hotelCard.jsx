@@ -5,14 +5,16 @@ import { Star, Edit, Trash2 } from "lucide-react";
 import { FaHeart } from "react-icons/fa";
 import useDeleteHotel from "../../shared/hooks/useDeleteHotel";
 import { addFavHotel } from "../../services/api";
+import { useNavigate } from "react-router-dom";
 
-const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, onDelete, id, onDeleted }) => {
+const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, onDelete, id }) => {
   const userData = JSON.parse(localStorage.getItem("User"));
   const favHotels = userData?.userDetails?.favHotel || [];
   const isFavorite = favHotels.includes(id);
 
   const [liked, setLiked] = useState(isFavorite);
   const { removeHotel, loading } = useDeleteHotel();
+  const navigate = useNavigate();
 
   let isAdmin = false;
   try {
@@ -72,7 +74,13 @@ const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, o
             title="Editar"
             onClick={e => {
               e.stopPropagation();
-              if (onEdit) onEdit();
+              // Solo pasa el id del hotel
+              navigate("/hoteles/registrar-hotel", {
+                state: {
+                  editMode: true,
+                  hotelId: id
+                }
+              });
             }}
           />
           <Trash2
