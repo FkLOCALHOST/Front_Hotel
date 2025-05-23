@@ -1,0 +1,91 @@
+.hotel-form-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 40px auto;
+  background: #181818;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  padding: 32px 24px;
+  color: #fff;
+  font-family: "Bold", "Arial";
+}
+
+.hotel-form-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 24px;
+  color: #ff2929;
+  letter-spacing: 1px;
+}
+
+.hotel-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.hotel-form label {
+  font-size: 1rem;
+  margin-bottom: 6px;
+  color: #ff2929;
+  font-weight: 500;
+}
+
+.hotel-form input[type="text"],
+.hotel-form input[type="email"],
+.hotel-form input[type="number"],
+.hotel-form input[type="file"],
+.hotel-form select,
+.hotel-form textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #333;
+  background: #232323;
+  color: #fff;
+  font-size: 1rem;
+  margin-top: 2px;
+  margin-bottom: 8px;
+  transition: border 0.2s;
+}
+
+.hotel-form input[type="file"] {
+  background: #232323;
+  color: #fff;
+  border: none;
+}
+
+.hotel-form input:focus,
+.hotel-form select:focus,
+.hotel-form textarea:focus {
+  outline: none;
+  border: 1.5px solid #ff2929;
+}
+
+.hotel-form textarea {
+  min-height: 70px;
+  resize: vertical;
+}
+
+.hotel-form button[type="submit"] {
+  background: #ff2929;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s;
+}
+
+.hotel-form button[type="submit"]:hover {
+  background: #cc0000;
+}
+
+@media (max-width: 500px) {
+  .hotel-form-container {
+    padding: 18px 6px;
+  }
+}
