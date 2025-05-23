@@ -289,6 +289,16 @@ export const getReservation = async() =>{
   }
 }
 
+export const createReservation = async (data) =>{
+  try {
+    const response = await apiHotel.post("/reservation/createReservation", data);
+    return response.data; 
+  } catch (error) {
+    const message = error.response?.data?.message || error.message || "Error en la petición";
+    return { error: true, message };
+  }
+}
+
 export const addFavHotel = async (uid, favHotel) => {
   try {
     return await apiHotel.patch(`/user/addFavHotel/${uid}`, { favHotel })
@@ -300,6 +310,14 @@ export const addFavHotel = async (uid, favHotel) => {
 export const getRoomById = async (uid) => {
   try {
     return await apiHotel.get(`/room/getRoomById/${uid}`);
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+};
+
+export const getUnavalilableDates = async (uid) => {
+  try {
+    return await apiHotel.get(`/room/getUnavalilableDates/${uid}`);
   } catch (error) {
     return { error: true, message: error.message };
   }
