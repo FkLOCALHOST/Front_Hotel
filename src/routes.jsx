@@ -6,7 +6,7 @@ import EventDashboard from "./pages/event/EventDashboard";
 import Favoritos from "./pages/favoritos/favoritos"
 import EventForm from "./components/forms/EventForm";
 import ReservacionesPage from "./pages/reservations/reservaciones";
-
+import RoomForm from "./components/forms/RoomForm";
 
 export const routes = [
   {
@@ -40,5 +40,9 @@ export const routes = [
   {
     path: "/reservaciones",
     element: < ReservacionesPage />,
+  },
+  {
+    path: "/habitaciones/registrar-room",
+    element: < RoomForm />,
   }
 ];

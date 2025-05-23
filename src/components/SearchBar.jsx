@@ -19,6 +19,7 @@ const SearchBar = ({ onSearch }) => {
     }
   } catch (e) {
     isAdmin = false;
+    console.log("Error al obtener el rol del usuario:", e);
   }
 
   const handleSearch = () => {
@@ -40,7 +41,7 @@ const SearchBar = ({ onSearch }) => {
     } else if (location.pathname.includes("/hoteles")) {
       navigate("registrar-hotel");
     } else if (location.pathname.includes("/habitaciones")) {
-      console.log("Agregar habitacion");
+      navigate("registrar-room");
     } else {
       console.log("Ruta no reconocida:", location.pathname);
     }
