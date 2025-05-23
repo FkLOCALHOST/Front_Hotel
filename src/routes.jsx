@@ -8,6 +8,7 @@ import HotelForm  from "./components/forms/HotelForm";
 import EventForm from "./components/forms/EventForm";
 import ReservacionesPage from "./pages/reservations/reservaciones";
 import RoomForm from "./components/forms/RoomForm";
+import Register from "./components/auth/registerCard";
 import RoomDetails from "./components/rooms/RoomDetails";
 
 export const routes = [
@@ -18,6 +19,10 @@ export const routes = [
   {
     path: "/auth/login",
     element: <Login />,
+  },
+  {
+    path: "/auth/register",
+    element: <Register />,
   },
   {
     path: "/eventos",
