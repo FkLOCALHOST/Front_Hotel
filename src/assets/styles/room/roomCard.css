@@ -137,3 +137,42 @@
   background: #eee;
   color: #d9534f;
 }
+
+.slider-container {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.room-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: all 0.3s ease-in-out;
+}
+
+.slider-controls {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+  padding: 0 10px;
+}
+
+.slider-controls button {
+  background-color: rgba(255, 255, 255, 0.7);
+  border: none;
+  font-size: 20px;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background 0.3s ease;
+  color: #000;
+}
+
+.slider-controls button:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+}

@@ -9,24 +9,6 @@ import SimpleFooter from "../footer";
 import "../../assets/styles/forms/forms.css";
 
 const EventForm = () => {
-  const formatDateForInput = (value) => {
-    if (!value) return "";
-    const date = new Date(value);
-    if (isNaN(date.getTime())) return "";
-    const pad = (n) => n.toString().padStart(2, "0");
-    return (
-      date.getFullYear() +
-      "-" +
-      pad(date.getMonth() + 1) +
-      "-" +
-      pad(date.getDate()) +
-      "T" +
-      pad(date.getHours()) +
-      ":" +
-      pad(date.getMinutes())
-    );
-  };
-
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -40,7 +22,6 @@ const EventForm = () => {
 
   const [selectedFile, setSelectedFile] = useState(null);
   const toast = useToast();
-
   const { addEvent, loading, error } = useAddEvent();
   const { rooms } = useRooms();
   const { hotels } = useGetHotel();
@@ -76,7 +57,8 @@ const EventForm = () => {
       return;
     }
 
-    const formattedDate = formatDateForInput(form.date);
+    // Formatear fecha a YYYY-MM-DD
+    const formattedDate = form.date.split("T")[0];
 
     const formData = new FormData();
     Object.entries({ ...form, date: formattedDate }).forEach(([key, value]) => {
@@ -156,7 +138,7 @@ const EventForm = () => {
               <input
                 type="datetime-local"
                 name="date"
-                value={formatDateForInput(form.date)}
+                value={form.date}
                 onChange={handleChange}
                 required
               />
@@ -204,7 +186,7 @@ const EventForm = () => {
               >
                 <option value="">Selecciona un hotel</option>
                 {hotels.map((hotel) => (
-                  <option key={hotel._id} value={hotel._id}>
+                  <option key={hotel._id} value={hotel.uid}>
                     {hotel.name}
                   </option>
                 ))}
@@ -220,7 +202,7 @@ const EventForm = () => {
               >
                 <option value="">Selecciona una habitación</option>
                 {rooms.map((room) => (
-                  <option key={room._id} value={room._id}>
+                  <option key={room._id} value={room.uid}>
                     {room.name || `Habitación ${room.number}`}
                   </option>
                 ))}
