@@ -92,6 +92,7 @@ const RoomForm = () => {
     return (
         <>
             <Navbar />
+            <div className="form-center-container">
             <div className="login-container-Event">
                 <div className="login-content event-form-content">
                     <h1 className="login-title">Registrar Habitación</h1>
@@ -161,6 +162,7 @@ const RoomForm = () => {
                         </button>
                     </form>
                 </div>
+            </div>
             </div>
             <SimpleFooter />
         </>

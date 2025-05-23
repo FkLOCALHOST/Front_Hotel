@@ -15,11 +15,13 @@ import { FaUserAlt, FaLock } from 'react-icons/fa';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { register } from '../../services/api';
 import "../../assets/styles/auth/register.css";
+import { useNavigate } from "react-router-dom";
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
 
 const Register = ({ switchAuthHandler }) => {
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [userName, setUserName] = useState('');
@@ -75,7 +77,9 @@ const Register = ({ switchAuthHandler }) => {
       setEmail('');
       setPassword('');
       setPhone('');
-      if (switchAuthHandler) switchAuthHandler('');
+      setTimeout(() => {
+        navigate("/auth/login");
+      }, 1500);
     }
   };
 
@@ -215,7 +219,7 @@ const Register = ({ switchAuthHandler }) => {
         </form>
         <Box>
           Ya tienes una cuenta{' '}
-          <Button variant="link" colorScheme="teal" onClick={switchAuthHandler}>
+          <Button variant="link" colorScheme="teal" onClick={() => navigate("/auth/login")}>
             Login
           </Button>
         </Box>

@@ -289,6 +289,16 @@ export const getReservation = async() =>{
   }
 }
 
+export const createReservation = async (data) =>{
+  try {
+    const response = await apiHotel.post("/reservation/createReservation", data);
+    return response.data; 
+  } catch (error) {
+    const message = error.response?.data?.message || error.message || "Error en la petición";
+    return { error: true, message };
+  }
+}
+
 export const addFavHotel = async (uid, favHotel) => {
   try {
     return await apiHotel.patch(`/user/addFavHotel/${uid}`, { favHotel })
@@ -297,9 +307,41 @@ export const addFavHotel = async (uid, favHotel) => {
   }
 };
 
+export const removeFavHotel = async (uid, favHotel) => {
+  try {
+    return await apiHotel.patch(`/user/removeFavHotel/${uid}`, { favHotel })
+  }catch (error) {
+    return { error: true, message: error.message };
+  }
+};
+    
 export const getRoomById = async (uid) => {
   try {
     return await apiHotel.get(`/room/getRoomById/${uid}`);
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+};
+
+export const getUnavalilableDates = async (uid) => {
+  try {
+    return await apiHotel.get(`/room/getUnavalilableDates/${uid}`);
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+};
+
+export const updateRoom = async (uid, data) => {
+  try {
+    return await apiHotel.patch(`/room/updateRoom/${uid}`, data);
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+};
+
+export const deleteRoom = async (uid) => {
+  try {
+    return await apiHotel.patch(`/room/deleteRoom/${uid}`);
   } catch (error) {
     return { error: true, message: error.message };
   }
