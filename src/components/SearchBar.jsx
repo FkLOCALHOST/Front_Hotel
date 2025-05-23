@@ -9,6 +9,18 @@ const SearchBar = ({ onSearch }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  let isAdmin = false;
+  try {
+    const userStr = localStorage.getItem("User");
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      const role = user.userDetails?.role;
+      isAdmin = role === "ADMIN_ROLE";
+    }
+  } catch (e) {
+    isAdmin = false;
+  }
+
   const handleSearch = () => {
     if (onSearch) {
       onSearch(searchTerm.trim());
@@ -26,14 +38,13 @@ const SearchBar = ({ onSearch }) => {
     if (location.pathname.includes("/eventos")) {
       navigate("registrar-evento");
     } else if (location.pathname.includes("/hoteles")) {
-      console.log("Agregar hotel");
+      navigate("registrar-hotel");
     } else if (location.pathname.includes("/habitaciones")) {
       console.log("Agregar habitacion");
     } else {
       console.log("Ruta no reconocida:", location.pathname);
     }
   };
-
   return (
     <Flex className="search-bar" align="center">
       <FormControl flex="1">
@@ -42,7 +53,7 @@ const SearchBar = ({ onSearch }) => {
         </FormLabel>
         <Input
           size="sm"
-          placeholder="Buscar habitaciones..."
+          placeholder="Buscar..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -51,9 +62,13 @@ const SearchBar = ({ onSearch }) => {
       <Button size="sm" ml={2} onClick={handleSearch}>
         Buscar
       </Button>
-      <Button size="sm" ml={2} onClick={handleAddClick}>
-        Agregar
-      </Button>
+      {isAdmin && (
+        <>
+          <Button size="sm" ml={2} onClick={handleAddClick}>
+            Agregar
+          </Button>
+        </>
+      )}
     </Flex>
   );
 };
