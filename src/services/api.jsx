@@ -296,3 +296,10 @@ export const addFavHotel = async (uid, favHotel) => {
   }
 };
 
+export const getRoomById = async (uid) => {
+  try {
+    return await apiHotel.get(`/room/getRoomById/${uid}`);
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+};

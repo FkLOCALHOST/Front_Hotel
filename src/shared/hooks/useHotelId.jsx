@@ -16,6 +16,7 @@ const useHotels = () => {
         }
       } catch (error) {
         setErrorMessage("Error al conectar con el servidor.");
+        console.error("Error fetching hotels:", error);
       }
     };
     fetchHotels();

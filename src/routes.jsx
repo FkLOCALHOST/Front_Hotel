@@ -7,12 +7,9 @@ import Favoritos from "./pages/favoritos/favoritos"
 import EventForm from "./components/forms/EventForm";
 import ReservacionesPage from "./pages/reservations/reservaciones";
 import RoomForm from "./components/forms/RoomForm";
+import RoomDetails from "./components/rooms/RoomDetails";
 
 export const routes = [
-  {
-    path: "/",
-    element: <Home />,
-  },
   {
     path: "/hoteles",
     element: <HotelPage />,
@@ -44,5 +41,13 @@ export const routes = [
   {
     path: "/habitaciones/registrar-room",
     element: < RoomForm />,
+  },
+  {
+    path: "/habitaciones/:id",
+    element: <RoomDetails />,
+  },
+  {
+    path: "/*",
+    element: <Home />,
   }
 ];

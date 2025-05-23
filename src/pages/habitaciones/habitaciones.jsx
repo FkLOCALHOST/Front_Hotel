@@ -5,6 +5,7 @@ import RoomCard from "../../components/rooms/RoomCard.jsx";
 import useRooms from "../../shared/hooks/rooms/useRooms.jsx";
 import Paginacion from "../../components/paginacion.jsx";
 import SearchBar from "../../components/SearchBar.jsx";
+import { useNavigate } from "react-router-dom";
 
 const HabitacionesPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -14,8 +15,14 @@ const HabitacionesPage = () => {
     limit: itemsPerPage,
   });
 
+  const navigate = useNavigate();
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
+  };
+
+  const handleCardClick = (roomId) => {
+    navigate(`/habitaciones/${roomId}`);
   };
 
   return (
@@ -39,6 +46,7 @@ const HabitacionesPage = () => {
               capacity={room.capacity}
               preView={room.preView}
               status={room.status}
+              onClick={() => handleCardClick(room._id || room.uid)}
             />
           ))
         ) : !errorMessage && !loading ? (
