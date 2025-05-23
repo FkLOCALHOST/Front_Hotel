@@ -26,13 +26,14 @@ const Calendary = ({ roomId, selectedDate, onSelect }) => {
     const parsedUnavailableDates = unavailableDates.map((d) => new Date(d));
 
     return (
-        <VStack align="start" spacing={2} position="relative" width="100%">
-            <Text fontWeight="bold">Fecha de reserva:</Text>
+        <VStack align="start" spacing={2} position="relative" width="100%" className="calendary-container">
+            <Text fontWeight="bold" className="calendary-label">Fecha de reserva:</Text>
 
             <Button
                 variant="outline"
                 onClick={() => setIsOpen(!isOpen)}
                 width="100%"
+                className="calendary-button"
             >
                 {selectedDate
                     ? format(selectedDate, "PPP", { locale: es })
@@ -42,14 +43,7 @@ const Calendary = ({ roomId, selectedDate, onSelect }) => {
             {isOpen && (
                 <Box
                     ref={ref}
-                    position="absolute"
-                    top="100%"
-                    zIndex="10"
-                    mt={2}
-                    border="1px solid #ccc"
-                    borderRadius="md"
-                    bg="white"
-                    boxShadow="md"
+                    className="calendary-dropdown"
                 >
                     <DayPicker
                         mode="single"
@@ -60,23 +54,12 @@ const Calendary = ({ roomId, selectedDate, onSelect }) => {
                         }}
                         disabled={parsedUnavailableDates}
                         locale={es}
-                        classNames={{
-                            day: "rdp-day",
-                            day_selected: "rdp-day_selected",
-                            day_disabled: "rdp-day_disabled",
-                            caption_label: "rdp-caption_label",
-                            nav_button: "rdp-nav_button",
-                            head_cell: "rdp-head_cell",
-                        }}
-                        styles={{
-                            head_cell: {color: "#000000 !important"},
-                        }}
                     />
                 </Box>
             )}
 
-            {loading && <Text fontSize="sm">Cargando fechas...</Text>}
-            {error && <Text fontSize="sm" color="red.500">Error: {error}</Text>}
+            {loading && <Text fontSize="sm" className="calendary-loading">Cargando fechas...</Text>}
+            {error && <Text fontSize="sm" className="calendary-error">Error: {error}</Text>}
         </VStack>
     );
 };
