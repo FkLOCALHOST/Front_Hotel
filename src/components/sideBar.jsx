@@ -40,7 +40,14 @@ const SideBar = ({ open, onClose }) => {
         </div>
         <div className="sidebar-item">
           <LogOut size={20} />
-          <span>Salir</span>
+          <span
+            onClick={() => {
+              localStorage.clear();
+              window.location.href = "/auth/login";
+            }}
+          >
+            Salir
+          </span>
         </div>
       </div>
     </div>

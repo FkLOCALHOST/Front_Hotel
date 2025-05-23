@@ -1,47 +1,89 @@
 import PropTypes from "prop-types";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "../../assets/styles/hotel/hotelCard.css";
-import { Star } from "lucide-react";
+import { Star, Edit, Trash2 } from "lucide-react";
 import { FaHeart } from "react-icons/fa";
+import useDeleteHotel from "../../shared/hooks/useDeleteHotel";
 import { addFavHotel } from "../../services/api";
 
-const HotelCard = ({ id, hotelName, department, starts, imageUrl, onClick, isFavorite }) => {
-  const [liked, setLiked] = useState(false);
+const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, onDelete, id, onDeleted }) => {
+  const userData = JSON.parse(localStorage.getItem("User"));
+  const favHotels = userData?.userDetails?.favHotel || [];
+  const isFavorite = favHotels.includes(id);
 
-  useEffect(() => {
-    setLiked(isFavorite);
-  }, [isFavorite]);
+  const [liked, setLiked] = useState(isFavorite);
+  const { removeHotel, loading } = useDeleteHotel();
+
+  let isAdmin = false;
+  try {
+    const userStr = localStorage.getItem("User");
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      const role = user.userDetails?.role;
+      isAdmin = role === "ADMIN_ROLE";
+    }
+  } catch (e) {
+    isAdmin = false;
+  }
 
   const toggleLike = async (e) => {
-  e.stopPropagation();
-  if (!liked) {
-    const userData = JSON.parse(localStorage.getItem("User"));
-    const uid = userData?.userDetails?._id;
-    if (!uid) {
+    e.stopPropagation();
+    if (!userData?.userDetails?._id) {
       alert("Debes iniciar sesión para guardar favoritos.");
       return;
     }
-
-    if(!liked){
+    const uid = userData.userDetails._id;
+    if (!liked) {
       const response = await addFavHotel(uid, id);
-    if (response.data && response.data.success) {
-      setLiked(true);
-      const favs = userData.userDetails.favHotel || [];
-      localStorage.setItem("user", JSON.stringify(userData));
+      if (response.data && response.data.success) {
+        setLiked(true);
+        const favs = userData.userDetails.favHotel || [];
+        userData.userDetails.favHotel = [...favs, id];
+        localStorage.setItem("User", JSON.stringify(userData));
+      } else {
+        alert("No se pudo guardar como favorito.");
+      }
     } else {
-      alert("No se pudo guardar como favorito.");
-    }  
-  } else {
-    setLiked(false);
-    const favs = userData.userDetails.favHotel || [];
+      setLiked(false);
+      const favs = userData.userDetails.favHotel || [];
       userData.userDetails.favHotel = favs.filter(favId => favId !== id);
       localStorage.setItem("User", JSON.stringify(userData));
     }
-  }
-};
+  };
+
+  const handleDelete = async (e) => {
+    e.stopPropagation();
+    if (loading) return;
+    if (window.confirm("¿Seguro que deseas eliminar este hotel?")) {
+      const ok = await removeHotel(id);
+      if (ok && typeof onDeleted === "function") {
+        onDeleted();
+      }
+    }
+  };
 
   return (
     <div className="hotel-card" onClick={onClick} style={{ cursor: "pointer", position: "relative" }}>
+      {isAdmin && (
+        <div className="hotel-card-actions">
+          <Edit
+            size={35}
+            className="hotel-card-action-icon"
+            title="Editar"
+            onClick={e => {
+              e.stopPropagation();
+              if (onEdit) onEdit();
+            }}
+          />
+          <Trash2
+            size={40}
+            className="hotel-card-action-icon"
+            title="Eliminar"
+            onClick={handleDelete}
+          />
+        </div>
+      )}
+
       <img
         src={imageUrl}
         alt={`Imagen de ${hotelName}`}
@@ -53,7 +95,7 @@ const HotelCard = ({ id, hotelName, department, starts, imageUrl, onClick, isFav
         title={liked ? "Quitar de favoritos" : "Guardar como favorito"}
         style={{
           position: "absolute",
-          top: "16px",
+          top: "300px",
           right: "16px",
           fontSize: "1.6rem",
           cursor: "pointer",
@@ -90,6 +132,9 @@ HotelCard.propTypes = {
   starts: PropTypes.number.isRequired,
   imageUrl: PropTypes.string,
   onClick: PropTypes.func,
+  onEdit: PropTypes.func,
+  onDelete: PropTypes.func,
+  onDeleted: PropTypes.func,
 };
 
 export default HotelCard;
