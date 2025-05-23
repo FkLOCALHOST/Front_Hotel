@@ -1,36 +1,69 @@
-/* Texto general de días */
-.rdp-day {
-  color: #000 !important; /* negro */
-  background-color: #fff !important; /* blanco */
+ .calendary-container {
+  background-color: #1a202c; 
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: #e2e8f0;
 }
 
-/* Texto días deshabilitados */
-.rdp-day_disabled {
-  color: #666 !important; /* gris oscuro */
-  background-color: #f0f0f0 !important; /* gris claro */
-  cursor: not-allowed;
+.calendary-label {
+  color: #63b3ed; 
+  font-size: 14px;
 }
 
-/* Día seleccionado */
+.calendary-button {
+  background-color: #2b6cb0;
+  color: #ffffff;
+  border: 1px solid #2c5282; 
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.calendary-button:hover {
+  background-color: #2c5282;
+}
+
+.calendary-dropdown {
+  background-color: #2d3748; 
+  border: 1px solid #4a5568;
+  border-radius: 8px;
+  padding: 8px;
+  position: absolute;
+  z-index: 10;
+  width: 150%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.rdp {
+  --rdp-cell-size: 200px;
+  --rdp-accent-color: #3182ce; 
+  --rdp-background-color: #2d3748; 
+  --rdp-outline-color: #63b3ed; 
+  --rdp-disabled-color: #718096; 
+  --rdp-hover-color: #2c5282;
+}
+
+.rdp button {
+  color: #e2e8f0;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.rdp button:hover {
+  background-color: #2c5282; 
+}
+
 .rdp-day_selected {
-  background-color: #3182ce !important; /* azul */
-  color: #fff !important; /* blanco */
-  border-radius: 0.375rem;
+  background-color: #3182ce; 
+  color: #ffffff;
 }
 
-/* Mes y año */
-.rdp-caption_label {
-  color: #000 !important; /* negro */
-  font-weight: 600;
+.calendary-loading {
+  color: #63b3ed; 
+  font-style: italic;
 }
 
-/* Botones de navegación */
-.rdp-nav_button {
-  color: #000 !important; /* negro */
-}
-
-/* Encabezado de días de la semana (Lun, Mar, Mie...) */
-.rdp-head_cell {
-  color: #000 !important; /* negro */
-  font-weight: 600;
+.calendary-error {
+  color: #e53e3e; 
+  font-weight: bold;
 }
