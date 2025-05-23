@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { createHotel } from "../../services/api.jsx";
-import { Toast } from "@chakra-ui/react";
 
 const useAddHotel = () => {
   const [loading, setLoading] = useState(false);
