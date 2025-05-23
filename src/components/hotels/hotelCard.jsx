@@ -5,14 +5,16 @@ import { Star, Edit, Trash2 } from "lucide-react";
 import { FaHeart } from "react-icons/fa";
 import useDeleteHotel from "../../shared/hooks/useDeleteHotel";
 import { addFavHotel, removeFavHotel } from "../../services/api";
+import { useNavigate } from "react-router-dom";
 
-const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, onDelete, id, onDeleted }) => {
+const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, onDelete, id }) => {
   const userData = JSON.parse(localStorage.getItem("User"));
   const favHotels = userData?.userDetails?.favHotel || [];
   const isFavorite = favHotels.includes(id);
 
   const [liked, setLiked] = useState(isFavorite);
   const { removeHotel, loading } = useDeleteHotel();
+  const navigate = useNavigate();
 
   let isAdmin = false;
   try {
@@ -61,8 +63,11 @@ const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, o
     if (loading) return;
     if (window.confirm("¿Seguro que deseas eliminar este hotel?")) {
       const ok = await removeHotel(id);
-      if (ok && typeof onDeleted === "function") {
-        onDeleted();
+      if (ok && ok.data && ok.data.success) {
+        window.alert("Hotel eliminado exitosamente");
+        window.location.reload(); 
+      } else {
+        window.alert(ok?.data?.message || "No se pudo eliminar el hotel");
       }
     }
   };
@@ -77,7 +82,12 @@ const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, o
             title="Editar"
             onClick={e => {
               e.stopPropagation();
-              if (onEdit) onEdit();
+              navigate("/hoteles/registrar-hotel", {
+                state: {
+                  editMode: true,
+                  hotelId: id
+                }
+              });
             }}
           />
           <Trash2

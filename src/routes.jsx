@@ -4,16 +4,14 @@ import Home from "./pages/Home";
 import HabitacionesPage from "./pages/habitaciones/habitaciones";
 import EventDashboard from "./pages/event/EventDashboard";
 import Favoritos from "./pages/favoritos/favoritos"
+import HotelForm  from "./components/forms/HotelForm";
 import EventForm from "./components/forms/EventForm";
 import ReservacionesPage from "./pages/reservations/reservaciones";
 import RoomForm from "./components/forms/RoomForm";
 import Register from "./components/auth/registerCard";
+import RoomDetails from "./components/rooms/RoomDetails";
 
 export const routes = [
-  {
-    path: "/",
-    element: <Home />,
-  },
   {
     path: "/hoteles",
     element: <HotelPage />,
@@ -47,7 +45,19 @@ export const routes = [
     element: < ReservacionesPage />,
   },
   {
+    path: "/hoteles/registrar-hotel",
+    element: <HotelForm />,
+     },
+    {
     path: "/habitaciones/registrar-room",
     element: < RoomForm />,
+  },
+  {
+    path: "/habitaciones/:id",
+    element: <RoomDetails />,
+  },
+  {
+    path: "/*",
+    element: <Home />,
   }
 ];

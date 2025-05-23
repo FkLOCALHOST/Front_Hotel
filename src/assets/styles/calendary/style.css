@@ -1,0 +1,36 @@
+/* Texto general de días */
+.rdp-day {
+  color: #000 !important; /* negro */
+  background-color: #fff !important; /* blanco */
+}
+
+/* Texto días deshabilitados */
+.rdp-day_disabled {
+  color: #666 !important; /* gris oscuro */
+  background-color: #f0f0f0 !important; /* gris claro */
+  cursor: not-allowed;
+}
+
+/* Día seleccionado */
+.rdp-day_selected {
+  background-color: #3182ce !important; /* azul */
+  color: #fff !important; /* blanco */
+  border-radius: 0.375rem;
+}
+
+/* Mes y año */
+.rdp-caption_label {
+  color: #000 !important; /* negro */
+  font-weight: 600;
+}
+
+/* Botones de navegación */
+.rdp-nav_button {
+  color: #000 !important; /* negro */
+}
+
+/* Encabezado de días de la semana (Lun, Mar, Mie...) */
+.rdp-head_cell {
+  color: #000 !important; /* negro */
+  font-weight: 600;
+}
