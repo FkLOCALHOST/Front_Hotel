@@ -330,3 +330,19 @@ export const getUnavalilableDates = async (uid) => {
     return { error: true, message: error.message };
   }
 };
+
+export const updateRoom = async (uid, data) => {
+  try {
+    return await apiHotel.patch(`/room/updateRoom/${uid}`, data);
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+};
+
+export const deleteRoom = async (uid) => {
+  try {
+    return await apiHotel.patch(`/room/deleteRoom/${uid}`);
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+};
