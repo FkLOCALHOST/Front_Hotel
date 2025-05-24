@@ -267,6 +267,23 @@ export const getRooms = async ({ page = 1, limit = 10 } = {}) => {
   }
 };
 
+export const searchRooms = async ({
+  search = "",
+  page = 1,
+  limit = 10,
+}) => {
+  try {
+    const desde = (page - 1) * limit;
+    const params = new URLSearchParams();
+    params.append("search", search);
+    params.append("desde", desde.toString());
+    params.append("limite", limit.toString());
+    return await apiHotel.get(`/room/searchRooms?${params.toString()}`);
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+}
+
 export const createRoom = async (data) => {
   try {
     const response = await apiHotel.post("/room/createRoom", data);
