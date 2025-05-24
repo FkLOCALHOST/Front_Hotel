@@ -6,8 +6,15 @@ const useSearchHotels = ({ page = 1, limit = 8, search = "" } = {}) => {
   const [totalItems, setTotalItems] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
-
   useEffect(() => {
+    if (!search || search.trim() === "") {
+      setHotels([]);
+      setTotalItems(0);
+      setErrorMessage("");
+      setLoading(false);
+      return;
+    }
+
     const fetchHotels = async () => {
       setLoading(true);
       try {

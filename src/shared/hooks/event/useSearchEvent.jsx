@@ -8,7 +8,6 @@ const useSearchEvent = ({ page = 1, limit = 8, search = "" } = {}) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Solo ejecutar la búsqueda si hay un término de búsqueda
     if (!search || search.trim() === "") {
       setEvents([]);
       setTotalItems(0);
