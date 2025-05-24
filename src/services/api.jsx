@@ -13,7 +13,9 @@ apiHotel.interceptors.request.use(
       !config.url.includes("/hotel/getHotels") &&
       !config.url.includes("/hotel/searchHotels") &&
       !config.url.includes("/room/getRooms") &&
-      !config.url.includes("/room/searchRooms")
+      !config.url.includes("/room/searchRooms") &&
+      !config.url.includes("/event/getEvents") &&
+      !config.url.includes("/event/searchEvent")
     ) {
       const userStr = localStorage.getItem("User");
 
@@ -124,6 +126,24 @@ export const getEvents = async () => {
     return { error: true, message: error.message };
   }
 };
+
+export const searchEvent = async ({
+  search = "",
+  page = 1,
+  limit = 8,
+}) => {
+  try {
+    const desde = (page - 1) * limit;
+    const params = new URLSearchParams();
+    params.append("search", search);
+    params.append("desde", desde.toString());
+    params.append("limite", limit.toString());
+    return await apiHotel.get(`/event/searchEvent?${params.toString()}`);
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+};
+
 
 export const updateEvent = async (eid, data) => {
   try {
