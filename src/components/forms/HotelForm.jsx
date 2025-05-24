@@ -4,6 +4,8 @@ import "../../assets/styles/forms/hotelForms.css";
 import useAddHotel from "../../shared/hooks/useAddHotel";
 import useEditHotel from "../../shared/hooks/useEditHotel";
 import useHotelById from "../../shared/hooks/useHotelById";
+import Navbar from "../navbar";
+import SimpleFooter from "../footer";
 
 const HotelForm = (props) => {
   const location = useLocation();
@@ -120,145 +122,149 @@ const HotelForm = (props) => {
   }
 
   return (
-    <div className="hotel-form-container">
-      <h2 className="hotel-form-title">
-        {editMode ? "Editar Hotel" : "Crear Hotel"}
-      </h2>
-      <form className="hotel-form" onSubmit={handleSubmit}>
-        <div>
-          <label>Nombre:</label>
-          <input
-            type="text"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            required
-            disabled={editMode && loadingHotel}
-          />
-        </div>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-            disabled={editMode && loadingHotel}
-          />
-        </div>
-        <div>
-          <label>Teléfono:</label>
-          <input
-            type="number"
-            name="phone"
-            value={form.phone}
-            onChange={handleChange}
-            required
-            disabled={editMode && loadingHotel}
-          />
-        </div>
-        <div>
-          <label>Dirección:</label>
-          <input
-            type="text"
-            name="address"  // <-- corregido aquí
-            value={form.address}  // <-- corregido aquí
-            onChange={handleChange}
-            required
-            disabled={editMode && loadingHotel}
-          />
-        </div>
-        <div>
-          <label>Categoría:</label>
-          <select
-            name="category"
-            value={form.category}
-            onChange={handleChange}
-            required
-            disabled={editMode && loadingHotel}
-          >
-            <option value="">Selecciona una categoría</option>
-            <option value="1 STARS">1 Estrella</option>
-            <option value="2 STARS">2 Estrellas</option>
-            <option value="3 STARS">3 Estrellas</option>
-            <option value="4 STARS">4 Estrellas</option>
-            <option value="5 STARS">5 Estrellas</option>
-          </select>
-        </div>
-        <div>
-          <label>Precio:</label>
-          <input
-            type="number"
-            name="price"
-            value={form.price}
-            onChange={handleChange}
-            required
-            disabled={editMode && loadingHotel}
-          />
-        </div>
-        <div>
-          <label>Descripción:</label>
-          <textarea
-            name="description"
-            value={form.description}
-            onChange={handleChange}
-            required
-            disabled={editMode && loadingHotel}
-          />
-        </div>
-        <div>
-          <label>Departamento:</label>
-          <input
-            type="text"
-            name="department"
-            value={form.department}
-            onChange={handleChange}
-            required
-            disabled={editMode && loadingHotel}
-          />
-        </div>
-        <div>
-          <label>Imagen:</label>
-          <input
-            type="file"
-            name="imageHotel"
-            accept="image/*"
-            onChange={handleChange}
-            disabled={editMode && loadingHotel}
-          />
-          {editMode && originalImage && !form.imageHotel && (
-            <img
-              src={originalImage}
-              alt="Imagen actual del hotel"
-              style={{ width: "120px", marginTop: "8px" }}
+    <>
+      <Navbar />
+      <div className="hotel-form-container" style={{ marginTop: "120px"}}>
+        <h2 className="hotel-form-title">
+          {editMode ? "Editar Hotel" : "Crear Hotel"}
+        </h2>
+        <form className="hotel-form" onSubmit={handleSubmit}>
+          <div>
+            <label>Nombre:</label>
+            <input
+              type="text"
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              required
+              disabled={editMode && loadingHotel}
             />
-          )}
-        </div>
-        <button
-          type="submit"
-          disabled={
-            loadingAdd || loadingEdit || (editMode && loadingHotel)
-          }
-        >
-          {editMode
-            ? loadingEdit
-              ? "Editando..."
-              : "Editar Hotel"
-            : loadingAdd
-            ? "Creando..."
-            : "Crear Hotel"}
-        </button>
-        {onCancel && (
-          <button type="button" onClick={onCancel} style={{ marginLeft: 8 }}>
-            Cancelar
+          </div>
+          <div>
+            <label>Email:</label>
+            <input
+              type="email"
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              required
+              disabled={editMode && loadingHotel}
+            />
+          </div>
+          <div>
+            <label>Teléfono:</label>
+            <input
+              type="number"
+              name="phone"
+              value={form.phone}
+              onChange={handleChange}
+              required
+              disabled={editMode && loadingHotel}
+            />
+          </div>
+          <div>
+            <label>Dirección:</label>
+            <input
+              type="text"
+              name="address"  // <-- corregido aquí
+              value={form.address}  // <-- corregido aquí
+              onChange={handleChange}
+              required
+              disabled={editMode && loadingHotel}
+            />
+          </div>
+          <div>
+            <label>Categoría:</label>
+            <select
+              name="category"
+              value={form.category}
+              onChange={handleChange}
+              required
+              disabled={editMode && loadingHotel}
+            >
+              <option value="">Selecciona una categoría</option>
+              <option value="1 STARS">1 Estrella</option>
+              <option value="2 STARS">2 Estrellas</option>
+              <option value="3 STARS">3 Estrellas</option>
+              <option value="4 STARS">4 Estrellas</option>
+              <option value="5 STARS">5 Estrellas</option>
+            </select>
+          </div>
+          <div>
+            <label>Precio:</label>
+            <input
+              type="number"
+              name="price"
+              value={form.price}
+              onChange={handleChange}
+              required
+              disabled={editMode && loadingHotel}
+            />
+          </div>
+          <div>
+            <label>Descripción:</label>
+            <textarea
+              name="description"
+              value={form.description}
+              onChange={handleChange}
+              required
+              disabled={editMode && loadingHotel}
+            />
+          </div>
+          <div>
+            <label>Departamento:</label>
+            <input
+              type="text"
+              name="department"
+              value={form.department}
+              onChange={handleChange}
+              required
+              disabled={editMode && loadingHotel}
+            />
+          </div>
+          <div>
+            <label>Imagen:</label>
+            <input
+              type="file"
+              name="imageHotel"
+              accept="image/*"
+              onChange={handleChange}
+              disabled={editMode && loadingHotel}
+            />
+            {editMode && originalImage && !form.imageHotel && (
+              <img
+                src={originalImage}
+                alt="Imagen actual del hotel"
+                style={{ width: "120px", marginTop: "8px" }}
+              />
+            )}
+          </div>
+          <button
+            type="submit"
+            disabled={
+              loadingAdd || loadingEdit || (editMode && loadingHotel)
+            }
+          >
+            {editMode
+              ? loadingEdit
+                ? "Editando..."
+                : "Editar Hotel"
+              : loadingAdd
+                ? "Creando..."
+                : "Crear Hotel"}
           </button>
-        )}
-        {(errorAdd || errorEdit) && (
-          <div style={{ color: "red" }}>{errorAdd || errorEdit}</div>
-        )}
-      </form>
-    </div>
+          {onCancel && (
+            <button type="button" onClick={onCancel} style={{ marginLeft: 8 }}>
+              Cancelar
+            </button>
+          )}
+          {(errorAdd || errorEdit) && (
+            <div style={{ color: "red" }}>{errorAdd || errorEdit}</div>
+          )}
+        </form>
+      </div>
+      <SimpleFooter />
+    </>
   );
 };
 

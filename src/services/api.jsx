@@ -11,7 +11,9 @@ apiHotel.interceptors.request.use(
       !config.url.includes("/auth/login") &&
       !config.url.includes("/auth/register") &&
       !config.url.includes("/hotel/getHotels") &&
-      !config.url.includes("/hotel/searchHotels")
+      !config.url.includes("/hotel/searchHotels") &&
+      !config.url.includes("/room/getRooms") &&
+      !config.url.includes("/room/searchRooms")
     ) {
       const userStr = localStorage.getItem("User");
 
@@ -47,7 +49,6 @@ apiHotel.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Auth
 export const register = async (data) => {
   try {
     return await apiHotel.post("/auth/register", data);
@@ -68,7 +69,6 @@ export const login = async (data) => {
   }
 };
 
-// Amenity
 export const createAmenity = async (data) => {
   try {
     return await apiHotel.post("/amenity/createAmenity", data);
@@ -109,7 +109,6 @@ export const updateAmenity = async (uid, data) => {
   }
 };
 
-// Event
 export const createEvent = async (data) => {
   try {
     return await apiHotel.post("/event/createEvent", data);
@@ -150,7 +149,6 @@ export const searchEventByName = async (name) => {
   }
 };
 
-// Hotel
 export const createHotel = async (data) => {
   try {
     return await apiHotel.post("/hotel/createHotel", data);
@@ -177,7 +175,6 @@ export const getHotelById = async (uid) => {
 
 export const updateHotel = async (uid, data) => {
   try {
-    // PATCH es correcto para actualizar parcialmente
     return await apiHotel.patch(`/hotel/updateHotel/${uid}`, data);
   } catch (error) {
     return { error: true, message: error.message };
@@ -209,7 +206,6 @@ export const searchHotelsService = async ({
   }
 };
 
-// User
 export const getUserById = async (uid) => {
   try {
     return await apiHotel.get(`/findUser/${uid}`);

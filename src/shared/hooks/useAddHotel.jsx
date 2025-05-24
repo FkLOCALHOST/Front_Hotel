@@ -32,8 +32,8 @@ const useAddHotel = () => {
 
       if (!response.data?.hotel) {
         throw new Error(response.data.message || "Error No se pudo crear el hotel");
-      }else{
-         return response.data.message;
+      } else {
+        return response.data.message;
       }
 
     } catch (err) {
