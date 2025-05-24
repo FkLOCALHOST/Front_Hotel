@@ -232,7 +232,7 @@ export const deleteUser = async (uid) => {
 
 export const updatePassword = async (uid, data) => {
   try {
-    return await apiHotel.patch(`/updatePassword/${uid}`, data);
+    return await apiHotel.patch(`/user/updatePassword/${uid}`, data);
   } catch (error) {
     return { error: true, message: error.message };
   }
@@ -240,7 +240,7 @@ export const updatePassword = async (uid, data) => {
 
 export const updateUser = async (uid, data) => {
   try {
-    return await apiHotel.put(`/updateUser/${uid}`, data);
+    return await apiHotel.put(`/user/updateUser/${uid}`, data);
   } catch (error) {
     return { error: true, message: error.message };
   }
