@@ -252,7 +252,7 @@ export const deleteUser = async (uid) => {
 
 export const updatePassword = async (uid, data) => {
   try {
-    return await apiHotel.patch(`/updatePassword/${uid}`, data);
+    return await apiHotel.patch(`/user/updatePassword/${uid}`, data);
   } catch (error) {
     return { error: true, message: error.message };
   }
@@ -260,7 +260,7 @@ export const updatePassword = async (uid, data) => {
 
 export const updateUser = async (uid, data) => {
   try {
-    return await apiHotel.put(`/updateUser/${uid}`, data);
+    return await apiHotel.put(`/user/updateUser/${uid}`, data);
   } catch (error) {
     return { error: true, message: error.message };
   }
@@ -273,6 +273,15 @@ export const updatePictureProfile = async (uid, data) => {
     return { error: true, message: error.message };
   }
 };
+
+export const getUserLogged = async () => {
+  try{
+    return await apiHotel.get("/user/getUserLog")
+
+  }catch (error) {
+    return {error: true, message: error.message};
+  }
+}
 
 export const getRooms = async ({ page = 1, limit = 10 } = {}) => {
   try {
