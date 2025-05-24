@@ -13,11 +13,8 @@ const EventDashboard = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const itemsPerPage = 8;
 
-    const isSearch = searchTerm.trim() !== "";
+    const { events, errorMessage, totalItems, loading } = useEvents({
 
-    const defaultResult = useEvents();
-
-    const searchResult = useSearchEvent({
         page: currentPage,
         limit: itemsPerPage,
         search: isSearch ? searchTerm : "",
