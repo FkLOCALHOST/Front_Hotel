@@ -14,14 +14,17 @@ const HotelPage = () => {
   const [selectedHotel, setSelectedHotel] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const itemsPerPage = 8;
+  
+  const isSearch = searchTerm.trim() !== "";
+  
   const defaultResult = useHotels({ page: currentPage, limit: itemsPerPage });
 
   const searchResult = useSearchHotels({
     page: currentPage,
     limit: itemsPerPage,
-    search: searchTerm,
+    search: isSearch ? searchTerm : "",
   });
-  const isSearch = searchTerm.trim() !== "";
+
   const { hotels, totalItems, errorMessage } = isSearch
     ? searchResult
     : defaultResult;
