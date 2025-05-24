@@ -4,6 +4,7 @@ import SearchBar from "../../components/SearchBar.jsx";
 import SimpleFooter from "../../components/footer.jsx";
 import EventCard from "../../components/events/EventCard.jsx";
 import useEvents from "../../shared/hooks/event/useGetEvent.jsx";
+import useSearchEvent from "../../shared/hooks/event/useSearchEvent.jsx";
 import Paginacion from "../../components/paginacion.jsx";
 
 const EventDashboard = () => {
@@ -13,10 +14,14 @@ const EventDashboard = () => {
     const itemsPerPage = 8;
 
     const { events, errorMessage, totalItems, loading } = useEvents({
+
         page: currentPage,
         limit: itemsPerPage,
-        search: searchTerm,
+        search: isSearch ? searchTerm : "",
     });
+
+    const { events, errorMessage, totalItems } = isSearch ? searchResult : { events: defaultResult.events, errorMessage: defaultResult.errorMessage, totalItems: defaultResult.events?.length || 0 };
+    const loading = isSearch ? searchResult.loading : false;
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
