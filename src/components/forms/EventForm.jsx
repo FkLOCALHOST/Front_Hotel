@@ -14,6 +14,8 @@ import { useLocation } from "react-router-dom";
 import useAddEvent from "../../shared/hooks/event/useAddEvent";
 import useEditEvent from "../../shared/hooks/event/useEditEvent";
 import { getHotels, getRooms } from "../../services/api.jsx";
+import Navbar from "../navbar";
+import SimpleFooter from "../footer";
 import "../../assets/styles/forms/forms.css";
 
 const EventForm = () => {
@@ -182,7 +184,12 @@ const EventForm = () => {
   };
 
   return (
+    <>
     <div className="event-form-container">
+      <Navbar />
+        <h2 className="event-form-title">
+        {editMode ? "Editar Evento" : "Agregar Evento"}
+      </h2>
       <form onSubmit={handleSubmit} className="event-form">
         <FormControl>
           <FormLabel>Nombre</FormLabel>
@@ -321,7 +328,11 @@ const EventForm = () => {
           {editMode ? "Actualizar Evento" : "Crear Evento"}
         </Button>
       </form>
+
+      
     </div>
+    <SimpleFooter />
+    </>
   );
 };
 
