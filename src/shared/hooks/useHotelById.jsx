@@ -10,7 +10,7 @@ const useHotelById = (hotelId) => {
     setLoading(true);
     getHotelById(hotelId)
       .then(res => {
-        setHotel(res.data?.hotel || null); // <-- Cambia aquí
+        setHotel(res.data?.hotel || null); 
       })
       .finally(() => setLoading(false));
   }, [hotelId]);

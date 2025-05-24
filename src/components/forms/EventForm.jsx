@@ -57,7 +57,6 @@ const EventForm = () => {
       return;
     }
 
-    // Formatear fecha a YYYY-MM-DD
     const formattedDate = form.date.split("T")[0];
 
     const formData = new FormData();
