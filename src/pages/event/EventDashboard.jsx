@@ -12,20 +12,11 @@ const EventDashboard = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const itemsPerPage = 8;
 
-    const defaultResult = useEvents({
-        page: currentPage,
-        limit: itemsPerPage,
-    });
-
-    const searchResult = useEvents({
+    const { events, errorMessage, totalItems, loading } = useEvents({
         page: currentPage,
         limit: itemsPerPage,
         search: searchTerm,
     });
-
-    const isSearch = searchTerm.trim() !== "";
-    const { events, errorMessage, totalItems } = isSearch ? searchResult : defaultResult;
-    const loading = isSearch ? searchResult.loading : defaultResult.loading || false;
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
