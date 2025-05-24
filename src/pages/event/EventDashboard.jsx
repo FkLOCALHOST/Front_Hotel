@@ -45,6 +45,11 @@ const EventDashboard = () => {
         setSelectedEvent(null);
     };
 
+    const normalizedEvents = (events || []).map(event => ({
+        ...event,
+        uid: event._id,
+    }));
+
     return (
         <div>
             <Navbar />
@@ -60,16 +65,10 @@ const EventDashboard = () => {
             {loading && <p>Cargando eventos...</p>}
 
             <div className="hotel-grid">
-                {(events || []).map((event, idx) => (
+                {normalizedEvents.map((event, idx) => (
                     <EventCard
-                        key={event._id || `event-${idx}`}
-                        name={event.name}
-                        description={event.description}
-                        price={event.price}
-                        date={event.date}
-                        place={event.place}
-                        image={event.image}
-                        type={event.type}
+                        key={event.uid || `event-${idx}`}
+                        {...event}
                         onClick={() => handleCardClick(event)}
                     />
                 ))}
