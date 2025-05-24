@@ -17,6 +17,14 @@ const EventCard = ({
   onClick,
   ...rest
 }) => {
+  // Filtrar props no válidas para el DOM
+  const {
+    status,
+    createdAt,
+    updatedAt,
+    ...domSafeRest
+  } = rest;
+
   let isAdmin = false;
   try {
     const userStr = localStorage.getItem("User");
@@ -54,11 +62,6 @@ const EventCard = ({
   const handleDelete = async (e) => {
     e.stopPropagation();
     if (loading) return;
-    if (!uid) {
-      window.alert("Error: El ID del evento es inválido.");
-      console.error("Intentando eliminar evento con uid inválido:", uid);
-      return;
-    }
     if (window.confirm("¿Seguro que deseas eliminar este evento?")) {
       console.log("Eliminando evento con uid:", uid);
       const ok = await removeEvent(uid);
@@ -82,7 +85,7 @@ const EventCard = ({
       className="hotel-card"
       onClick={handleCardClick}
       style={{ cursor: "pointer", position: "relative" }}
-      {...rest}
+      {...domSafeRest}
     >
       {isAdmin && (
         <div className="hotel-card-actions">
@@ -128,7 +131,7 @@ const EventCard = ({
 };
 
 EventCard.propTypes = {
-  uid: PropTypes.string.isRequired,
+  uid: PropTypes.string,
   name: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,

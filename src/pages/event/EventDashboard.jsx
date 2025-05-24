@@ -5,7 +5,6 @@ import SimpleFooter from "../../components/footer.jsx";
 import EventCard from "../../components/events/EventCard.jsx";
 import useEvents from "../../shared/hooks/event/useGetEvent.jsx";
 import Paginacion from "../../components/paginacion.jsx";
-import { Button } from "@chakra-ui/react";
 
 const EventDashboard = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -67,7 +66,8 @@ const EventDashboard = () => {
             <div className="hotel-grid">
                 {normalizedEvents.map((event, idx) => (
                     <EventCard
-                        key={event.uid || `event-${idx}`}
+                        key={event.uid || event._id || `event-${idx}`}
+                        uid={event.uid || event._id}
                         {...event}
                         onClick={() => handleCardClick(event)}
                     />
