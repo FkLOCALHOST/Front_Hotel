@@ -30,6 +30,7 @@ const Home = () => {
                 department={hotel.department}
                 starts={parseInt(hotel.category)}
                 imageUrl={hotel.imageHotel}
+                showLike={false}
               />
             ))}
         </div>

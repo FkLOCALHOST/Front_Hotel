@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import "../../assets/styles/auth/login.css";
 import { login as loginService } from "../../services/api"; 
+import { useNavigate } from "react-router-dom";
+
 const Login = ({ onLoginSuccess }) => {
+    const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -65,7 +68,7 @@ const Login = ({ onLoginSuccess }) => {
           </button>
           <p>
             ¿No tienes cuenta?{" "}
-            <span>
+            <span onClick={() => navigate("/auth/register")}>
               Regístrate
             </span>
           </p>

@@ -307,6 +307,14 @@ export const addFavHotel = async (uid, favHotel) => {
   }
 };
 
+export const removeFavHotel = async (uid, favHotel) => {
+  try {
+    return await apiHotel.patch(`/user/removeFavHotel/${uid}`, { favHotel })
+  }catch (error) {
+    return { error: true, message: error.message };
+  }
+};
+    
 export const getRoomById = async (uid) => {
   try {
     return await apiHotel.get(`/room/getRoomById/${uid}`);
@@ -318,6 +326,22 @@ export const getRoomById = async (uid) => {
 export const getUnavalilableDates = async (uid) => {
   try {
     return await apiHotel.get(`/room/getUnavalilableDates/${uid}`);
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+};
+
+export const updateRoom = async (uid, data) => {
+  try {
+    return await apiHotel.patch(`/room/updateRoom/${uid}`, data);
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+};
+
+export const deleteRoom = async (uid) => {
+  try {
+    return await apiHotel.patch(`/room/deleteRoom/${uid}`);
   } catch (error) {
     return { error: true, message: error.message };
   }

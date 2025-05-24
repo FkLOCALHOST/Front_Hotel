@@ -100,6 +100,7 @@ const EventForm = () => {
   return (
     <>
       <Navbar />
+      <div className="form-center-container">
       <div className="login-container-Event">
         <div className="login-content event-form-content">
           <h1 className="login-title">Crear Evento</h1>
@@ -213,6 +214,7 @@ const EventForm = () => {
             </button>
           </form>
         </div>
+      </div>
       </div>
       <SimpleFooter />
     </>

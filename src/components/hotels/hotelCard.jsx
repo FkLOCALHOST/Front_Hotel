@@ -4,10 +4,10 @@ import "../../assets/styles/hotel/hotelCard.css";
 import { Star, Edit, Trash2 } from "lucide-react";
 import { FaHeart } from "react-icons/fa";
 import useDeleteHotel from "../../shared/hooks/useDeleteHotel";
-import { addFavHotel } from "../../services/api";
+import { addFavHotel, removeFavHotel } from "../../services/api";
 import { useNavigate } from "react-router-dom";
 
-const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, onDelete, id }) => {
+const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, onDelete, id, showLike = true }) => {
   const userData = JSON.parse(localStorage.getItem("User"));
   const favHotels = userData?.userDetails?.favHotel || [];
   const isFavorite = favHotels.includes(id);
@@ -46,10 +46,15 @@ const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, o
         alert("No se pudo guardar como favorito.");
       }
     } else {
+      const response = await removeFavHotel(uid, id);
+    if (response.data && response.data.success) {
       setLiked(false);
       const favs = userData.userDetails.favHotel || [];
       userData.userDetails.favHotel = favs.filter(favId => favId !== id);
       localStorage.setItem("User", JSON.stringify(userData));
+    } else {
+      alert("No se pudo quitar de favoritos.");
+    }
     }
   };
 
@@ -58,8 +63,11 @@ const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, o
     if (loading) return;
     if (window.confirm("¿Seguro que deseas eliminar este hotel?")) {
       const ok = await removeHotel(id);
-      if (ok && typeof onDeleted === "function") {
-        onDeleted();
+      if (ok && ok.data && ok.data.success) {
+        window.alert("Hotel eliminado exitosamente");
+        window.location.reload(); 
+      } else {
+        window.alert(ok?.data?.message || "No se pudo eliminar el hotel");
       }
     }
   };
@@ -74,7 +82,6 @@ const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, o
             title="Editar"
             onClick={e => {
               e.stopPropagation();
-              // Solo pasa el id del hotel
               navigate("/hoteles/registrar-hotel", {
                 state: {
                   editMode: true,
@@ -97,22 +104,24 @@ const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, o
         alt={`Imagen de ${hotelName}`}
         className="hotel-image"
       />
-      <span
-        className={`like-button${liked ? " liked" : ""}`}
-        onClick={toggleLike}
-        title={liked ? "Quitar de favoritos" : "Guardar como favorito"}
-        style={{
-          position: "absolute",
-          top: "300px",
-          right: "16px",
-          fontSize: "1.6rem",
-          cursor: "pointer",
-          transition: "color 0.2s",
-          zIndex: 2
-        }}
-      >
-        <FaHeart />
-      </span>
+      {showLike !== false && (
+        <span
+          className={`like-button${liked ? " liked" : ""}`}
+          onClick={toggleLike}
+          title={liked ? "Quitar de favoritos" : "Guardar como favorito"}
+          style={{
+            position: "absolute",
+            top: "300px",
+            right: "16px",
+            fontSize: "1.6rem",
+            cursor: "pointer",
+            transition: "color 0.2s",
+            zIndex: 2
+          }}
+        >
+          <FaHeart />
+        </span>
+      )}
       <div className="hotel-info">
         <h2 className="hotel-name">{hotelName}</h2>
         <p className="hotel-detail">
@@ -143,6 +152,7 @@ HotelCard.propTypes = {
   onEdit: PropTypes.func,
   onDelete: PropTypes.func,
   onDeleted: PropTypes.func,
+  showLike: PropTypes.bool,
 };
 
 export default HotelCard;

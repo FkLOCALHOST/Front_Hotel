@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../../assets/styles/forms/hotelForms.css";
 import useAddHotel from "../../shared/hooks/useAddHotel";
 import useEditHotel from "../../shared/hooks/useEditHotel";
@@ -7,6 +7,7 @@ import useHotelById from "../../shared/hooks/useHotelById";
 
 const HotelForm = (props) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const editMode = props.editMode || location.state?.editMode || false;
   const hotelId = props.hotelId || location.state?.hotelId || null;
   const onSubmit = props.onSubmit || null;
@@ -18,7 +19,7 @@ const HotelForm = (props) => {
     name: "",
     email: "",
     phone: "",
-    addres: "",
+    address: "",  // <-- corregido aquí
     category: "",
     price: "",
     description: "",
@@ -34,7 +35,7 @@ const HotelForm = (props) => {
         name: hotel.name || "",
         email: hotel.email || "",
         phone: hotel.phone || "",
-        addres: hotel.addres || "",
+        address: hotel.address || "",  // <-- corregido aquí
         category: hotel.category || "",
         price: hotel.price || "",
         description: hotel.description || "",
@@ -59,26 +60,27 @@ const HotelForm = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const priceValue = Number(form.price);
     let result;
 
     if (editMode && hotel && hotel.uid) {
       let dataToSend;
-      // Si hay nueva imagen, usa FormData
       if (form.imageHotel instanceof File) {
         dataToSend = new FormData();
-        dataToSend.append("name", form.name);
-        dataToSend.append("email", form.email);
-        dataToSend.append("phone", form.phone);
-        dataToSend.append("addres", form.addres);
-        dataToSend.append("category", form.category);
-        dataToSend.append("price", form.price);
-        dataToSend.append("description", form.description);
-        dataToSend.append("department", form.department);
-        dataToSend.append("imageHotel", form.imageHotel); // archivo
+        dataToSend.append("name", form.name || "");
+        dataToSend.append("email", form.email || "");
+        dataToSend.append("phone", form.phone || "");
+        dataToSend.append("address", form.address || "");  // <-- corregido aquí
+        dataToSend.append("category", form.category || "");
+        dataToSend.append("price", priceValue);
+        dataToSend.append("description", form.description || "");
+        dataToSend.append("department", form.department || "");
+        dataToSend.append("imageHotel", form.imageHotel);
       } else {
-        // Si no hay nueva imagen, envía la URL original
         dataToSend = {
           ...form,
+          price: priceValue,
           imageHotel: originalImage,
         };
       }
@@ -86,31 +88,20 @@ const HotelForm = (props) => {
       if (result) {
         if (onSubmit) onSubmit(result);
         alert("Hotel editado exitosamente");
+        navigate("/hoteles");
       }
     } else if (!editMode) {
-      // Crear hotel (puedes hacer lo mismo aquí si soportas imágenes al crear)
-      let dataToSend;
-      if (form.imageHotel instanceof File) {
-        dataToSend = new FormData();
-        dataToSend.append("name", form.name);
-        dataToSend.append("email", form.email);
-        dataToSend.append("phone", form.phone);
-        dataToSend.append("addres", form.addres);
-        dataToSend.append("category", form.category);
-        dataToSend.append("price", form.price);
-        dataToSend.append("description", form.description);
-        dataToSend.append("department", form.department);
-        dataToSend.append("imageHotel", form.imageHotel);
-      } else {
-        dataToSend = { ...form };
-      }
+      const dataToSend = {
+        ...form,
+        price: priceValue,
+      };
       result = await addHotel(dataToSend);
       if (result) {
         setForm({
           name: "",
           email: "",
           phone: "",
-          addres: "",
+          address: "",  // <-- corregido aquí
           category: "",
           price: "",
           description: "",
@@ -119,6 +110,7 @@ const HotelForm = (props) => {
         });
         if (onSubmit) onSubmit(result);
         alert("Hotel creado exitosamente");
+        navigate("/hoteles");
       }
     }
   };
@@ -170,8 +162,8 @@ const HotelForm = (props) => {
           <label>Dirección:</label>
           <input
             type="text"
-            name="addres"
-            value={form.addres}
+            name="address"  // <-- corregido aquí
+            value={form.address}  // <-- corregido aquí
             onChange={handleChange}
             required
             disabled={editMode && loadingHotel}
@@ -243,7 +235,12 @@ const HotelForm = (props) => {
             />
           )}
         </div>
-        <button type="submit" disabled={loadingAdd || loadingEdit || (editMode && loadingHotel)}>
+        <button
+          type="submit"
+          disabled={
+            loadingAdd || loadingEdit || (editMode && loadingHotel)
+          }
+        >
           {editMode
             ? loadingEdit
               ? "Editando..."
