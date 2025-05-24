@@ -13,6 +13,7 @@ import { useDropzone } from "react-dropzone";
 import { useLocation } from "react-router-dom";
 import useAddEvent from "../../shared/hooks/event/useAddEvent";
 import useEditEvent from "../../shared/hooks/event/useEditEvent";
+import { getHotels, getRooms } from "../../services/api.jsx";
 import "../../assets/styles/forms/forms.css";
 
 const EventForm = () => {
@@ -34,6 +35,40 @@ const EventForm = () => {
   });
 
   const [selectedFile, setSelectedFile] = useState(null);
+  const [hotels, setHotels] = useState([]);
+  const [rooms, setRooms] = useState([]);
+
+  useEffect(() => {
+    const fetchHotels = async () => {
+      const res = await getHotels();
+      if (res?.data?.hotels) {
+        setHotels(res.data.hotels);
+      }
+    };
+    fetchHotels();
+  }, []);
+
+  useEffect(() => {
+    const fetchRooms = async () => {
+      if (!form.hotel) {
+        setRooms([]);
+        return;
+      }
+      const res = await getRooms();
+      if (res?.data?.rooms) {
+        // Soporta r.hotel como string o como objeto
+        const filtered = res.data.rooms.filter((r) => {
+          const hotelId =
+            typeof r.hotel === "object"
+              ? r.hotel.uid || r.hotel._id
+              : r.hotel;
+          return hotelId === form.hotel;
+        });
+        setRooms(filtered);
+      }
+    };
+    fetchRooms();
+  }, [form.hotel]);
 
   useEffect(() => {
     if (editMode && location.state) {
@@ -222,24 +257,46 @@ const EventForm = () => {
 
         <FormControl>
           <FormLabel>Hotel</FormLabel>
-          <Input
+          <Select
             name="hotel"
             value={form.hotel}
             onChange={handleChange}
             required
-            className="event-form-input"
-          />
+            className="event-form-select"
+            placeholder="Selecciona un hotel"
+          >
+            {hotels.map((hotel) => (
+              <option key={hotel.uid || hotel._id} value={hotel.uid || hotel._id}>
+                {hotel.name}
+              </option>
+            ))}
+          </Select>
         </FormControl>
 
         <FormControl>
           <FormLabel>Salón</FormLabel>
-          <Input
+          <Select
             name="room"
             value={form.room}
             onChange={handleChange}
             required
-            className="event-form-input"
-          />
+            className="event-form-select"
+            placeholder={
+              form.hotel
+                ? "Selecciona una habitación"
+                : "Selecciona primero un hotel"
+            }
+            disabled={!form.hotel}
+          >
+            {rooms.map((room) => (
+              <option
+                key={room.uid || room._id}
+                value={room.uid || room._id}
+              >
+                {room.name || room.numero || "Sin nombre"}
+              </option>
+            ))}
+          </Select>
         </FormControl>
 
         <FormControl>

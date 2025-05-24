@@ -17,7 +17,7 @@ const EventCard = ({
   onClick,
   ...rest
 }) => {
-  // Filtrar props no válidas para el DOM
+
   const {
     status,
     createdAt,
