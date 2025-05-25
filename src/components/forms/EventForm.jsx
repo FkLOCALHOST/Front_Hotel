@@ -17,6 +17,8 @@ import { getHotels, getRooms } from "../../services/api.jsx";
 import Navbar from "../navbar";
 import SimpleFooter from "../footer";
 import "../../assets/styles/forms/forms.css";
+import Navbar from "../navbar";
+import SimpleFooter from "../footer";
 
 const EventForm = () => {
   const toast = useToast();
@@ -58,7 +60,6 @@ const EventForm = () => {
       }
       const res = await getRooms();
       if (res?.data?.rooms) {
-        // Soporta r.hotel como string o como objeto
         const filtered = res.data.rooms.filter((r) => {
           const hotelId =
             typeof r.hotel === "object"
@@ -201,111 +202,103 @@ const EventForm = () => {
             className="event-form-input"
           />
         </FormControl>
-
-        <FormControl>
-          <FormLabel>Descripción</FormLabel>
-          <Textarea
-            name="description"
-            value={form.description}
-            onChange={handleChange}
-            required
-            className="event-form-textarea"
-          />
-        </FormControl>
-
-        <FormControl>
-          <FormLabel>Precio</FormLabel>
-          <Input
-            type="number"
-            name="price"
-            value={form.price}
-            onChange={handleChange}
-            required
-            className="event-form-input"
-          />
-        </FormControl>
-
-        <FormControl>
-          <FormLabel>Fecha</FormLabel>
-          <Input
-            type="datetime-local"
-            name="date"
-            value={form.date}
-            onChange={handleChange}
-            required
-            className="event-form-input"
-          />
-        </FormControl>
-
-        <FormControl>
-          <FormLabel>Lugar</FormLabel>
-          <Input
-            name="place"
-            value={form.place}
-            onChange={handleChange}
-            required
-            className="event-form-input"
-          />
-        </FormControl>
-
-        <FormControl>
-          <FormLabel>Tipo</FormLabel>
-          <Select
-            name="type"
-            value={form.type}
-            onChange={handleChange}
-            required
-            className="event-form-select"
-          >
-            <option value="PRIVATE">Privado</option>
-            <option value="PUBLIC">Público</option>
-          </Select>
-        </FormControl>
-
-        <FormControl>
-          <FormLabel>Hotel</FormLabel>
-          <Select
-            name="hotel"
-            value={form.hotel}
-            onChange={handleChange}
-            required
-            className="event-form-select"
-            placeholder="Selecciona un hotel"
-          >
-            {hotels.map((hotel) => (
-              <option key={hotel.uid || hotel._id} value={hotel.uid || hotel._id}>
-                {hotel.name}
-              </option>
-            ))}
-          </Select>
-        </FormControl>
-
-        <FormControl>
-          <FormLabel>Salón</FormLabel>
-          <Select
-            name="room"
-            value={form.room}
-            onChange={handleChange}
-            required
-            className="event-form-select"
-            placeholder={
-              form.hotel
-                ? "Selecciona una habitación"
-                : "Selecciona primero un hotel"
-            }
-            disabled={!form.hotel}
-          >
-            {rooms.map((room) => (
-              <option
-                key={room.uid || room._id}
-                value={room.uid || room._id}
-              >
-                {room.name || room.numero || "Sin nombre"}
-              </option>
-            ))}
-          </Select>
-        </FormControl>
-
+          <FormControl>
+            <FormLabel>Descripción</FormLabel>
+            <Textarea
+              name="description"
+              value={form.description}
+              onChange={handleChange}
+              required
+              className="event-form-textarea"
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Precio</FormLabel>
+            <Input
+              type="number"
+              name="price"
+              value={form.price}
+              onChange={handleChange}
+              required
+              className="event-form-input"
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Fecha</FormLabel>
+            <Input
+              type="datetime-local"
+              name="date"
+              value={form.date}
+              onChange={handleChange}
+              required
+              className="event-form-input"
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Lugar</FormLabel>
+            <Input
+              name="place"
+              value={form.place}
+              onChange={handleChange}
+              required
+              className="event-form-input"
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Tipo</FormLabel>
+            <Select
+              name="type"
+              value={form.type}
+              onChange={handleChange}
+              required
+              className="event-form-select"
+            >
+              <option value="PRIVATE">Privado</option>
+              <option value="PUBLIC">Público</option>
+            </Select>
+          </FormControl>
+          <FormControl>
+            <FormLabel>Hotel</FormLabel>
+            <Select
+              name="hotel"
+              value={form.hotel}
+              onChange={handleChange}
+              required
+              className="event-form-select"
+              placeholder="Selecciona un hotel"
+            >
+              {hotels.map((hotel) => (
+                <option key={hotel.uid || hotel._id} value={hotel.uid || hotel._id}>
+                  {hotel.name}
+                </option>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl>
+            <FormLabel>Salón</FormLabel>
+            <Select
+              name="room"
+              value={form.room}
+              onChange={handleChange}
+              required
+              className="event-form-select"
+              placeholder={
+                form.hotel
+                  ? "Selecciona una habitación"
+                  : "Selecciona primero un hotel"
+              }
+              disabled={!form.hotel}
+            >
+              {rooms.map((room) => (
+                <option
+                  key={room.uid || room._id}
+                  value={room.uid || room._id}
+                >
+                  {room.name || room.numero || "Sin nombre"}
+                </option>
+              ))}
+            </Select>
+          </FormControl>
         <FormControl>
           <FormLabel>Imagen</FormLabel>
           <div {...getRootProps()} className="dropzone">
@@ -323,13 +316,10 @@ const EventForm = () => {
             )}
           </div>
         </FormControl>
-
         <Button type="submit" className="event-form-submit-btn">
           {editMode ? "Actualizar Evento" : "Crear Evento"}
         </Button>
       </form>
-
-      
     </div>
     <SimpleFooter />
     </>

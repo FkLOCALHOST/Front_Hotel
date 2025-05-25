@@ -93,16 +93,16 @@ const RoomForm = () => {
         <>
             <Navbar />
             <div className="form-center-container" style={{
-                minHeight: "80vh",
+
                 display: "flex",
+                justifyContent: "center",
                 alignItems: "center",
-                justifyContent: "center"
+                height: "100vh",
+                margin: "120px 0 160px"
             }}>
                 <div className="login-container-Event">
                     <div className="login-content event-form-content">
-                        <h1 className="login-title" style={{ textAlign: "center" }}>
-                            Registrar Habitación
-                        </h1>
+                        <h1 className="login-title">Registrar Habitación</h1>
                         <form className="login-form" onSubmit={handleSubmit}>
                             <div className="input-group"><input type="text" name="name" placeholder="Nombre" value={form.name} onChange={handleChange} required /></div>
                             <div className="input-group"><textarea name="description" placeholder="Descripción" value={form.description} onChange={handleChange} required className="event-description" /></div>
