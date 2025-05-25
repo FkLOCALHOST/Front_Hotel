@@ -12,9 +12,9 @@ const HabitacionesPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const itemsPerPage = 10;
-    const isSearch = searchTerm.trim() !== "";
-  
-  const defaultResult = useRooms({
+
+  const { rooms, totalItems, errorMessage, loading, refetch } = useRooms({
+
     page: currentPage,
     limit: itemsPerPage,
   });
@@ -42,6 +42,19 @@ const HabitacionesPage = () => {
     navigate(`/habitaciones/${roomId}`);
   };
 
+  const handleDelete = async (roomId) => {
+    // Aquí podrías usar un hook como useDeleteRoom si lo tienes, o una llamada directa a la API
+    if (window.confirm("¿Estás seguro de que deseas eliminar esta habitación?")) {
+      try {
+        // await deleteRoom(roomId); // Si tienes un hook o función para eliminar
+        console.log("Eliminar habitación", roomId);
+        refetch(); // Recarga las habitaciones luego de eliminar
+      } catch (error) {
+        console.error("Error al eliminar habitación:", error);
+      }
+    }
+  };
+
   return (
     <div>
       <Navbar />
@@ -56,6 +69,7 @@ const HabitacionesPage = () => {
           rooms.map((room) => (
             <RoomCard
               key={room.uid || room._id || room.number}
+              id={room._id || room.uid}
               number={room.number}
               price={room.price}
               description={room.description}
@@ -63,6 +77,7 @@ const HabitacionesPage = () => {
               preView={room.preView}
               status={room.status}
               onClick={() => handleCardClick(room._id || room.uid)}
+              onDelete={() => handleDelete(room._id || room.uid)}
             />
           ))
         ) : !errorMessage && !loading ? (
