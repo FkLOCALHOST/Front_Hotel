@@ -93,6 +93,7 @@ const RoomForm = () => {
         <>
             <Navbar />
             <div className="form-center-container" style={{
+
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",

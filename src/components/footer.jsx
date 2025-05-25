@@ -41,7 +41,10 @@ const SimpleFooter = () => {
           © {new Date().getFullYear()} LocalHost. Todos los derechos reservados.
         </Text>
         <Stack direction="row" spacing={6} className="social-buttons">
-          <SocialButton label="Twitter" href="#">
+          <SocialButton
+            label="Twitter"
+            href="https://x.com/LocalHost_Hotel?t=ITXUVcWQejJg9Of-gVW2_g&s=09"
+          >
             <FaTwitter />
           </SocialButton>
           <SocialButton label="YouTube" href="#">
@@ -49,7 +52,7 @@ const SimpleFooter = () => {
           </SocialButton>
           <SocialButton
             label="Instagram"
-            href="https://www.instagram.com/evelinaava?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw== "
+            href="https://www.instagram.com/localhost_hotel?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
           >
             <FaInstagram />
           </SocialButton>

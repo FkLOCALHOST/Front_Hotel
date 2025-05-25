@@ -127,23 +127,20 @@ export const getEvents = async () => {
   }
 };
 
-export const searchEvent = async ({
-  search = "",
-  page = 1,
-  limit = 8,
-}) => {
+export const getEventsPaginated = async ({ page = 1, limit = 8, search = "" } = {}) => {
   try {
     const desde = (page - 1) * limit;
     const params = new URLSearchParams();
-    params.append("search", search);
-    params.append("desde", desde.toString());
-    params.append("limite", limit.toString());
-    return await apiHotel.get(`/event/searchEvent?${params.toString()}`);
+    params.append("limite", limit);
+    params.append("desde", desde);
+    if (search) params.append("search", search);
+    const response = await apiHotel.get(`/event/getEvents?${params.toString()}`);
+    return response;
+
   } catch (error) {
     return { error: true, message: error.message };
   }
 };
-
 
 export const updateEvent = async (eid, data) => {
   try {

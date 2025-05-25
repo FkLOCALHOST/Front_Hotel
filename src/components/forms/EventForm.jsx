@@ -14,6 +14,8 @@ import { useLocation } from "react-router-dom";
 import useAddEvent from "../../shared/hooks/event/useAddEvent";
 import useEditEvent from "../../shared/hooks/event/useEditEvent";
 import { getHotels, getRooms } from "../../services/api.jsx";
+import Navbar from "../navbar";
+import SimpleFooter from "../footer";
 import "../../assets/styles/forms/forms.css";
 import Navbar from "../navbar";
 import SimpleFooter from "../footer";
@@ -184,20 +186,22 @@ const EventForm = () => {
 
   return (
     <>
+    <div className="event-form-container">
       <Navbar />
-      <div className="event-form-container" style={{ marginTop: "120px" }}>
-        <form onSubmit={handleSubmit} className="event-form">
-          <FormControl>
-            <FormLabel>Nombre</FormLabel>
-            <Input
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              required
-              className="event-form-input"
-            />
-          </FormControl>
-
+        <h2 className="event-form-title">
+        {editMode ? "Editar Evento" : "Agregar Evento"}
+      </h2>
+      <form onSubmit={handleSubmit} className="event-form">
+        <FormControl>
+          <FormLabel>Nombre</FormLabel>
+          <Input
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+            required
+            className="event-form-input"
+          />
+        </FormControl>
           <FormControl>
             <FormLabel>Descripción</FormLabel>
             <Textarea
@@ -208,7 +212,6 @@ const EventForm = () => {
               className="event-form-textarea"
             />
           </FormControl>
-
           <FormControl>
             <FormLabel>Precio</FormLabel>
             <Input
@@ -220,7 +223,6 @@ const EventForm = () => {
               className="event-form-input"
             />
           </FormControl>
-
           <FormControl>
             <FormLabel>Fecha</FormLabel>
             <Input
@@ -232,7 +234,6 @@ const EventForm = () => {
               className="event-form-input"
             />
           </FormControl>
-
           <FormControl>
             <FormLabel>Lugar</FormLabel>
             <Input
@@ -243,7 +244,6 @@ const EventForm = () => {
               className="event-form-input"
             />
           </FormControl>
-
           <FormControl>
             <FormLabel>Tipo</FormLabel>
             <Select
@@ -257,7 +257,6 @@ const EventForm = () => {
               <option value="PUBLIC">Público</option>
             </Select>
           </FormControl>
-
           <FormControl>
             <FormLabel>Hotel</FormLabel>
             <Select
@@ -275,7 +274,6 @@ const EventForm = () => {
               ))}
             </Select>
           </FormControl>
-
           <FormControl>
             <FormLabel>Salón</FormLabel>
             <Select
@@ -301,30 +299,29 @@ const EventForm = () => {
               ))}
             </Select>
           </FormControl>
-
-          <FormControl>
-            <FormLabel>Imagen</FormLabel>
-            <div {...getRootProps()} className="dropzone">
-              <input {...getInputProps()} />
-              {selectedFile && selectedFile.preview ? (
-                <img
-                  src={selectedFile.preview}
-                  alt="Preview"
-                  className="event-image-preview"
-                />
-              ) : isDragActive ? (
-                <Text>Suelta la imagen aquí...</Text>
-              ) : (
-                <Text>Arrastra una imagen o haz clic para seleccionar</Text>
-              )}
-            </div>
-          </FormControl>
-          <Button type="submit" className="event-form-submit-btn">
-            {editMode ? "Actualizar Evento" : "Crear Evento"}
-          </Button>
-        </form>
-      </div>
-      <SimpleFooter />
+        <FormControl>
+          <FormLabel>Imagen</FormLabel>
+          <div {...getRootProps()} className="dropzone">
+            <input {...getInputProps()} />
+            {selectedFile && selectedFile.preview ? (
+              <img
+                src={selectedFile.preview}
+                alt="Preview"
+                className="event-image-preview"
+              />
+            ) : isDragActive ? (
+              <Text>Suelta la imagen aquí...</Text>
+            ) : (
+              <Text>Arrastra una imagen o haz clic para seleccionar</Text>
+            )}
+          </div>
+        </FormControl>
+        <Button type="submit" className="event-form-submit-btn">
+          {editMode ? "Actualizar Evento" : "Crear Evento"}
+        </Button>
+      </form>
+    </div>
+    <SimpleFooter />
     </>
   );
 };
