@@ -12,9 +12,11 @@ const HabitacionesPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const itemsPerPage = 10;
+  const navigate = useNavigate();
 
-  const { rooms, totalItems, errorMessage, loading, refetch } = useRooms({
+  const isSearch = searchTerm.trim() !== "";
 
+  const defaultResult = useRooms({
     page: currentPage,
     limit: itemsPerPage,
   });
@@ -25,9 +27,13 @@ const HabitacionesPage = () => {
     search: isSearch ? searchTerm : "",
   });
 
-  const { rooms, totalItems, errorMessage } = isSearch ? searchResult : defaultResult;
-  const loading = isSearch ? searchResult.loading : defaultResult.loading || false;
-  const navigate = useNavigate();
+  const {
+    rooms,
+    totalItems,
+    errorMessage,
+    loading,
+    refetch,
+  } = isSearch ? searchResult : defaultResult;
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -43,12 +49,10 @@ const HabitacionesPage = () => {
   };
 
   const handleDelete = async (roomId) => {
-    // Aquí podrías usar un hook como useDeleteRoom si lo tienes, o una llamada directa a la API
     if (window.confirm("¿Estás seguro de que deseas eliminar esta habitación?")) {
       try {
-        // await deleteRoom(roomId); // Si tienes un hook o función para eliminar
         console.log("Eliminar habitación", roomId);
-        refetch(); // Recarga las habitaciones luego de eliminar
+        refetch();
       } catch (error) {
         console.error("Error al eliminar habitación:", error);
       }
@@ -59,7 +63,8 @@ const HabitacionesPage = () => {
     <div>
       <Navbar />
       <br />
-      <br />      <div className="filter-wrapper">
+      <br />
+      <div className="filter-wrapper">
         <SearchBar onSearch={handleSearch} />
       </div>
       <div className="room-grid">
