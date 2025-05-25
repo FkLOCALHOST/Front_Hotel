@@ -34,7 +34,7 @@ const SideBar = ({ open, onClose }) => {
           <History size={20} />
           <span>Historial</span>
         </div>
-        <div className="sidebar-item">
+        <div className="sidebar-item" onClick={() => navigate("/perfil")}>
           <Edit size={20} />
           <span>Editar Perfil</span>
         </div>

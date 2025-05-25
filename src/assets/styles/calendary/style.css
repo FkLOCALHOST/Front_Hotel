@@ -4,6 +4,7 @@
   padding: 16px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   color: #e2e8f0;
+  max-width: 220px;
 }
 
 .calendary-label {

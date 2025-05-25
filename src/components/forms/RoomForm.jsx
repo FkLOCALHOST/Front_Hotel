@@ -139,7 +139,7 @@ const RoomForm = (props) => {
       });
     }
   };
-
+  
   const removeImage = (index) => {
     setForm((prev) => {
       const newPreview = [...prev.preView];

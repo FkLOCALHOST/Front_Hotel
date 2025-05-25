@@ -1,26 +1,27 @@
 import { useEffect, useState } from "react";
-import { searchHotelsService } from "../../services/api.jsx";
+import { searchEvent } from "../../../services/api.jsx";
 
-const useSearchHotels = ({ page = 1, limit = 8, search = "" } = {}) => {
-  const [hotels, setHotels] = useState([]);
+const useSearchEvent = ({ page = 1, limit = 8, search = "" } = {}) => {
+  const [events, setEvents] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     if (!search || search.trim() === "") {
-      setHotels([]);
+      setEvents([]);
       setTotalItems(0);
       setErrorMessage("");
       setLoading(false);
       return;
     }
 
-    const fetchHotels = async () => {
+    const fetchEvents = async () => {
       setLoading(true);
       try {
-        const response = await searchHotelsService({ page, limit, search });
+        const response = await searchEvent({ search: search, page, limit });
         if (response && response.data) {
-          setHotels(response.data.hotels);
+          setEvents(response.data.events);
           setTotalItems(response.data.total);
           setErrorMessage("");
         } else {
@@ -32,10 +33,10 @@ const useSearchHotels = ({ page = 1, limit = 8, search = "" } = {}) => {
         setLoading(false);
       }
     };
-    fetchHotels();
+    fetchEvents();
   }, [page, limit, search]);
 
-  return { hotels, totalItems, errorMessage, loading };
+  return { events, totalItems, errorMessage, loading };
 };
 
-export default useSearchHotels;
+export default useSearchEvent;

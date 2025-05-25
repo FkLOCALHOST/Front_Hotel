@@ -96,16 +96,19 @@ const RoomCard = ({
       <div className="room-info">
         <h2 className="room-name">Habitación {number}</h2>
         <p className="room-detail">
-          <span style={{ fontWeight: "bold" }}>Precio:</span> {price}
+          <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
+            Precio:
+          </span>{" "}
+          {price}
         </p>
         <p className="room-detail">
-          <span style={{ fontWeight: "bold" }}>Capacidad:</span> {capacity}
+          <span style={{ fontWeight: "bold" ,marginLeft: "10px"}}>Capacidad:</span> {capacity}
         </p>
         <p className="room-detail">
-          <span style={{ fontWeight: "bold" }}>Descripción:</span> {description}
+          <span style={{ fontWeight: "bold", marginLeft: "10px" }}>Descripción:</span> {description}
         </p>
         <p className="room-detail">
-          <span style={{ fontWeight: "bold" }}>Estado:</span>{" "}
+          <span style={{ fontWeight: "bold" , marginLeft: "10px"}}>Estado:</span>{" "}
           {status ? "Disponible" : "No disponible"}
         </p>
       </div>

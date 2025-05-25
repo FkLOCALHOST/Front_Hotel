@@ -3,23 +3,39 @@ import { Navbar } from "../../components/navbar.jsx";
 import SimpleFooter from "../../components/footer.jsx";
 import RoomCard from "../../components/rooms/RoomCard.jsx";
 import useRooms from "../../shared/hooks/rooms/useRooms.jsx";
+import useSearchRooms from "../../shared/hooks/rooms/useSearchRooms.jsx";
 import Paginacion from "../../components/paginacion.jsx";
 import SearchBar from "../../components/SearchBar.jsx";
 import { useNavigate } from "react-router-dom";
 
 const HabitacionesPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
   const itemsPerPage = 10;
 
   const { rooms, totalItems, errorMessage, loading, refetch } = useRooms({
+
     page: currentPage,
     limit: itemsPerPage,
   });
 
+  const searchResult = useSearchRooms({
+    page: currentPage,
+    limit: itemsPerPage,
+    search: isSearch ? searchTerm : "",
+  });
+
+  const { rooms, totalItems, errorMessage } = isSearch ? searchResult : defaultResult;
+  const loading = isSearch ? searchResult.loading : defaultResult.loading || false;
   const navigate = useNavigate();
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+  };
+
+  const handleSearch = (value) => {
+    setSearchTerm(value);
+    setCurrentPage(1);
   };
 
   const handleCardClick = (roomId) => {
@@ -43,9 +59,8 @@ const HabitacionesPage = () => {
     <div>
       <Navbar />
       <br />
-      <br />
-      <div className="filter-wrapper">
-        <SearchBar />
+      <br />      <div className="filter-wrapper">
+        <SearchBar onSearch={handleSearch} />
       </div>
       <div className="room-grid">
         {errorMessage && <p>{errorMessage}</p>}
