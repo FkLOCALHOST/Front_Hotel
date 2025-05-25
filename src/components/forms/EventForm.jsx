@@ -17,8 +17,6 @@ import { getHotels, getRooms } from "../../services/api.jsx";
 import Navbar from "../navbar";
 import SimpleFooter from "../footer";
 import "../../assets/styles/forms/forms.css";
-import Navbar from "../navbar";
-import SimpleFooter from "../footer";
 
 const EventForm = () => {
   const toast = useToast();
