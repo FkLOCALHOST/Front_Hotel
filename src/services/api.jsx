@@ -385,3 +385,14 @@ export const deleteRoom = async (uid) => {
     return { error: true, message: error.message };
   }
 };
+
+export const getReports = async() =>{
+  try{
+    return await apiHotel.get("/reservation/getStatsGenerales")
+  }catch(error){
+    return{
+      error: true,
+      message: error.message
+    }
+  }
+}
