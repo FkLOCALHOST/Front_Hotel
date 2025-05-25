@@ -11,7 +11,11 @@ apiHotel.interceptors.request.use(
       !config.url.includes("/auth/login") &&
       !config.url.includes("/auth/register") &&
       !config.url.includes("/hotel/getHotels") &&
-      !config.url.includes("/hotel/searchHotels")
+      !config.url.includes("/hotel/searchHotels") &&
+      !config.url.includes("/room/getRooms") &&
+      !config.url.includes("/room/searchRooms") &&
+      !config.url.includes("/event/getEvents") &&
+      !config.url.includes("/event/searchEvent")
     ) {
       const userStr = localStorage.getItem("User");
 
@@ -47,7 +51,6 @@ apiHotel.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Auth
 export const register = async (data) => {
   try {
     return await apiHotel.post("/auth/register", data);
@@ -68,7 +71,6 @@ export const login = async (data) => {
   }
 };
 
-// Amenity
 export const createAmenity = async (data) => {
   try {
     return await apiHotel.post("/amenity/createAmenity", data);
@@ -109,7 +111,6 @@ export const updateAmenity = async (uid, data) => {
   }
 };
 
-// Event
 export const createEvent = async (data) => {
   try {
     return await apiHotel.post("/event/createEvent", data);
@@ -121,6 +122,21 @@ export const createEvent = async (data) => {
 export const getEvents = async () => {
   try {
     return await apiHotel.get("/event/getEvents");
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+};
+
+export const getEventsPaginated = async ({ page = 1, limit = 8, search = "" } = {}) => {
+  try {
+    const desde = (page - 1) * limit;
+    const params = new URLSearchParams();
+    params.append("limite", limit);
+    params.append("desde", desde);
+    if (search) params.append("search", search);
+    const response = await apiHotel.get(`/event/getEvents?${params.toString()}`);
+    return response;
+
   } catch (error) {
     return { error: true, message: error.message };
   }
@@ -150,7 +166,6 @@ export const searchEventByName = async (name) => {
   }
 };
 
-// Hotel
 export const createHotel = async (data) => {
   try {
     return await apiHotel.post("/hotel/createHotel", data);
@@ -177,7 +192,6 @@ export const getHotelById = async (uid) => {
 
 export const updateHotel = async (uid, data) => {
   try {
-    // PATCH es correcto para actualizar parcialmente
     return await apiHotel.patch(`/hotel/updateHotel/${uid}`, data);
   } catch (error) {
     return { error: true, message: error.message };
@@ -209,7 +223,6 @@ export const searchHotelsService = async ({
   }
 };
 
-// User
 export const getUserById = async (uid) => {
   try {
     return await apiHotel.get(`/findUser/${uid}`);
@@ -236,7 +249,7 @@ export const deleteUser = async (uid) => {
 
 export const updatePassword = async (uid, data) => {
   try {
-    return await apiHotel.patch(`/updatePassword/${uid}`, data);
+    return await apiHotel.patch(`/user/updatePassword/${uid}`, data);
   } catch (error) {
     return { error: true, message: error.message };
   }
@@ -244,7 +257,7 @@ export const updatePassword = async (uid, data) => {
 
 export const updateUser = async (uid, data) => {
   try {
-    return await apiHotel.put(`/updateUser/${uid}`, data);
+    return await apiHotel.put(`/user/updateUser/${uid}`, data);
   } catch (error) {
     return { error: true, message: error.message };
   }
@@ -258,6 +271,15 @@ export const updatePictureProfile = async (uid, data) => {
   }
 };
 
+export const getUserLogged = async () => {
+  try{
+    return await apiHotel.get("/user/getUserLog")
+
+  }catch (error) {
+    return {error: true, message: error.message};
+  }
+}
+
 export const getRooms = async ({ page = 1, limit = 10 } = {}) => {
   try {
     const desde = (page - 1) * limit;
@@ -270,6 +292,23 @@ export const getRooms = async ({ page = 1, limit = 10 } = {}) => {
     return { error: true, message: error.message };
   }
 };
+
+export const searchRooms = async ({
+  search = "",
+  page = 1,
+  limit = 10,
+}) => {
+  try {
+    const desde = (page - 1) * limit;
+    const params = new URLSearchParams();
+    params.append("search", search);
+    params.append("desde", desde.toString());
+    params.append("limite", limit.toString());
+    return await apiHotel.get(`/room/searchRooms?${params.toString()}`);
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+}
 
 export const createRoom = async (data) => {
   try {
@@ -326,6 +365,22 @@ export const getRoomById = async (uid) => {
 export const getUnavalilableDates = async (uid) => {
   try {
     return await apiHotel.get(`/room/getUnavalilableDates/${uid}`);
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+};
+
+export const updateRoom = async (uid, data) => {
+  try {
+    return await apiHotel.patch(`/room/updateRoom/${uid}`, data);
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+};
+
+export const deleteRoom = async (uid) => {
+  try {
+    return await apiHotel.patch(`/room/deleteRoom/${uid}`);
   } catch (error) {
     return { error: true, message: error.message };
   }

@@ -1,14 +1,30 @@
-import React, { useState } from "react";
-import { useToast, Box, Text } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Select,
+  Textarea,
+  useToast,
+  Text,
+} from "@chakra-ui/react";
 import { useDropzone } from "react-dropzone";
+import { useLocation } from "react-router-dom";
 import useAddEvent from "../../shared/hooks/event/useAddEvent";
-import useRooms from "../../shared/hooks/rooms/useRooms";
-import useGetHotel from "../../shared/hooks/useGetHotel";
+import useEditEvent from "../../shared/hooks/event/useEditEvent";
+import { getHotels, getRooms } from "../../services/api.jsx";
 import Navbar from "../navbar";
 import SimpleFooter from "../footer";
 import "../../assets/styles/forms/forms.css";
 
 const EventForm = () => {
+  const toast = useToast();
+  const { addEvent } = useAddEvent();
+  const { editEvent } = useEditEvent();
+  const location = useLocation();
+  const editMode = location.state?.editMode || false;
+
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -21,27 +37,88 @@ const EventForm = () => {
   });
 
   const [selectedFile, setSelectedFile] = useState(null);
-  const toast = useToast();
-  const { addEvent, loading, error } = useAddEvent();
-  const { rooms } = useRooms();
-  const { hotels } = useGetHotel();
+  const [hotels, setHotels] = useState([]);
+  const [rooms, setRooms] = useState([]);
+
+  useEffect(() => {
+    const fetchHotels = async () => {
+      const res = await getHotels();
+      if (res?.data?.hotels) {
+        setHotels(res.data.hotels);
+      }
+    };
+    fetchHotels();
+  }, []);
+
+  useEffect(() => {
+    const fetchRooms = async () => {
+      if (!form.hotel) {
+        setRooms([]);
+        return;
+      }
+      const res = await getRooms();
+      if (res?.data?.rooms) {
+        const filtered = res.data.rooms.filter((r) => {
+          const hotelId =
+            typeof r.hotel === "object"
+              ? r.hotel.uid || r.hotel._id
+              : r.hotel;
+          return hotelId === form.hotel;
+        });
+        setRooms(filtered);
+      }
+    };
+    fetchRooms();
+  }, [form.hotel]);
+
+  useEffect(() => {
+    if (editMode && location.state) {
+      const {
+        name,
+        description,
+        price,
+        date,
+        place,
+        type,
+        hotel,
+        room,
+        image,
+      } = location.state;
+
+      setForm({
+        name: name || "",
+        description: description || "",
+        price: price || "",
+        date: date ? new Date(date).toISOString().slice(0, 16) : "",
+        place: place || "",
+        type: type || "PRIVATE",
+        hotel: hotel || "",
+        room: room || "",
+      });
+
+      if (image) {
+        setSelectedFile({ name: image, preview: image });
+      }
+    }
+  }, [editMode, location.state]);
+
+  const onDrop = (acceptedFiles) => {
+    const file = acceptedFiles[0];
+    setSelectedFile(
+      Object.assign(file, { preview: URL.createObjectURL(file) })
+    );
+  };
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    multiple: false,
+    accept: { "image/*": [] },
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
-
-  const onDrop = (acceptedFiles) => {
-    if (acceptedFiles.length > 0) {
-      setSelectedFile(acceptedFiles[0]);
-    }
-  };
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: { "image/*": [] },
-    multiple: false,
-  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -57,7 +134,6 @@ const EventForm = () => {
       return;
     }
 
-    // Formatear fecha a YYYY-MM-DD
     const formattedDate = form.date.split("T")[0];
 
     const formData = new FormData();
@@ -66,15 +142,24 @@ const EventForm = () => {
     });
     formData.append("image", selectedFile);
 
-    const response = await addEvent(formData);
+    let response;
+    if (editMode) {
+      const eventId = location.state?.eventId;
+      response = await editEvent(eventId, formData);
+    } else {
+      response = await addEvent(formData);
+    }
 
     if (response) {
       toast({
-        title: "Evento creado exitosamente.",
+        title: editMode
+          ? "Evento actualizado exitosamente."
+          : "Evento creado exitosamente.",
         status: "success",
         duration: 3000,
         isClosable: true,
       });
+
       setForm({
         name: "",
         description: "",
@@ -88,8 +173,8 @@ const EventForm = () => {
       setSelectedFile(null);
     } else {
       toast({
-        title: "Error al crear el evento.",
-        description: error || "Inténtalo de nuevo.",
+        title: "Error al procesar el evento.",
+        description: "Inténtalo de nuevo.",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -99,124 +184,142 @@ const EventForm = () => {
 
   return (
     <>
+    <div className="event-form-container">
       <Navbar />
-      <div className="form-center-container">
-      <div className="login-container-Event">
-        <div className="login-content event-form-content">
-          <h1 className="login-title">Crear Evento</h1>
-          <form className="login-form" onSubmit={handleSubmit}>
-            <div className="input-group">
-              <input
-                type="text"
-                name="name"
-                placeholder="Nombre del evento"
-                value={form.name}
-                onChange={handleChange}
-                required
+        <h2 className="event-form-title">
+        {editMode ? "Editar Evento" : "Agregar Evento"}
+      </h2>
+      <form onSubmit={handleSubmit} className="event-form">
+        <FormControl>
+          <FormLabel>Nombre</FormLabel>
+          <Input
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+            required
+            className="event-form-input"
+          />
+        </FormControl>
+          <FormControl>
+            <FormLabel>Descripción</FormLabel>
+            <Textarea
+              name="description"
+              value={form.description}
+              onChange={handleChange}
+              required
+              className="event-form-textarea"
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Precio</FormLabel>
+            <Input
+              type="number"
+              name="price"
+              value={form.price}
+              onChange={handleChange}
+              required
+              className="event-form-input"
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Fecha</FormLabel>
+            <Input
+              type="datetime-local"
+              name="date"
+              value={form.date}
+              onChange={handleChange}
+              required
+              className="event-form-input"
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Lugar</FormLabel>
+            <Input
+              name="place"
+              value={form.place}
+              onChange={handleChange}
+              required
+              className="event-form-input"
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Tipo</FormLabel>
+            <Select
+              name="type"
+              value={form.type}
+              onChange={handleChange}
+              required
+              className="event-form-select"
+            >
+              <option value="PRIVATE">Privado</option>
+              <option value="PUBLIC">Público</option>
+            </Select>
+          </FormControl>
+          <FormControl>
+            <FormLabel>Hotel</FormLabel>
+            <Select
+              name="hotel"
+              value={form.hotel}
+              onChange={handleChange}
+              required
+              className="event-form-select"
+              placeholder="Selecciona un hotel"
+            >
+              {hotels.map((hotel) => (
+                <option key={hotel.uid || hotel._id} value={hotel.uid || hotel._id}>
+                  {hotel.name}
+                </option>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl>
+            <FormLabel>Salón</FormLabel>
+            <Select
+              name="room"
+              value={form.room}
+              onChange={handleChange}
+              required
+              className="event-form-select"
+              placeholder={
+                form.hotel
+                  ? "Selecciona una habitación"
+                  : "Selecciona primero un hotel"
+              }
+              disabled={!form.hotel}
+            >
+              {rooms.map((room) => (
+                <option
+                  key={room.uid || room._id}
+                  value={room.uid || room._id}
+                >
+                  {room.name || room.numero || "Sin nombre"}
+                </option>
+              ))}
+            </Select>
+          </FormControl>
+        <FormControl>
+          <FormLabel>Imagen</FormLabel>
+          <div {...getRootProps()} className="dropzone">
+            <input {...getInputProps()} />
+            {selectedFile && selectedFile.preview ? (
+              <img
+                src={selectedFile.preview}
+                alt="Preview"
+                className="event-image-preview"
               />
-            </div>
-            <div className="input-group">
-              <textarea
-                name="description"
-                placeholder="Descripción"
-                value={form.description}
-                onChange={handleChange}
-                required
-                className="event-description"
-              />
-            </div>
-            <div className="input-group">
-              <input
-                type="number"
-                name="price"
-                placeholder="Precio"
-                value={form.price}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="input-group">
-              <input
-                type="datetime-local"
-                name="date"
-                value={form.date}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="input-group">
-              <input
-                type="text"
-                name="place"
-                placeholder="Lugar"
-                value={form.place}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="input-group">
-              <Box {...getRootProps()} className="event-dropzone">
-                <input {...getInputProps()} />
-                {selectedFile ? (
-                  <Text>{selectedFile.name}</Text>
-                ) : isDragActive ? (
-                  <Text>Suelta la imagen aquí...</Text>
-                ) : (
-                  <Text>Arrastra una imagen o haz clic para seleccionar</Text>
-                )}
-              </Box>
-            </div>
-            <div className="input-group">
-              <select
-                name="type"
-                value={form.type}
-                onChange={handleChange}
-                className="event-select"
-              >
-                <option value="PRIVATE">Privado</option>
-                <option value="PUBLIC">Público</option>
-              </select>
-            </div>
-            <div className="input-group">
-              <select
-                name="hotel"
-                value={form.hotel}
-                onChange={handleChange}
-                required
-                className="event-select"
-              >
-                <option value="">Selecciona un hotel</option>
-                {hotels.map((hotel) => (
-                  <option key={hotel._id} value={hotel.uid}>
-                    {hotel.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="input-group">
-              <select
-                name="room"
-                value={form.room}
-                onChange={handleChange}
-                required
-                className="event-select"
-              >
-                <option value="">Selecciona una habitación</option>
-                {rooms.map((room) => (
-                  <option key={room._id} value={room.uid}>
-                    {room.name || `Habitación ${room.number}`}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <button type="submit" className="login-button" disabled={loading}>
-              {loading ? "Creando..." : "Crear Evento"}
-            </button>
-          </form>
-        </div>
-      </div>
-      </div>
-      <SimpleFooter />
+            ) : isDragActive ? (
+              <Text>Suelta la imagen aquí...</Text>
+            ) : (
+              <Text>Arrastra una imagen o haz clic para seleccionar</Text>
+            )}
+          </div>
+        </FormControl>
+        <Button type="submit" className="event-form-submit-btn">
+          {editMode ? "Actualizar Evento" : "Crear Evento"}
+        </Button>
+      </form>
+    </div>
+    <SimpleFooter />
     </>
   );
 };

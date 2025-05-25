@@ -2,8 +2,11 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Edit, Trash2 } from "lucide-react";
 import "../../assets/styles/hotel/hotelCard.css";
+import { useNavigate } from "react-router-dom";
+import useDeleteEvent from "../../shared/hooks/event/useDeleteEvent";
 
 const EventCard = ({
+  uid,
   name,
   description,
   price,
@@ -12,9 +15,16 @@ const EventCard = ({
   image,
   type,
   onClick,
-  onEdit,
-  onDelete,
+  ...rest
 }) => {
+
+  const {
+    status,
+    createdAt,
+    updatedAt,
+    ...domSafeRest
+  } = rest;
+
   let isAdmin = false;
   try {
     const userStr = localStorage.getItem("User");
@@ -28,27 +38,68 @@ const EventCard = ({
     console.log("Error Parsing User from Local Storage", e)
   }
 
+  const navigate = useNavigate();
+  const { removeEvent, loading } = useDeleteEvent();
+
+  const handleEdit = (e) => {
+    e.stopPropagation();
+    navigate("/eventos/registrar-evento", {
+      state: {
+        editMode: true,
+        eventId: uid,
+        // Pasa todos los datos para prellenar el formulario
+        name,
+        description,
+        price,
+        date,
+        place,
+        image,
+        type,
+      },
+    });
+  };
+
+  const handleDelete = async (e) => {
+    e.stopPropagation();
+    if (loading) return;
+    if (window.confirm("¿Seguro que deseas eliminar este evento?")) {
+      console.log("Eliminando evento con uid:", uid);
+      const ok = await removeEvent(uid);
+      if (ok) {
+        window.alert("Evento eliminado exitosamente");
+        window.location.reload();
+      } else {
+        window.alert("No se pudo eliminar el evento");
+      }
+    }
+  };
+
+  const handleCardClick = () => {
+    if (onClick) onClick({ 
+      uid, name, description, price, date, place, image, type 
+    });
+  };
+
   return (
-    <div className="hotel-card" onClick={onClick} style={{ cursor: "pointer", position: "relative" }}>
+    <div
+      className="hotel-card"
+      onClick={handleCardClick}
+      style={{ cursor: "pointer", position: "relative" }}
+      {...domSafeRest}
+    >
       {isAdmin && (
         <div className="hotel-card-actions">
           <Edit
             size={40}
             className="hotel-card-action-icon"
             title="Editar"
-            onClick={e => {
-              e.stopPropagation();
-              if (onEdit) onEdit();
-            }}
+            onClick={handleEdit}
           />
           <Trash2
             size={40}
             className="hotel-card-action-icon"
             title="Eliminar"
-            onClick={e => {
-              e.stopPropagation();
-              if (onDelete) onDelete();
-            }}
+            onClick={handleDelete}
           />
         </div>
       )}
@@ -72,7 +123,7 @@ const EventCard = ({
           <strong>Fecha:</strong>&nbsp;{date ? date.slice(0, 10) : ""}
         </p>
         <p className="hotel-detail">
-          <strong>Precio:</strong>&nbsp;Q{price.toFixed(2)}
+          <strong>Precio:</strong>&nbsp;Q{price?.toFixed ? price.toFixed(2) : price}
         </p>
       </div>
     </div>
@@ -80,6 +131,7 @@ const EventCard = ({
 };
 
 EventCard.propTypes = {
+  uid: PropTypes.string,
   name: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
@@ -88,8 +140,6 @@ EventCard.propTypes = {
   image: PropTypes.string,
   type: PropTypes.oneOf(["PUBLIC", "PRIVATE"]),
   onClick: PropTypes.func,
-  onEdit: PropTypes.func,
-  onDelete: PropTypes.func,
 };
 
 export default EventCard;

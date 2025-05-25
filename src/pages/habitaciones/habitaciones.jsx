@@ -3,26 +3,60 @@ import { Navbar } from "../../components/navbar.jsx";
 import SimpleFooter from "../../components/footer.jsx";
 import RoomCard from "../../components/rooms/RoomCard.jsx";
 import useRooms from "../../shared/hooks/rooms/useRooms.jsx";
+import useSearchRooms from "../../shared/hooks/rooms/useSearchRooms.jsx";
 import Paginacion from "../../components/paginacion.jsx";
 import SearchBar from "../../components/SearchBar.jsx";
 import { useNavigate } from "react-router-dom";
 
 const HabitacionesPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
   const itemsPerPage = 10;
-  const { rooms, totalItems, errorMessage, loading } = useRooms({
+  const navigate = useNavigate();
+
+  const isSearch = searchTerm.trim() !== "";
+
+  const defaultResult = useRooms({
     page: currentPage,
     limit: itemsPerPage,
   });
 
-  const navigate = useNavigate();
+  const searchResult = useSearchRooms({
+    page: currentPage,
+    limit: itemsPerPage,
+    search: isSearch ? searchTerm : "",
+  });
+
+  const {
+    rooms,
+    totalItems,
+    errorMessage,
+    loading,
+    refetch,
+  } = isSearch ? searchResult : defaultResult;
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
+  const handleSearch = (value) => {
+    setSearchTerm(value);
+    setCurrentPage(1);
+  };
+
   const handleCardClick = (roomId) => {
     navigate(`/habitaciones/${roomId}`);
+  };
+
+  const handleDelete = async (roomId) => {
+    if (window.confirm("¿Estás seguro de que deseas eliminar esta habitación?")) {
+      try {
+        console.log("Eliminar habitación", roomId);
+        refetch();
+      } catch (error) {
+        console.error("Error al eliminar habitación:", error);
+      }
+    }
   };
 
   return (
@@ -31,7 +65,7 @@ const HabitacionesPage = () => {
       <br />
       <br />
       <div className="filter-wrapper">
-        <SearchBar />
+        <SearchBar onSearch={handleSearch} />
       </div>
       <div className="room-grid">
         {errorMessage && <p>{errorMessage}</p>}
@@ -40,6 +74,7 @@ const HabitacionesPage = () => {
           rooms.map((room) => (
             <RoomCard
               key={room.uid || room._id || room.number}
+              id={room._id || room.uid}
               number={room.number}
               price={room.price}
               description={room.description}
@@ -47,6 +82,7 @@ const HabitacionesPage = () => {
               preView={room.preView}
               status={room.status}
               onClick={() => handleCardClick(room._id || room.uid)}
+              onDelete={() => handleDelete(room._id || room.uid)}
             />
           ))
         ) : !errorMessage && !loading ? (

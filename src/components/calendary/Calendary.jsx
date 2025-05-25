@@ -13,7 +13,7 @@ import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import useUnavailableDates from "../../shared/hooks/reservation/useUnavailableDates";
 
-const Calendary = ({ roomId, selectedDate, onSelect }) => {
+const Calendary = ({ roomId, selectedDate, onSelect, label}) => {
     const { unavailableDates, loading, error } = useUnavailableDates(roomId);
     const [isOpen, setIsOpen] = useState(false);
     const ref = useRef();
@@ -23,33 +23,25 @@ const Calendary = ({ roomId, selectedDate, onSelect }) => {
         handler: () => setIsOpen(false),
     });
 
-    const parsedUnavailableDates = unavailableDates.map((d) => new Date(d));
+    const disabledDates = unavailableDates.map((date) => new Date(date));
 
     return (
-        <VStack align="start" spacing={2} position="relative" width="100%">
-            <Text fontWeight="bold">Fecha de reserva:</Text>
-
+        <VStack align="start" spacing={2} position="relative" width="100%" className="calendary-container">
+            <Text fontWeight="bold" className="calendary-label" style={{position: "relative", left: "25px"}}>{label}</Text>
             <Button
                 variant="outline"
                 onClick={() => setIsOpen(!isOpen)}
                 width="100%"
+                className="calendary-button"
             >
                 {selectedDate
                     ? format(selectedDate, "PPP", { locale: es })
                     : "Selecciona una fecha"}
             </Button>
-
             {isOpen && (
                 <Box
                     ref={ref}
-                    position="absolute"
-                    top="100%"
-                    zIndex="10"
-                    mt={2}
-                    border="1px solid #ccc"
-                    borderRadius="md"
-                    bg="white"
-                    boxShadow="md"
+                    className="calendary-dropdown"
                 >
                     <DayPicker
                         mode="single"
@@ -58,27 +50,16 @@ const Calendary = ({ roomId, selectedDate, onSelect }) => {
                             onSelect(date);
                             setIsOpen(false);
                         }}
-                        disabled={parsedUnavailableDates}
+                        disabled={disabledDates}
                         locale={es}
-                        classNames={{
-                            day: "rdp-day",
-                            day_selected: "rdp-day_selected",
-                            day_disabled: "rdp-day_disabled",
-                            caption_label: "rdp-caption_label",
-                            nav_button: "rdp-nav_button",
-                            head_cell: "rdp-head_cell",
-                        }}
-                        styles={{
-                            head_cell: {color: "#000000 !important"},
-                        }}
                     />
                 </Box>
             )}
-
-            {loading && <Text fontSize="sm">Cargando fechas...</Text>}
-            {error && <Text fontSize="sm" color="red.500">Error: {error}</Text>}
+            {loading && <Text fontSize="sm" className="calendary-loading">Cargando fechas...</Text>}
+            {error && <Text fontSize="sm" className="calendary-error">Error: {error}</Text>}
         </VStack>
     );
 };
+
 
 export default Calendary;

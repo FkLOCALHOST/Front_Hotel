@@ -1,54 +1,138 @@
-.event-form-content {
+.event-form-container {
   width: 100%;
   max-width: 400px;
+  margin: 40px auto;
+  background: #181818;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  padding: 32px 24px;
+  color: #fff;
+  font-family: "Arial", sans-serif;
+  margin-top: 100px;
 }
 
-.event-description {
-  resize: none;
-  height: 80px;
-  width: 250px;
-  margin-bottom: 20px;
-}
-
-.event-dropzone {
-  border: 2px dashed gray;
-  padding: 16px;
+.event-form-title {
   text-align: center;
-  cursor: pointer;
-  margin-bottom: 20px;
+  font-size: 2rem;
+  margin-bottom: 24px;
+  color: #ff2929;
+  letter-spacing: 1px;
 }
 
-.event-select {
-  width: 200px;
-  min-height: 24px;
-  margin-bottom: 20px;
-}
-
-.form-center-container {
-  min-height: 100vh;           
+.event-form {
   display: flex;
-  justify-content: center;    
-  align-items: center;            
+  flex-direction: column;
+  gap: 18px;
 }
 
+.event-form label {
+  font-size: 1rem;
+  color: #ff2929;
+  font-weight: 500;
+}
 
-@media (max-width: 600px) {
-  .event-form-content {
-    max-width: 98vw;
-    padding: 10px 4px;
-  }
+.event-form input,
+.event-form select,
+.event-form textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #333;
+  background: #232323;
+  color: #fff;
+  font-size: 1rem;
+  margin-top: 2px;
+  margin-bottom: 8px;
+  transition: border 0.2s;
+}
 
-  .event-description {
-    width: 100%;
-    min-width: 0;
-  }
+.event-form input[type="file"] {
+  background: #232323;
+  color: #fff;
+  border: none;
+}
 
-  .event-select {
-    width: 100%;
-    min-width: 0;
-  }
+.event-form select,
+.event-form-select {
+  background: #ff2929 !important;
+  color: #111 !important;
+  border: 1px solid #ff2929 !important;
+  border-radius: 6px !important;
+  padding: 8px 12px !important;
+  font-size: 1rem !important;
+  margin-top: 2px;
+  margin-bottom: 8px;
+  transition: border 0.2s;
+}
 
-  .form-center-container {
-    padding: 0 4px;
+/* Cambia el color de las opciones desplegadas */
+.event-form select option,
+.event-form-select option {
+  background: #ff2929;
+  color: #111;
+}
+
+/* Para Chrome, Edge, Opera */
+.event-form select:focus,
+.event-form-select:focus {
+  outline: none !important;
+  border: 1.5px solid #cc0000 !important;
+}
+
+/* Firefox: color del menú desplegable */
+.event-form select:-moz-focusring,
+.event-form-select:-moz-focusring {
+  color: #111;
+  background: #ff2929;
+}
+
+.event-form textarea {
+  min-height: 70px;
+  resize: vertical;
+}
+
+.event-form button[type="submit"] {
+  background: #ff2929;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s;
+}
+
+.event-form button[type="submit"]:hover {
+  background: #cc0000;
+}
+
+.event-image-preview {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.dropzone {
+  border: 2px dashed #ff2929;
+  padding: 10px;
+  text-align: center;
+  border-radius: 6px;
+  background-color: #232323;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  color: #ccc;
+}
+
+.dropzone:hover {
+  border-color: #cc0000;
+}
+
+@media (max-width: 500px) {
+  .event-form-container {
+    padding: 18px 6px;
   }
 }
