@@ -6,7 +6,6 @@ import EventCard from "../../components/events/EventCard.jsx";
 import useEvents from "../../shared/hooks/event/useGetEvent.jsx";
 import useSearchEvent from "../../shared/hooks/event/useSearchEvent.jsx";
 import Paginacion from "../../components/paginacion.jsx";
-import { Button } from "@chakra-ui/react";
 
 const EventDashboard = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -59,9 +58,10 @@ const EventDashboard = () => {
             {loading && <p>Cargando eventos...</p>}
 
             <div className="hotel-grid">
-                {(events || []).map((event, idx) => (
+                {events.map((event) => (
                     <EventCard
-                        key={event._id || `event-${idx}`}
+                        key={event.uid || event._id}
+                        uid={event.uid || event._id}
                         name={event.name}
                         description={event.description}
                         price={event.price}
@@ -69,6 +69,9 @@ const EventDashboard = () => {
                         place={event.place}
                         image={event.image}
                         type={event.type}
+                        status={event.status}
+                        createdAt={event.createdAt}
+                        updatedAt={event.updatedAt}
                         onClick={() => handleCardClick(event)}
                     />
                 ))}
