@@ -1,10 +1,11 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { Star, Edit, Trash2 } from "lucide-react";
-
+import { useNavigate } from "react-router-dom";
 import "../../assets/styles/room/roomCard.css";
 
 const RoomCard = ({
+  id,
   number,
   price,
   description,
@@ -12,10 +13,10 @@ const RoomCard = ({
   preView = [],
   status,
   onClick,
-  onEdit,
   onDelete,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const navigate = useNavigate();
 
   let isAdmin = false;
   try {
@@ -27,7 +28,7 @@ const RoomCard = ({
     }
   } catch (e) {
     isAdmin = false;
-    console.log(e)
+    console.log(e);
   }
 
   const handleNext = (e) => {
@@ -54,7 +55,12 @@ const RoomCard = ({
             title="Editar"
             onClick={(e) => {
               e.stopPropagation();
-              if (onEdit) onEdit();
+              navigate("/habitaciones/registrar-room", {
+                state: {
+                  editMode: true,
+                  roomId: id,
+                },
+              });
             }}
           />
           <Trash2
@@ -108,6 +114,7 @@ const RoomCard = ({
 };
 
 RoomCard.propTypes = {
+  id: PropTypes.string.isRequired,
   number: PropTypes.string.isRequired,
   price: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
@@ -115,7 +122,6 @@ RoomCard.propTypes = {
   preView: PropTypes.arrayOf(PropTypes.string),
   status: PropTypes.bool,
   onClick: PropTypes.func,
-  onEdit: PropTypes.func,
   onDelete: PropTypes.func,
 };
 
