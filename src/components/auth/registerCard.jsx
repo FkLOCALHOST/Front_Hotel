@@ -26,6 +26,7 @@ const Register = ({ switchAuthHandler }) => {
   const [surname, setSurname] = useState('');
   const [userName, setUserName] = useState('');
   const [profilePicture, setProfilePicture] = useState(null);
+  const [profilePreview, setProfilePreview] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -40,11 +41,12 @@ const Register = ({ switchAuthHandler }) => {
   const handleShowConfirmClick = () => setShowConfirmPassword(!showConfirmPassword);
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setProfilePicture(URL.createObjectURL(file));
-    }
-  };
+  const file = e.target.files[0];
+  if (file) {
+    setProfilePicture(file);
+    setProfilePreview(URL.createObjectURL(file));
+  }
+};
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -56,15 +58,18 @@ const Register = ({ switchAuthHandler }) => {
       return;
     }
 
-    const response = await register({
-      name,
-      surname,
-      userName,
-      profilePicture,
-      email,
-      password,
-      phone
-    });
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('surname', surname);
+    formData.append('userName', userName);
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('phone', phone);
+    if (profilePicture) {
+      formData.append('profilePicture', profilePicture); 
+    }
+
+    const response = await register(formData);
 
     if (response.error) {
       setError('Ocurrió un problema al registrar. Pruebe otra vez');
@@ -86,7 +91,7 @@ const Register = ({ switchAuthHandler }) => {
   return (
     <Flex className="register-page">
       <Stack className="register-container">
-        <Avatar className="avatar" src={profilePicture} borderRadius="full"/>
+        <Avatar className="avatar" src={profilePreview} borderRadius="full"/>
         <Heading>Registro LocalHotel</Heading>
         {error && <Box className="error-message">{error}</Box>}
         {success && <Box className="success-message">{success}</Box>}
