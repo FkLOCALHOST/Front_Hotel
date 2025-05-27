@@ -27,3 +27,33 @@ export {
   validatePhone,
   validatePhoneMessage,
 } from './validatePhone';
+
+export {
+  validateHotelName,
+  validateHotelNameMessage,
+} from './validateHotelName';
+
+export {
+  validateAddress,
+  validateAddressMessage,
+} from './validateAddress';
+
+export {
+  validatePrice,
+  validatePriceMessage,
+} from './validatePrice';
+
+export {
+  validateDescription,
+  validateDescriptionMessage,
+} from './validateDescription';
+
+export {
+  validateDepartment,
+  validateDepartmentMessage,
+} from './validateDepartment';
+
+export {
+  validateCategory,
+  validateCategoryMessage,
+} from './validateCategory';
