@@ -6,7 +6,7 @@ import useGetReservations from "../../shared/hooks/reservation/useGetReservation
 import Paginacion from "../../components/paginacion.jsx";
 import SearchBar from "../../components/SearchBar.jsx";
 
-const itemsPerPage = 10;
+const itemsPerPage = 5;
 
 const ReservacionesPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -15,7 +15,7 @@ const ReservacionesPage = () => {
     const { reservations, totalItems, errorMessage, loading } = useGetReservations({
         page: currentPage,
         limit: itemsPerPage,
-        search: searchTerm, // Pasa el término de búsqueda al hook
+        search: searchTerm,
     });
 
     const handlePageChange = (page) => {
