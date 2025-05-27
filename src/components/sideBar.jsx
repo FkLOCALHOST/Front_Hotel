@@ -30,10 +30,6 @@ const SideBar = ({ open, onClose }) => {
           <CalendarCheck size={20} />
           <span>Mis Reservaciones</span>
         </div>
-        <div className="sidebar-item">
-          <History size={20} />
-          <span>Historial</span>
-        </div>
         <div className="sidebar-item" onClick={() => navigate("/perfil")}>
           <Edit size={20} />
           <span>Editar Perfil</span>

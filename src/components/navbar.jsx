@@ -7,6 +7,7 @@ import SideBar from "./sideBar.jsx";
 export const Navbar = () => {
   const [showNavbar, setShowNavbar] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [userRole, setUserRole] = useState(null);
   const lastScrollY = useRef(0);
 
   const handleScroll = () => {
@@ -24,6 +25,18 @@ export const Navbar = () => {
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const userStr = localStorage.getItem("User");
+    if (userStr) {
+      try {
+        const user = JSON.parse(userStr);
+        setUserRole(user.userDetails?.role || null);
+      } catch {
+        setUserRole(null);
+      }
+    }
   }, []);
 
   return (
@@ -47,9 +60,11 @@ export const Navbar = () => {
           <Link to="/eventos" className="nav-link">
             Eventos
           </Link>
-          <Link to="/reportes" className="nav-link">
-            Reportes
-          </Link>
+          {userRole === "ADMIN_ROLE" && (
+            <Link to="/reportes" className="nav-link">
+              Reportes
+            </Link>
+          )}
           <div
             onClick={() => setSidebarOpen(true)}
             style={{ cursor: "pointer" }}

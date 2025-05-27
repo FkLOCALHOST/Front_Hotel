@@ -39,7 +39,7 @@ const ViewHotel = ({
         <p className="hotel-detail-horizontal">
           <span className="bold-horizontal">Precio:</span> {price}
         </p>
-        <button>
+        <button className="button">
           Habitaciones
         </button>
       </div>
