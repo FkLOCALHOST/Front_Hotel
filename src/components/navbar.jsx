@@ -3,12 +3,10 @@ import "../assets/styles/navbar.css";
 import logoSinTexto from "../assets/images/logo_sin_texto.svg";
 import { Link } from "react-router-dom";
 import SideBar from "./sideBar.jsx";
-import { useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
   const [showNavbar, setShowNavbar] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const navigate = useNavigate();
   const lastScrollY = useRef(0);
 
   const handleScroll = () => {
@@ -48,6 +46,9 @@ export const Navbar = () => {
           </Link>
           <Link to="/eventos" className="nav-link">
             Eventos
+          </Link>
+          <Link to="/reportes" className="nav-link">
+            Reportes
           </Link>
           <div
             onClick={() => setSidebarOpen(true)}

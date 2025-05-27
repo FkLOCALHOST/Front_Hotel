@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import useGetRoomById from "../../shared/hooks/rooms/useGetRoomById";
+import useCreateReservation from "../../shared/hooks/reservation/useCreateReservation";
 import Navbar from "../navbar";
 import SimpleFooter from "../footer";
-import "../../assets/styles/room/roomDetails.css";
 import Calendary from "../calendary/Calendary";
+import "../../assets/styles/room/roomDetails.css";
 
 const RoomDetails = () => {
-    const { id } = useParams();
+    const { id } = useParams(); 
     const { room, errorMessage, loading } = useGetRoomById(id);
+    const { addReservation, loading: loadingReservation } = useCreateReservation();
+
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [selectedDate, setSelectedDate] = useState(null); // ahora es Date
+    const [checkIn, setCheckIn] = useState(null);
+    const [checkOut, setCheckOut] = useState(null);
 
     if (loading) return <p>Cargando habitación...</p>;
     if (errorMessage) return <p>{errorMessage}</p>;
@@ -24,16 +28,30 @@ const RoomDetails = () => {
         setCurrentIndex((prev) => (prev - 1 + room.preView.length) % room.preView.length);
     };
 
-    const handleCheckAvailability = () => {
-        if (!selectedDate) {
-            alert("Selecciona una fecha primero.");
+    const handleReservation = async () => {
+        const user = JSON.parse(localStorage.getItem("User"));
+        const userId = user?.userDetails?._id;
+
+        if (!checkIn || !checkOut || !userId || !id) {
+            console.log("Datos de reserva incompletos:", { checkIn, checkOut, userId, id });
+            alert("Completa todos los campos antes de reservar.");
             return;
         }
-        alert(`(Simulado) Verificando disponibilidad para: ${selectedDate.toLocaleDateString()}`);
-    };
 
-    const handleReservation = () => {
-        alert("Reservar (simulado)");
+        const reservationData = {
+            user: userId,
+            room: id,
+            checkIn: checkIn.toISOString().split("T")[0],
+            checkOut: checkOut.toISOString().split("T")[0]
+        };
+
+        const result = await addReservation(reservationData);
+        if (result) {
+            alert("¡Reserva realizada con éxito!");
+            console.log("Reserva:", result);
+        } else {
+            alert("Ocurrió un error al intentar reservar.");
+        }
     };
 
     return (
@@ -56,7 +74,6 @@ const RoomDetails = () => {
                         </div>
                     )}
                 </div>
-
                 <div className="room-info">
                     <h2>{room.name}</h2>
                     <p><span>Número:</span> {room.number}</p>
@@ -66,18 +83,28 @@ const RoomDetails = () => {
                     <p className={room.status ? "availability" : "availability unavailable"}>
                         <span>Estado:</span> {room.status ? "Disponible" : "No disponible"}
                     </p>
-
                     <div className="availability-section">
                         <Calendary
                             roomId={id}
-                            selectedDate={selectedDate}
-                            onSelect={setSelectedDate}
+                            selectedDate={checkIn}
+                            onSelect={setCheckIn}
+                            label={"Fecha de Check-in"}
                         />
-                        <button onClick={handleCheckAvailability}>Verificar disponibilidad</button>
                     </div>
-
-                    <button className="reserve-button" onClick={handleReservation}>
-                        Reservar
+                    <div className="availability-section">
+                        <Calendary
+                            roomId={id}
+                            selectedDate={checkOut}
+                            onSelect={setCheckOut}
+                            label={"Fecha de Check-out"}
+                        />
+                    </div>
+                    <button
+                        className="reserve-button"
+                        onClick={handleReservation}
+                        disabled={loadingReservation}
+                    >
+                        {loadingReservation ? "Reservando..." : "Reservar"}
                     </button>
                 </div>
             </div>

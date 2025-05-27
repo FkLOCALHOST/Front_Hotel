@@ -12,6 +12,8 @@ import Register from "./components/auth/registerCard";
 import RoomDetails from "./components/rooms/RoomDetails";
 import Perfil from "./pages/user/Perfil"
 import EditProfileForm from "./components/forms/UserForm"
+import ReservationForm from "./components/forms/ReservationForm";
+import Stats from "./pages/stats/Stats";
 
 export const routes = [
   {
@@ -69,5 +71,13 @@ export const routes = [
   {
     path: "/perfil/editar",
     element: <EditProfileForm />,
+  },
+  {
+    path: "/reservaciones/create",
+    element: <ReservationForm />,
+  },
+  {
+    path: "/reportes",
+    element: <Stats />,
   }
 ];

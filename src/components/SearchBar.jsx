@@ -42,7 +42,9 @@ const SearchBar = ({ onSearch }) => {
       navigate("registrar-hotel");
     } else if (location.pathname.includes("/habitaciones")) {
       navigate("registrar-room");
-    } else {
+    } else if (location.pathname.includes("/reservaciones")) {
+      navigate("create")
+    }else{
       console.log("Ruta no reconocida:", location.pathname);
     }
   };
