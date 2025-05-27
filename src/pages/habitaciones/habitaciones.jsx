@@ -13,7 +13,6 @@ const HabitacionesPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [filters, setFilters] = useState({
-    search: "",
     capacity: "",
     maxPrice: ""
   });
@@ -21,7 +20,6 @@ const HabitacionesPage = () => {
   const navigate = useNavigate();
 
   const isSearch = searchTerm.trim() !== "" || 
-                  filters.search.trim() !== "" || 
                   filters.capacity || 
                   filters.maxPrice;
 
@@ -33,7 +31,7 @@ const HabitacionesPage = () => {
   const searchResult = useSearchRooms({
     page: currentPage,
     limit: itemsPerPage,
-    search: searchTerm || filters.search,
+    search: searchTerm,
     capacity: filters.capacity,
     maxPrice: filters.maxPrice
   });

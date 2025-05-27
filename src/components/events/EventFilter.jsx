@@ -27,13 +27,6 @@ const EventFilter = ({ onFilter }) => {
 
   return (
     <div className="hotel-filters">
-      <input
-        type="text"
-        name="search"
-        placeholder="Buscar por nombre..."
-        value={filters.search}
-        onChange={handleInputChange}
-      />
 
       <input
         type="text"

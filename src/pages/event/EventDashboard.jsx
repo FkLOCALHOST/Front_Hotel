@@ -13,7 +13,6 @@ const EventDashboard = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filters, setFilters] = useState({
-    search: "",
     place: "",
     maxPrice: "",
     date: ""
@@ -21,7 +20,6 @@ const EventDashboard = () => {
   const itemsPerPage = 8;
 
   const isSearch = searchTerm.trim() !== "" || 
-                  filters.search.trim() !== "" || 
                   filters.place || 
                   filters.maxPrice || 
                   filters.date;
@@ -34,7 +32,7 @@ const EventDashboard = () => {
   const searchResult = useSearchEvent({
     page: currentPage,
     limit: itemsPerPage,
-    search: searchTerm || filters.search,
+    search: searchTerm,
     place: filters.place,
     maxPrice: filters.maxPrice,
     date: filters.date

@@ -26,13 +26,6 @@ const BedroomFilter = ({ onFilter }) => {
 
   return (
     <div className="hotel-filters">
-      <input
-        type="text"
-        name="search"
-        placeholder="Buscar por nombre o número..."
-        value={filters.search}
-        onChange={handleInputChange}
-      />
 
       <input
         type="number"
