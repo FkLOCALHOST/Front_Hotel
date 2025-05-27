@@ -10,13 +10,21 @@ const itemsPerPage = 10;
 
 const ReservacionesPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
+    const [searchTerm, setSearchTerm] = useState(""); // Nuevo estado para búsqueda
+
     const { reservations, totalItems, errorMessage, loading } = useGetReservations({
         page: currentPage,
         limit: itemsPerPage,
+        search: searchTerm, // Pasa el término de búsqueda al hook
     });
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
+    };
+
+    const handleSearch = (value) => {
+        setSearchTerm(value);
+        setCurrentPage(1); // Reinicia la página al buscar
     };
 
     return (
@@ -25,7 +33,7 @@ const ReservacionesPage = () => {
             <br />
             <br />
             <div className="filter-wrapper">
-                <SearchBar />
+                <SearchBar onSearch={handleSearch} /> {/* Pasa la función de búsqueda */}
             </div>
             <div className="reservation-grid">
                 {errorMessage && <p>{errorMessage}</p>}

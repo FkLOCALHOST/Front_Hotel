@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import useGetRoomById from "../../shared/hooks/rooms/useGetRoomById";
 import useCreateReservation from "../../shared/hooks/reservation/useCreateReservation";
+import useReservationReceipt from "../../shared/hooks/reservation/useReservationReceipt";
 import Navbar from "../navbar";
 import SimpleFooter from "../footer";
 import Calendary from "../calendary/Calendary";
@@ -11,10 +12,12 @@ const RoomDetails = () => {
     const { id } = useParams(); 
     const { room, errorMessage, loading } = useGetRoomById(id);
     const { addReservation, loading: loadingReservation } = useCreateReservation();
+    const { downloadReceipt, loading: loadingReceipt } = useReservationReceipt();
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const [checkIn, setCheckIn] = useState(null);
     const [checkOut, setCheckOut] = useState(null);
+    const [reservationUid, setReservationUid] = useState(null);
 
     if (loading) return <p>Cargando habitación...</p>;
     if (errorMessage) return <p>{errorMessage}</p>;
@@ -49,6 +52,7 @@ const RoomDetails = () => {
         if (result) {
             alert("¡Reserva realizada con éxito!");
             console.log("Reserva:", result);
+            setReservationUid(result.uid || result._id); // Ajusta según la respuesta real
         } else {
             alert("Ocurrió un error al intentar reservar.");
         }
@@ -106,6 +110,16 @@ const RoomDetails = () => {
                     >
                         {loadingReservation ? "Reservando..." : "Reservar"}
                     </button>
+                    {reservationUid && (
+                        <button
+                            className="reserve-button"
+                            style={{ marginTop: "10px" }}
+                            onClick={() => downloadReceipt(reservationUid)}
+                            disabled={loadingReceipt}
+                        >
+                            {loadingReceipt ? "Descargando..." : "Recibo"}
+                        </button>
+                    )}
                 </div>
             </div>
             <SimpleFooter />
