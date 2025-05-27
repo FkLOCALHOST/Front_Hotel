@@ -27,14 +27,7 @@ const HotelFilters = ({ onFilter }) => {
 
   return (
     <div className="hotel-filters">
-      <input
-        type="text"
-        name="search"
-        placeholder="Buscar por nombre..."
-        value={filters.search}
-        onChange={handleInputChange}
-      />
-
+      
       <select
         name="category"
         value={filters.category}

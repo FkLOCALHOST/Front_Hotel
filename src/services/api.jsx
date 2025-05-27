@@ -346,6 +346,16 @@ export const searchRooms = async ({
   }
 }
 
+export const createRoom = async (data) => {
+  try {
+    const response = await apiHotel.post("/room/createRoom", data);
+    return response.data; 
+  } catch (error) {
+    const message = error.response?.data?.message || error.message || "Error en la petición";
+    return { error: true, message };
+  }
+};
+
 export const getReservation = async() =>{
   try {
     return await apiHotel.get("/reservation/getReservations");

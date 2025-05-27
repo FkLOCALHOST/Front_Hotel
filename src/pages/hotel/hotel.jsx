@@ -15,7 +15,6 @@ const HotelPage = () => {
   const [selectedHotel, setSelectedHotel] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filters, setFilters] = useState({
-    search: "",
     category: "",
     department: "",
     maxPrice: ""
@@ -24,7 +23,6 @@ const HotelPage = () => {
   const itemsPerPage = 8;
   
   const isFilterActive = searchTerm.trim() !== "" || 
-                        filters.search.trim() !== "" || 
                         filters.category || 
                         filters.department || 
                         filters.maxPrice;
@@ -34,10 +32,10 @@ const HotelPage = () => {
   const searchResult = useSearchHotels({
     page: currentPage,
     limit: itemsPerPage,
-    search: searchTerm || filters.search,
     category: filters.category,
     maxPrice: filters.maxPrice,
-    department: filters.department
+    department: filters.department,
+    search: searchTerm
   });
 
   const { hotels, totalItems, errorMessage } = isFilterActive
