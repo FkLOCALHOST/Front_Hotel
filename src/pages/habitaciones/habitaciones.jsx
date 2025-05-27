@@ -7,14 +7,21 @@ import useSearchRooms from "../../shared/hooks/rooms/useSearchRooms.jsx";
 import Paginacion from "../../components/paginacion.jsx";
 import SearchBar from "../../components/SearchBar.jsx";
 import { useNavigate } from "react-router-dom";
+import BedroomFilter from "../../components/rooms/BedroomFilter.jsx"
 
 const HabitacionesPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
+  const [filters, setFilters] = useState({
+    capacity: "",
+    maxPrice: ""
+  });
   const itemsPerPage = 10;
   const navigate = useNavigate();
 
-  const isSearch = searchTerm.trim() !== "";
+  const isSearch = searchTerm.trim() !== "" || 
+                  filters.capacity || 
+                  filters.maxPrice;
 
   const defaultResult = useRooms({
     page: currentPage,
@@ -24,7 +31,9 @@ const HabitacionesPage = () => {
   const searchResult = useSearchRooms({
     page: currentPage,
     limit: itemsPerPage,
-    search: isSearch ? searchTerm : "",
+    search: searchTerm,
+    capacity: filters.capacity,
+    maxPrice: filters.maxPrice
   });
 
   const {
@@ -41,6 +50,11 @@ const HabitacionesPage = () => {
 
   const handleSearch = (value) => {
     setSearchTerm(value);
+    setCurrentPage(1);
+  };
+
+  const handleFilter = (filterValues) => {
+    setFilters(filterValues);
     setCurrentPage(1);
   };
 
@@ -66,6 +80,7 @@ const HabitacionesPage = () => {
       <br />
       <div className="filter-wrapper">
         <SearchBar onSearch={handleSearch} />
+        <BedroomFilter onFilter={handleFilter} />
       </div>
       <div className="room-grid">
         {errorMessage && <p>{errorMessage}</p>}

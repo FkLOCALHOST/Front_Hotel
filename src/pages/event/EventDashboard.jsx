@@ -3,20 +3,44 @@ import { Navbar } from "../../components/navbar.jsx";
 import SearchBar from "../../components/SearchBar.jsx";
 import SimpleFooter from "../../components/footer.jsx";
 import EventCard from "../../components/events/EventCard.jsx";
+import EventFilter from "../../components/events/EventFilter.jsx";
 import useEvents from "../../shared/hooks/event/useGetEvent.jsx";
+import useSearchEvent from "../../shared/hooks/event/useSearchEvent.jsx";
 import Paginacion from "../../components/paginacion.jsx";
 
 const EventDashboard = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [filters, setFilters] = useState({
+    place: "",
+    maxPrice: "",
+    date: ""
+  });
   const itemsPerPage = 8;
 
-  const { events, errorMessage, totalItems, loading } = useEvents({
+  const isSearch = searchTerm.trim() !== "" || 
+                  filters.place || 
+                  filters.maxPrice || 
+                  filters.date;
+
+  const defaultResult = useEvents({
+    page: currentPage,
+    limit: itemsPerPage,
+  });
+
+  const searchResult = useSearchEvent({
     page: currentPage,
     limit: itemsPerPage,
     search: searchTerm,
+    place: filters.place,
+    maxPrice: filters.maxPrice,
+    date: filters.date
   });
+
+  const { events, totalItems, errorMessage, loading } = isSearch 
+    ? searchResult 
+    : defaultResult;
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -24,6 +48,11 @@ const EventDashboard = () => {
 
   const handleSearch = (value) => {
     setSearchTerm(value);
+    setCurrentPage(1);
+  };
+
+  const handleFilter = (filterValues) => {
+    setFilters(filterValues);
     setCurrentPage(1);
   };
 
@@ -39,10 +68,9 @@ const EventDashboard = () => {
     <div>
       <Navbar />
       <div className="hotel-header">
-        <br />
-        <br />
         <div className="filter-wrapper">
           <SearchBar onSearch={handleSearch} />
+          <EventFilter onFilter={handleFilter} />
         </div>
       </div>
 
