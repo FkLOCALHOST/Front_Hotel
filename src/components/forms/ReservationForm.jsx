@@ -36,22 +36,32 @@ const ReservationForm = () => {
         setForm((prev) => ({ ...prev, [name]: value }));
     };
 
+    const isFormValid = () => {
+        return (
+            form.hotel &&
+            form.room &&
+            form.checkIn instanceof Date &&
+            form.checkOut instanceof Date &&
+            form.checkIn < form.checkOut
+        );
+    };
+
     const handleReservation = async (e) => {
         e.preventDefault();
 
-        const user = JSON.parse(localStorage.getItem("User"));
-        const userId = user?.userDetails?._id;
-
-        if (!userId || !form.checkIn || !form.checkOut || !form.room) {
+        if (!isFormValid()) {
             toast({
-                title: "Campos incompletos",
-                description: "Por favor completa todos los campos antes de reservar.",
+                title: "Campos incompletos o inválidos",
+                description: "Por favor completa todos los campos correctamente.",
                 status: "warning",
                 duration: 3000,
                 isClosable: true,
             });
             return;
         }
+
+        const user = JSON.parse(localStorage.getItem("User"));
+        const userId = user?.userDetails?._id;
 
         const reservationData = {
             user: userId,
@@ -105,15 +115,8 @@ const ReservationForm = () => {
                             </option>
                         ))}
                     </select>
-                    <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            marginTop: "10px",
-                            marginBottom: "10px",
-                        }}
-                    >
+
+                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "10px", marginBottom: "10px" }}>
                         <Calendary
                             roomId={form.room}
                             selectedDate={form.checkIn}
@@ -121,15 +124,8 @@ const ReservationForm = () => {
                             label="Fecha de Check-in"
                         />
                     </div>
-                    <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            marginTop: "10px",
-                            marginBottom: "10px",
-                        }}
-                    >
+
+                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "10px", marginBottom: "10px" }}>
                         <Calendary
                             roomId={form.room}
                             selectedDate={form.checkOut}
@@ -138,7 +134,7 @@ const ReservationForm = () => {
                         />
                     </div>
 
-                    <button type="submit" disabled={loading}>
+                    <button type="submit" disabled={!isFormValid() || loading}>
                         {loading ? "Reservando..." : "Reservar"}
                     </button>
                 </form>
