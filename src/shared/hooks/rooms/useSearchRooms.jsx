@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
 import { searchRooms } from "../../../services/api.jsx";
 
-const useSearchRooms = ({ page = 1, limit = 10, search = "" } = {}) => {
+const useSearchRooms = ({ page = 1, limit = 10, search = "", capacity, maxPrice } = {}) => {
   const [rooms, setRooms] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    if (!search || search.trim() === "") {
-      setRooms([]);
-      setTotalItems(0);
-      setErrorMessage("");
-      setLoading(false);
-      return;
-    }
 
+  useEffect(() => {
     const fetchRooms = async () => {
       setLoading(true);
       try {
-        const response = await searchRooms({ search: search, page, limit });
+        const response = await searchRooms({ 
+          search, 
+          capacity, 
+          maxPrice, 
+          page, 
+          limit 
+        });
+        
         if (response && response.data) {
           setRooms(response.data.rooms);
           setTotalItems(response.data.total);
@@ -32,8 +32,13 @@ const useSearchRooms = ({ page = 1, limit = 10, search = "" } = {}) => {
         setLoading(false);
       }
     };
-    fetchRooms();
-  }, [page, limit, search]);
+
+    const timer = setTimeout(() => {
+      fetchRooms();
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [page, limit, search, capacity, maxPrice]);
 
   return { rooms, totalItems, errorMessage, loading };
 };

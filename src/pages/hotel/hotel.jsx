@@ -8,35 +8,56 @@ import useHotels from "../../shared/hooks/useHotels.jsx";
 import useSearchHotels from "../../shared/hooks/useSearchHotels.jsx";
 import Paginacion from "../../components/paginacion.jsx";
 import "../../assets/styles/hotel/hotelPage.css";
+import HotelFilters from "../../components/hotels/hotelFilter.jsx";
 
 const HotelPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedHotel, setSelectedHotel] = useState("");
+  const [selectedHotel, setSelectedHotel] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [filters, setFilters] = useState({
+    search: "",
+    category: "",
+    department: "",
+    maxPrice: ""
+  });
+
   const itemsPerPage = 8;
   
-  const isSearch = searchTerm.trim() !== "";
-  
+  const isFilterActive = searchTerm.trim() !== "" || 
+                        filters.search.trim() !== "" || 
+                        filters.category || 
+                        filters.department || 
+                        filters.maxPrice;
+
   const defaultResult = useHotels({ page: currentPage, limit: itemsPerPage });
 
   const searchResult = useSearchHotels({
     page: currentPage,
     limit: itemsPerPage,
-    search: isSearch ? searchTerm : "",
+    search: searchTerm || filters.search,
+    category: filters.category,
+    maxPrice: filters.maxPrice,
+    department: filters.department
   });
 
-  const { hotels, totalItems, errorMessage } = isSearch
+  const { hotels, totalItems, errorMessage } = isFilterActive
     ? searchResult
     : defaultResult;
-  const loading = isSearch
+  const loading = isFilterActive
     ? searchResult.loading
     : defaultResult.loading || false;
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+
   const handleSearch = (value) => {
     setSearchTerm(value);
+    setCurrentPage(1);
+  };
+
+  const handleFilter = (filterValues) => {
+    setFilters(filterValues);
     setCurrentPage(1);
   };
 
@@ -49,16 +70,15 @@ const HotelPage = () => {
   };
 
   const userData = JSON.parse(localStorage.getItem("User"));
-const favHotels = userData?.userDetails?.favHotel || [];
+  const favHotels = userData?.userDetails?.favHotel || [];
 
   return (
     <div>
       <Navbar />
       <div className="hotel-header">
-        <br />
-        <br />
         <div className="filter-wrapper">
           <SearchBar onSearch={handleSearch} />
+          <HotelFilters onFilter={handleFilter} />
         </div>
       </div>
 
@@ -78,8 +98,8 @@ const favHotels = userData?.userDetails?.favHotel || [];
             onDeleted={() => setCurrentPage(currentPage)}
           />
         ))}
-
       </div>
+      
       <Paginacion
         totalItems={totalItems}
         itemsPerPage={itemsPerPage}

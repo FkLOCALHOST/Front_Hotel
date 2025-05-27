@@ -166,6 +166,31 @@ export const searchEventByName = async (name) => {
   }
 };
 
+export const searchEvent = async ({
+  search = "",
+  place = "",
+  maxPrice = "",
+  date = "",
+  page = 1,
+  limit = 8,
+}) => {
+  try {
+    const desde = (page - 1) * limit;
+    const params = new URLSearchParams();
+    
+    params.append("search", search);
+    if (place) params.append("place", place);
+    if (maxPrice) params.append("maxPrice", maxPrice);
+    if (date) params.append("date", date);
+    params.append("desde", desde.toString());
+    params.append("limite", limit.toString());
+    
+    return await apiHotel.get(`/event/searchEvent?${params.toString()}`);
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+};
+
 export const createHotel = async (data) => {
   try {
     return await apiHotel.post("/hotel/createHotel", data);
@@ -210,6 +235,9 @@ export const searchHotelsService = async ({
   search = "",
   page = 1,
   limit = 8,
+  category,
+  maxPrice,
+  department,
 }) => {
   try {
     const desde = (page - 1) * limit;
@@ -217,6 +245,10 @@ export const searchHotelsService = async ({
     params.append("search", search);
     params.append("desde", desde.toString());
     params.append("limite", limit.toString());
+    if (category) params.append("category", category);
+    if (maxPrice) params.append("maxPrice", maxPrice);
+    if (department) params.append("department", department);
+
     return await apiHotel.get(`/hotel/searchHotels?${params.toString()}`);
   } catch (error) {
     return { error: true, message: error.message };
@@ -295,6 +327,8 @@ export const getRooms = async ({ page = 1, limit = 10 } = {}) => {
 
 export const searchRooms = async ({
   search = "",
+  capacity = "",
+  maxPrice = "",
   page = 1,
   limit = 10,
 }) => {
@@ -302,6 +336,8 @@ export const searchRooms = async ({
     const desde = (page - 1) * limit;
     const params = new URLSearchParams();
     params.append("search", search);
+    if (capacity) params.append("capacity", capacity);
+    if (maxPrice) params.append("maxPrice", maxPrice);
     params.append("desde", desde.toString());
     params.append("limite", limit.toString());
     return await apiHotel.get(`/room/searchRooms?${params.toString()}`);
@@ -309,16 +345,6 @@ export const searchRooms = async ({
     return { error: true, message: error.message };
   }
 }
-
-export const createRoom = async (data) => {
-  try {
-    const response = await apiHotel.post("/room/createRoom", data);
-    return response.data; 
-  } catch (error) {
-    const message = error.response?.data?.message || error.message || "Error en la petición";
-    return { error: true, message };
-  }
-};
 
 export const getReservation = async() =>{
   try {

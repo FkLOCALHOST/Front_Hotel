@@ -1,0 +1,64 @@
+.hotel-filters {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin: 20px auto 32px;
+  width: 80%;
+  max-width: 1000px;
+  height: auto;
+  z-index: 1001;
+  gap: 12px;
+}
+
+.hotel-filters input,
+.hotel-filters select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  flex: 1;
+  min-width: 120px;
+}
+
+.hotel-filters input::-webkit-input-placeholder {
+  color: #000;
+}
+.hotel-filters input::-moz-placeholder {
+  color: #000;
+}
+.hotel-filters input:-ms-input-placeholder {
+  color: #000;
+}
+.hotel-filters input::placeholder {
+  color: #000;
+}
+
+.hotel-filters input,
+.hotel-filters select {
+  color: #000;
+}
+
+@media (max-width: 768px) {
+  .hotel-filters {
+    flex-direction: column;
+    align-items: stretch;
+    margin: 10px auto 24px;
+  }
+ 
+  .hotel-filters > * {
+    width: 100% !important;
+  }
+
+  .hotel-filters input,
+  .hotel-filters select {
+    width: 100% !important;
+  }
+
+  .hotel-filters > *:not(:last-child) {
+    margin-bottom: 8px;
+  }
+}
