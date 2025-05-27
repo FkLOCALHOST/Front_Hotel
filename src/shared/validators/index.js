@@ -57,3 +57,23 @@ export {
   validateCategory,
   validateCategoryMessage,
 } from './validateCategory';
+
+export {
+  validateRoomName,
+  validateRoomNameMessage,
+} from './validateRoomName';
+
+export {
+  validateCapacity,
+  validateCapacityMessage,
+} from './validateCapacity';
+
+export {
+  validateRoomNumber,
+  validateRoomNumberMessage,
+} from './validateRoomNumber';
+
+export {
+  validateImages,
+  validateImagesMessage,
+} from './validateImages';
