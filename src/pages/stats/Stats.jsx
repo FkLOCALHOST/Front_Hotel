@@ -4,6 +4,7 @@ import RoomStatsBarChart from '../../components/stats/StatsRoom';
 import Navbar from "../../components/navbar";
 import SimpleFooter from '../../components/footer';
 import useGetStats from "../../shared/hooks/stats/useGetStats";
+import '../../assets/styles/stats/stats.css';
 
 export const Stats = () => {
     const [activeTab, setActiveTab] = useState('hotel');
@@ -38,44 +39,23 @@ export const Stats = () => {
     return (
         <>
             <Navbar />
-            <div style={{ marginTop: "120px", textAlign: "center" }}>
+            <div className="stats-container">
                 <h1>Estadísticas</h1>
-                <div style={{ marginBottom: "50px" }}>
+                <div className="stats-tabs">
                     <button
                         onClick={() => handleTabChange('hotel')}
-                        style={{
-                            marginRight: "10px",
-                            padding: "10px 20px",
-                            backgroundColor: activeTab === 'hotel' ? '#4CAF50' : '#ccc',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '5px',
-                            cursor: 'pointer'
-                        }}
+                        className={`stats-tab-btn${activeTab === 'hotel' ? ' active' : ''}`}
                     >
                         Hoteles
                     </button>
                     <button
                         onClick={() => handleTabChange('room')}
-                        style={{
-                            padding: "10px 20px",
-                            backgroundColor: activeTab === 'room' ? '#4CAF50' : '#ccc',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '5px',
-                            cursor: 'pointer'
-                        }}
+                        className={`stats-tab-btn${activeTab === 'room' ? ' active' : ''}`}
                     >
                         Cuartos
                     </button>
                 </div>
-                <div style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: "100%",
-                    padding: "0 20px"
-                }}>
+                <div className="stats-content">
                     {renderContent()}
                 </div>
             </div>
@@ -83,7 +63,6 @@ export const Stats = () => {
         </>
     );
 };
-
 
 export default Stats;
 
