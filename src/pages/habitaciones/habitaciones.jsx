@@ -77,16 +77,27 @@ const HabitacionesPage = () => {
     navigate(`/habitaciones/${roomId}`);
   };
 
-  const handleDelete = async (roomId) => {
-    if (window.confirm("¿Estás seguro de que deseas eliminar esta habitación?")) {
-      try {
-        const ok = await removeRoom(roomId)
-        ok?.data?.success === true ? window.location.reload() : alert("Error al ejecutar la operación")
-      } catch (error) {
-        console.error("Error al eliminar habitación:", error);
+  const handleDeleteClick = (roomId) => {
+  setRoomToDelete(roomId);
+  onOpen();
+};
+
+const confirmDelete = async () => {
+  if (roomToDelete) {
+    try {
+      const ok = await removeRoom(roomToDelete);
+      if (ok?.data?.success === true) {
+        setRoomToDelete(null);
+        onClose();
+        window.location.reload();
+      } else {
+        alert("Error al ejecutar la operación");
       }
+    } catch (error) {
+      console.error("Error al eliminar habitación:", error);
     }
-  };
+  }
+};
 
   return (
     <div>
@@ -112,8 +123,8 @@ const HabitacionesPage = () => {
               preView={room.preView}
               status={room.status}
               onClick={() => handleCardClick(room._id || room.uid)}
-              onDelete={() => handleDelete(room._id || room.uid)}
-            />
+              onDelete={() => handleDeleteClick(room._id || room.uid)} // <--- usa handleDeleteClick
+          />
           ))
         ) : !errorMessage && !loading ? (
           <p>No hay habitaciones disponibles.</p>
