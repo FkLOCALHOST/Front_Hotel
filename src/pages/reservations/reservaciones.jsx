@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Navbar } from "../../components/navbar.jsx";
 import SimpleFooter from "../../components/footer.jsx";
 import ReservationCard from "../../components/reservations/ReservationCard.jsx";
@@ -10,7 +11,9 @@ const itemsPerPage = 5;
 
 const ReservacionesPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const [searchTerm, setSearchTerm] = useState(""); // Nuevo estado para búsqueda
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const navigate = useNavigate();
 
     const { reservations, totalItems, errorMessage, loading } = useGetReservations({
         page: currentPage,
@@ -25,6 +28,16 @@ const ReservacionesPage = () => {
     const handleSearch = (value) => {
         setSearchTerm(value);
         setCurrentPage(1);
+
+    };
+
+    const handleEdit = (reservation) => {
+        navigate("/reservaciones/create", {
+            state: {
+                editMode: true,
+                reservationId: reservation.uid,
+            },
+        });
     };
 
     return (
@@ -33,7 +46,7 @@ const ReservacionesPage = () => {
             <br />
             <br />
             <div className="filter-wrapper">
-                <SearchBar onSearch={handleSearch} /> {/* Pasa la función de búsqueda */}
+                <SearchBar onSearch={handleSearch} />
             </div>
             <div className="reservation-grid">
                 {errorMessage && <p>{errorMessage}</p>}
@@ -44,6 +57,7 @@ const ReservacionesPage = () => {
                             key={reservation.uid}
                             reservation={reservation}
                             onClick={() => console.log(`Reservación seleccionada: ${reservation.uid}`)}
+                            onEdit={handleEdit}
                         />
                     ))
                 ) : !errorMessage && !loading ? (
