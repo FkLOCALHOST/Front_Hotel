@@ -20,13 +20,7 @@ const useAddHotel = () => {
       formData.append("category", data.category);
       formData.append("price", Number(data.price));
       formData.append("description", data.description);
-      formData.append("department", data.department);
-      if (data.imageHotel) formData.append("imageHotel", data.imageHotel);
-
-      console.log("FormData contents:");
-      for (let pair of formData.entries()) {
-        console.log(`${pair[0]}: ${pair[1]}`);
-      }
+      formData.append("department", data.department);      if (data.imageHotel) formData.append("imageHotel", data.imageHotel);
 
       const response = await createHotel(formData);
 

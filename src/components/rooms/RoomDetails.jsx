@@ -31,13 +31,21 @@ const RoomDetails = () => {
         setCurrentIndex((prev) => (prev - 1 + room.preView.length) % room.preView.length);
     };
 
+    const isFormValid = () => {
+        return (
+            checkIn instanceof Date &&
+            checkOut instanceof Date &&
+            checkIn < checkOut
+        );
+    };
+
     const handleReservation = async () => {
         const user = JSON.parse(localStorage.getItem("User"));
         const userId = user?.userDetails?._id;
 
-        if (!checkIn || !checkOut || !userId || !id) {
+        if (!isFormValid() || !userId || !id) {
+            alert("Completa todos los campos correctamente antes de reservar.");
             console.log("Datos de reserva incompletos:", { checkIn, checkOut, userId, id });
-            alert("Completa todos los campos antes de reservar.");
             return;
         }
 
@@ -52,7 +60,8 @@ const RoomDetails = () => {
         if (result) {
             alert("¡Reserva realizada con éxito!");
             console.log("Reserva:", result);
-            setReservationUid(result.uid || result._id); // Ajusta según la respuesta real
+
+            setReservationUid(result.uid || result._id); 
         } else {
             alert("Ocurrió un error al intentar reservar.");
         }
@@ -87,6 +96,7 @@ const RoomDetails = () => {
                     <p className={room.status ? "availability" : "availability unavailable"}>
                         <span>Estado:</span> {room.status ? "Disponible" : "No disponible"}
                     </p>
+
                     <div className="availability-section">
                         <Calendary
                             roomId={id}
@@ -95,6 +105,7 @@ const RoomDetails = () => {
                             label={"Fecha de Check-in"}
                         />
                     </div>
+
                     <div className="availability-section">
                         <Calendary
                             roomId={id}
@@ -103,10 +114,11 @@ const RoomDetails = () => {
                             label={"Fecha de Check-out"}
                         />
                     </div>
+
                     <button
                         className="reserve-button"
                         onClick={handleReservation}
-                        disabled={loadingReservation}
+                        disabled={loadingReservation || !isFormValid()}
                     >
                         {loadingReservation ? "Reservando..." : "Reservar"}
                     </button>
