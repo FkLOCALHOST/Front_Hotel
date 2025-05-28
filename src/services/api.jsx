@@ -130,21 +130,6 @@ export const getEvents = async () => {
   }
 };
 
-export const getEventsPaginated = async ({ page = 1, limit = 8, search = "" } = {}) => {
-  try {
-    const desde = (page - 1) * limit;
-    const params = new URLSearchParams();
-    params.append("limite", limit);
-    params.append("desde", desde);
-    if (search) params.append("search", search);
-    const response = await apiHotel.get(`/event/getEvents?${params.toString()}`);
-    return response;
-
-  } catch (error) {
-    return { error: true, message: error.message };
-  }
-};
-
 export const updateEvent = async (eid, data) => {
   try {
     return await apiHotel.put(`/event/updateEvent/${eid}`, data);
@@ -164,6 +149,31 @@ export const deleteEvent = async (eid) => {
 export const searchEventByName = async (name) => {
   try {
     return await apiHotel.get(`/event/searchEvent/${name}`);
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+};
+
+export const searchEvent = async ({
+  search = "",
+  place = "",
+  maxPrice = "",
+  date = "",
+  page = 1,
+  limit = 8,
+}) => {
+  try {
+    const desde = (page - 1) * limit;
+    const params = new URLSearchParams();
+    
+    params.append("search", search);
+    if (place) params.append("place", place);
+    if (maxPrice) params.append("maxPrice", maxPrice);
+    if (date) params.append("date", date);
+    params.append("desde", desde.toString());
+    params.append("limite", limit.toString());
+    
+    return await apiHotel.get(`/event/searchEvent?${params.toString()}`);
   } catch (error) {
     return { error: true, message: error.message };
   }
@@ -213,6 +223,9 @@ export const searchHotelsService = async ({
   search = "",
   page = 1,
   limit = 8,
+  category,
+  maxPrice,
+  department,
 }) => {
   try {
     const desde = (page - 1) * limit;
@@ -220,6 +233,10 @@ export const searchHotelsService = async ({
     params.append("search", search);
     params.append("desde", desde.toString());
     params.append("limite", limit.toString());
+    if (category) params.append("category", category);
+    if (maxPrice) params.append("maxPrice", maxPrice);
+    if (department) params.append("department", department);
+
     return await apiHotel.get(`/hotel/searchHotels?${params.toString()}`);
   } catch (error) {
     return { error: true, message: error.message };
@@ -275,13 +292,12 @@ export const updatePictureProfile = async (uid, data) => {
 };
 
 export const getUserLogged = async () => {
-  try{
-    return await apiHotel.get("/user/getUserLog")
-
-  }catch (error) {
-    return {error: true, message: error.message};
+  try {
+    return await apiHotel.get("/user/getUserLog");
+  } catch (error) {
+    return { error: true, message: error.message };
   }
-}
+};
 
 export const getRooms = async ({ page = 1, limit = 10 } = {}) => {
   try {
@@ -296,67 +312,75 @@ export const getRooms = async ({ page = 1, limit = 10 } = {}) => {
   }
 };
 
-export const searchRooms = async ({
-  search = "",
-  page = 1,
-  limit = 10,
-}) => {
+export const searchRooms = async ({ search = "", page = 1, limit = 10 }) => {
   try {
     const desde = (page - 1) * limit;
     const params = new URLSearchParams();
     params.append("search", search);
+    if (capacity) params.append("capacity", capacity);
+    if (maxPrice) params.append("maxPrice", maxPrice);
     params.append("desde", desde.toString());
     params.append("limite", limit.toString());
     return await apiHotel.get(`/room/searchRooms?${params.toString()}`);
   } catch (error) {
     return { error: true, message: error.message };
   }
-}
+};
 
 export const createRoom = async (data) => {
   try {
     const response = await apiHotel.post("/room/createRoom", data);
-    return response.data; 
+    return response.data;
   } catch (error) {
-    const message = error.response?.data?.message || error.message || "Error en la petición";
+    const message =
+      error.response?.data?.message || error.message || "Error en la petición";
     return { error: true, message };
   }
 };
 
-export const getReservation = async() =>{
+export const getReservation = async ({ page = 1, limit = 10, search = "" } = {}) => {
   try {
-    return await apiHotel.get("/reservation/getReservations");
+    const desde = (page - 1) * limit;
+    const params = new URLSearchParams();
+    params.append("limite", limit);
+    params.append("desde", desde);
+    if (search) params.append("search", search);
+    return await apiHotel.get(`/reservation/getReservations?${params.toString()}`);
   } catch (error) {
     return { error: true, message: error.message };
   }
-}
+};
 
-export const createReservation = async (data) =>{
+export const createReservation = async (data) => {
   try {
-    const response = await apiHotel.post("/reservation/createReservation", data);
-    return response.data; 
+    const response = await apiHotel.post(
+      "/reservation/createReservation",
+      data
+    );
+    return response.data;
   } catch (error) {
-    const message = error.response?.data?.message || error.message || "Error en la petición";
+    const message =
+      error.response?.data?.message || error.message || "Error en la petición";
     return { error: true, message };
   }
-}
+};
 
 export const addFavHotel = async (uid, favHotel) => {
   try {
-    return await apiHotel.patch(`/user/addFavHotel/${uid}`, { favHotel })
-  }catch (error) {
+    return await apiHotel.patch(`/user/addFavHotel/${uid}`, { favHotel });
+  } catch (error) {
     return { error: true, message: error.message };
   }
 };
 
 export const removeFavHotel = async (uid, favHotel) => {
   try {
-    return await apiHotel.patch(`/user/removeFavHotel/${uid}`, { favHotel })
-  }catch (error) {
+    return await apiHotel.patch(`/user/removeFavHotel/${uid}`, { favHotel });
+  } catch (error) {
     return { error: true, message: error.message };
   }
 };
-    
+
 export const getRoomById = async (uid) => {
   try {
     return await apiHotel.get(`/room/getRoomById/${uid}`);
@@ -389,13 +413,21 @@ export const deleteRoom = async (uid) => {
   }
 };
 
-export const getReports = async() =>{
-  try{
-    return await apiHotel.get("/reservation/getStatsGenerales")
-  }catch(error){
-    return{
+export const getReports = async () => {
+  try {
+    return await apiHotel.get("/reservation/getStatsGenerales");
+  } catch (error) {
+    return {
       error: true,
-      message: error.message
-    }
+      message: error.message,
+    };
   }
-}
+};
+
+export const getReservationReceipt = async (uid) => {
+  try {
+    return await apiHotel.get(`/reservation/getReservationReceipt/${uid}`, {
+      responseType: "blob",
+    });
+  } catch (error) {}
+};

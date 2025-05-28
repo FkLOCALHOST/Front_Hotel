@@ -47,7 +47,10 @@ const SimpleFooter = () => {
           >
             <FaTwitter />
           </SocialButton>
-          <SocialButton label="YouTube" href="#">
+          <SocialButton
+            label="YouTube"
+            href="https://www.youtube.com/@hoteleslocalhost"
+          >
             <FaYoutube />
           </SocialButton>
           <SocialButton

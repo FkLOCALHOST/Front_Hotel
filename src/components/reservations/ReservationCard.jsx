@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import "../../assets/styles/reservations/reservationCard.css";
+import useReservationReceipt from "../../shared/hooks/reservation/useReservationReceipt";
 
 
 const ReservationCard = ({ reservation, onClick }) => {
@@ -13,6 +14,8 @@ const ReservationCard = ({ reservation, onClick }) => {
         status,
         uid,
     } = reservation
+
+    const { downloadReceipt, loading: loadingReceipt } = useReservationReceipt();
 
     const formatDate = (isoDate) =>
         new Date(isoDate).toLocaleDateString("es-ES", {
@@ -44,6 +47,16 @@ const ReservationCard = ({ reservation, onClick }) => {
                 <p className="reservation-detail">
                     <strong>Estado:</strong> {status}
                 </p>
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        downloadReceipt(uid);
+                    }}
+                    className="invoice-btn"
+                    disabled={loadingReceipt}
+                >
+                    {loadingReceipt ? "Descargando..." : "Recibo"}
+                </button>
             </div>
         </div>
     )

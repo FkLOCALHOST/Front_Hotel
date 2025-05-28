@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import useGetRoomById from "../../shared/hooks/rooms/useGetRoomById";
 import useCreateReservation from "../../shared/hooks/reservation/useCreateReservation";
+import useReservationReceipt from "../../shared/hooks/reservation/useReservationReceipt";
 import Navbar from "../navbar";
 import SimpleFooter from "../footer";
 import Calendary from "../calendary/Calendary";
@@ -11,10 +12,12 @@ const RoomDetails = () => {
     const { id } = useParams(); 
     const { room, errorMessage, loading } = useGetRoomById(id);
     const { addReservation, loading: loadingReservation } = useCreateReservation();
+    const { downloadReceipt, loading: loadingReceipt } = useReservationReceipt();
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const [checkIn, setCheckIn] = useState(null);
     const [checkOut, setCheckOut] = useState(null);
+    const [reservationUid, setReservationUid] = useState(null);
 
     if (loading) return <p>Cargando habitación...</p>;
     if (errorMessage) return <p>{errorMessage}</p>;
@@ -28,13 +31,21 @@ const RoomDetails = () => {
         setCurrentIndex((prev) => (prev - 1 + room.preView.length) % room.preView.length);
     };
 
+    const isFormValid = () => {
+        return (
+            checkIn instanceof Date &&
+            checkOut instanceof Date &&
+            checkIn < checkOut
+        );
+    };
+
     const handleReservation = async () => {
         const user = JSON.parse(localStorage.getItem("User"));
         const userId = user?.userDetails?._id;
 
-        if (!checkIn || !checkOut || !userId || !id) {
+        if (!isFormValid() || !userId || !id) {
+            alert("Completa todos los campos correctamente antes de reservar.");
             console.log("Datos de reserva incompletos:", { checkIn, checkOut, userId, id });
-            alert("Completa todos los campos antes de reservar.");
             return;
         }
 
@@ -49,6 +60,8 @@ const RoomDetails = () => {
         if (result) {
             alert("¡Reserva realizada con éxito!");
             console.log("Reserva:", result);
+
+            setReservationUid(result.uid || result._id); 
         } else {
             alert("Ocurrió un error al intentar reservar.");
         }
@@ -83,6 +96,7 @@ const RoomDetails = () => {
                     <p className={room.status ? "availability" : "availability unavailable"}>
                         <span>Estado:</span> {room.status ? "Disponible" : "No disponible"}
                     </p>
+
                     <div className="availability-section">
                         <Calendary
                             roomId={id}
@@ -91,6 +105,7 @@ const RoomDetails = () => {
                             label={"Fecha de Check-in"}
                         />
                     </div>
+
                     <div className="availability-section">
                         <Calendary
                             roomId={id}
@@ -99,13 +114,24 @@ const RoomDetails = () => {
                             label={"Fecha de Check-out"}
                         />
                     </div>
+
                     <button
                         className="reserve-button"
                         onClick={handleReservation}
-                        disabled={loadingReservation}
+                        disabled={loadingReservation || !isFormValid()}
                     >
                         {loadingReservation ? "Reservando..." : "Reservar"}
                     </button>
+                    {reservationUid && (
+                        <button
+                            className="reserve-button"
+                            style={{ marginTop: "10px" }}
+                            onClick={() => downloadReceipt(reservationUid)}
+                            disabled={loadingReceipt}
+                        >
+                            {loadingReceipt ? "Descargando..." : "Recibo"}
+                        </button>
+                    )}
                 </div>
             </div>
             <SimpleFooter />

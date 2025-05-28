@@ -45,7 +45,8 @@
 }
 
 .register-form button[type="submit"],
-.register-form .chakra-button {
+.register-form .chakra-button,
+.submit-button {
   width: 100%;
   padding: 12px;
   background: #ff2929;
@@ -60,7 +61,8 @@
 }
 
 .register-form button[type="submit"]:hover,
-.register-form .chakra-button:hover {
+.register-form .chakra-button:hover,
+.submit-button:hover:not(:disabled) {
   background: #c71c1c;
 }
 
@@ -114,4 +116,70 @@
   color: #4caf50;
   text-align: center;
   margin-bottom: 8px;
+}
+
+.eye-icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #ccc;
+  transition: color 0.2s;
+}
+
+.eye-icon:hover {
+  color: #fff;
+}
+
+/* Error messages for form validation */
+.error-text {
+  font-size: 0.875rem;
+  color: #ff2929;
+  margin-top: 0.25rem;
+}
+
+/* Form layout */
+.form-row {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+/* Form controls */
+.form-control {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Button styling */
+.submit-button {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.submit-button:disabled {
+  background-color: #666 !important;
+  cursor: not-allowed;
+}
+
+/* Login link section */
+.login-link-box {
+  text-align: center;
+  margin-top: 1rem;
+  color: #ccc;
+}
+
+.login-link {
+  color: #ff2929 !important;
+  text-decoration: none;
+  font-weight: bold;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+}
+
+.login-link:hover {
+  text-decoration: underline;
 }

@@ -62,7 +62,6 @@ const EventCard = ({
       state: {
         editMode: true,
         eventId: uid,
-        // Pasa todos los datos para prellenar el formulario
         name,
         description,
         price,
