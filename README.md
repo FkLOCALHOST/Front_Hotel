@@ -1,12 +1,33 @@
-# React + Vite
+# 🏨 Gestor de Hoteles
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+*Gestor de Hoteles* es una aplicación web diseñada para la administración y reserva de hoteles. Permite a los usuarios explorar diferentes hoteles, habitaciones, servicios exclusivos como jacuzzi, y reservar eventos especiales como bodas o celebraciones privadas.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🌐 Descripción
 
-## Expanding the ESLint configuration
+Este proyecto facilita la gestión de hoteles, brindando funcionalidades tanto para visitantes como para usuarios registrados. Algunas de las principales características incluyen:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Visualización de hoteles disponibles
+- Consulta de habitaciones, servicios y eventos
+- Registro e inicio de sesión para realizar reservas
+- Manual de usuario integrado para facilitar la navegación
+
+---
+
+## ⚙️ Tecnologías utilizadas
+
+- *Frontend:* React
+- *Backend:* Node.js + Express.js
+- *Base de datos:* MongoDB
+
+---
+
+## 🚀 Instalación
+
+1. *Clona el repositorio*
+   ```bash
+   git clone https://github.com/FkLOCALHOST/Front_Hotel.git
+   cd Front_Hotel
+   npm i
+   npm run dev
