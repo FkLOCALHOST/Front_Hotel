@@ -4,6 +4,7 @@ import SimpleFooter from "../../components/footer.jsx";
 import RoomCard from "../../components/rooms/RoomCard.jsx";
 import useRooms from "../../shared/hooks/rooms/useRooms.jsx";
 import useSearchRooms from "../../shared/hooks/rooms/useSearchRooms.jsx";
+import useDeleteRooms from "../../shared/hooks/rooms/useDeleteRooms.jsx";
 import Paginacion from "../../components/paginacion.jsx";
 import SearchBar from "../../components/SearchBar.jsx";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +12,7 @@ import BedroomFilter from "../../components/rooms/BedroomFilter.jsx"
 
 const HabitacionesPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const {removeRoom} = useDeleteRooms();
   const [searchTerm, setSearchTerm] = useState("");
   const [filters, setFilters] = useState({
     capacity: "",
@@ -41,7 +43,6 @@ const HabitacionesPage = () => {
     totalItems,
     errorMessage,
     loading,
-    refetch,
   } = isSearch ? searchResult : defaultResult;
 
   const handlePageChange = (page) => {
@@ -65,8 +66,8 @@ const HabitacionesPage = () => {
   const handleDelete = async (roomId) => {
     if (window.confirm("¿Estás seguro de que deseas eliminar esta habitación?")) {
       try {
-        console.log("Eliminar habitación", roomId);
-        refetch();
+        const ok = await removeRoom(roomId)
+        ok?.data?.success === true ? window.location.reload() : alert("Error al ejecutar la operación")
       } catch (error) {
         console.error("Error al eliminar habitación:", error);
       }
