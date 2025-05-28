@@ -7,6 +7,7 @@ import useEditHotel from "../../shared/hooks/useEditHotel";
 import useHotelById from "../../shared/hooks/useHotelById";
 import Navbar from "../navbar";
 import SimpleFooter from "../footer";
+import { useToast } from "@chakra-ui/react";
 import {
   validateHotelName,
   validateHotelNameMessage,
@@ -34,6 +35,7 @@ const HotelForm = (props) => {
   const hotelId = props.hotelId || location.state?.hotelId || null;
   const onSubmit = props.onSubmit || null;
   const onCancel = props.onCancel || null;
+  const toast = useToast();
 
   const { hotel, loading: loadingHotel } = useHotelById(editMode ? hotelId : null);
   const [form, setForm] = useState({
@@ -262,8 +264,10 @@ const HotelForm = (props) => {
         toast({
           title: "Hotel editado exitosamente",
           status: "success",
-          duration: 3000,
+          duration: 2000,
           isClosable: true,
+          position: "top",
+          containerStyle: { color: "#fff" },
         });
         navigate("/hoteles");
       } else {
@@ -305,8 +309,10 @@ const HotelForm = (props) => {
         toast({
           title: "Hotel creado exitosamente",
           status: "success",
-          duration: 3000,
+          duration: 2000,
           isClosable: true,
+          position: "top",
+          containerStyle: { color: "#fff" },
         });
         navigate("/hoteles");
       } else {

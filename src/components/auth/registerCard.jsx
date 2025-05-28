@@ -31,8 +31,12 @@ import {
 const Register = () => {
   const navigate = useNavigate();
   const [profilePicture, setProfilePicture] = useState(null);
-  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [phone, setPhone] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -79,11 +83,12 @@ const Register = () => {
   const handleShowConfirmClick = () => setShowConfirmPassword(!showConfirmPassword);
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setProfilePicture(URL.createObjectURL(file));
-    }
-  };
+  const file = e.target.files[0];
+  if (file) {
+    setProfilePicture(file);
+    setProfilePreview(URL.createObjectURL(file));
+  }
+};
 
   const handleInputValueChange = (value, field) => {
     setFormState((prevState) => ({
@@ -157,6 +162,19 @@ const Register = () => {
         password: formState.password.value,
         phone: formState.phone.value
       });
+      
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('surname', surname);
+    formData.append('userName', userName);
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('phone', phone);
+    if (profilePicture) {
+      formData.append('profilePicture', profilePicture); 
+    }
+
+    const response = await register(formData);
 
       setIsLoading(false);
 
@@ -183,10 +201,12 @@ const Register = () => {
   return (
     <Flex className="register-page">
       <Stack className="register-container">
-        <Avatar className="avatar" src={profilePicture} borderRadius="full"/>
-        <Heading>Registro LocalHotel</Heading>        {error && <div className="error-message">{error}</div>}
-        {success && <div className="success-message">{success}</div>}<form className="register-form" onSubmit={handleRegister}>
-          <div className="form-row">
+        <Avatar className="avatar" src={profilePreview} borderRadius="full"/>
+        <Heading>Registro LocalHotel</Heading>
+        {error && <Box className="error-message">{error}</Box>}
+        {success && <Box className="success-message">{success}</Box>}
+        <form className="register-form" onSubmit={handleRegister}>
+          <Flex flexDirection="row" gap={4}>
             <FormControl>
               <InputGroup>
                 <Input

@@ -53,7 +53,10 @@ apiHotel.interceptors.request.use(
 
 export const register = async (data) => {
   try {
-    return await apiHotel.post("/auth/register", data);
+    // Si data es FormData, axios lo maneja automáticamente
+    return await apiHotel.post("/auth/register", data, {
+      headers: data instanceof FormData ? { "Content-Type": "multipart/form-data" } : {},
+    });
   } catch (e) {
     return { error: true, e };
   }

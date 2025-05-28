@@ -1,20 +1,38 @@
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "../../assets/styles/hotel/hotelCard.css";
 import { Star, Edit, Trash2 } from "lucide-react";
 import { FaHeart } from "react-icons/fa";
 import useDeleteHotel from "../../shared/hooks/useDeleteHotel";
 import { addFavHotel, removeFavHotel } from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  Button,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
 
 const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, onDelete, id, showLike = true }) => {
   const userData = JSON.parse(localStorage.getItem("User"));
   const favHotels = userData?.userDetails?.favHotel || [];
   const isFavorite = favHotels.includes(id);
+  const [showLoginAlert, setShowLoginAlert] = useState(false);
+  const loginAlertCancelRef = useRef();
+  
 
   const [liked, setLiked] = useState(isFavorite);
   const { removeHotel, loading } = useDeleteHotel();
   const navigate = useNavigate();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef();
+  const toast = useToast();
 
   let isAdmin = false;
   try {
@@ -31,7 +49,7 @@ const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, o
   const toggleLike = async (e) => {
     e.stopPropagation();
     if (!userData?.userDetails?._id) {
-      alert("Debes iniciar sesión para guardar favoritos.");
+      setShowLoginAlert(true);
       return;
     }
     const uid = userData.userDetails._id;
@@ -61,14 +79,32 @@ const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, o
   const handleDelete = async (e) => {
     e.stopPropagation();
     if (loading) return;
-    if (window.confirm("¿Seguro que deseas eliminar este hotel?")) {
-      const ok = await removeHotel(id);
-      if (ok && ok.data && ok.data.success) {
-        window.alert("Hotel eliminado exitosamente");
-        window.location.reload(); 
-      } else {
-        window.alert(ok?.data?.message || "No se pudo eliminar el hotel");
-      }
+    onOpen();
+  };
+
+  const confirmDelete = async () => {
+    const ok = await removeHotel(id);
+    if (ok && ok.data && ok.data.success) {
+      toast({
+        title: "Hotel eliminado exitosamente",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+        position: "top",
+        containerStyle: { color: "#fff" },
+      });
+      onClose();
+      setTimeout(() => window.location.reload(), 1200);
+    } else {
+      toast({
+        title: ok?.data?.message || "No se pudo eliminar el hotel",
+        status: "error",
+        duration: 2500,
+        isClosable: true,
+        position: "top",
+        containerStyle: { color: "#fff" },
+      });
+      onClose();
     }
   };
 
@@ -138,7 +174,58 @@ const HotelCard = ({ hotelName, department, starts, imageUrl, onClick, onEdit, o
         <p className="hotel-detail">
           <span style={{ fontWeight: "bold" }}>Departamento:</span> {department}
         </p>
+        
       </div>
+      
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent bg="#232323" color="#fff">
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Eliminar hotel
+            </AlertDialogHeader>
+            <AlertDialogBody>
+              ¿Seguro que deseas eliminar este hotel?
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose} bg="#333" color="#fff" _hover={{ bg: "#444" }}>
+                Cancelar
+              </Button>
+              <Button colorScheme="red" onClick={confirmDelete} ml={3}>
+                Eliminar
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+
+      <AlertDialog
+        isOpen={showLoginAlert}
+        leastDestructiveRef={loginAlertCancelRef}
+        onClose={() => setShowLoginAlert(false)}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent bg="#232323" color="#fff">
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Iniciar sesión requerida
+            </AlertDialogHeader>
+            <AlertDialogBody>
+              Debes iniciar sesión para guardar hoteles como favoritos.
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button ref={loginAlertCancelRef} onClick={() => setShowLoginAlert(false)} bg="#333" color="#fff" _hover={{ bg: "#444" }}>
+                Cerrar
+              </Button>
+              <Button colorScheme="teal" ml={3} onClick={() => { setShowLoginAlert(false); navigate("/auth/login"); }}>
+                Iniciar sesión
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </div>
   );
 };
