@@ -30,7 +30,7 @@ const ReservationCard = ({ reservation, onClick }) => {
                 <h2 className="reservation-title">Reservación</h2>
                 <p className="reservation-id">#{uid}</p>
                 <p className="reservation-detail">
-                    <strong>Usuario ID:</strong> {user}
+                    <strong>Usuario: </strong> {' ' + user}
                 </p>
                 <p className="reservation-detail">
                     <strong>Habitación ID:</strong> {' ' + room}
