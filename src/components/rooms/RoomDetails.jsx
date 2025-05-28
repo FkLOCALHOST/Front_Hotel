@@ -9,7 +9,7 @@ import Calendary from "../calendary/Calendary";
 import "../../assets/styles/room/roomDetails.css";
 
 const RoomDetails = () => {
-    const { id } = useParams(); 
+    const { id } = useParams();
     const { room, errorMessage, loading } = useGetRoomById(id);
     const { addReservation, loading: loadingReservation } = useCreateReservation();
     const { downloadReceipt, loading: loadingReceipt } = useReservationReceipt();
@@ -61,7 +61,7 @@ const RoomDetails = () => {
             alert("¡Reserva realizada con éxito!");
             console.log("Reserva:", result);
 
-            setReservationUid(result.uid || result._id); 
+            setReservationUid(result.uid || result._id);
         } else {
             alert("Ocurrió un error al intentar reservar.");
         }
@@ -71,67 +71,77 @@ const RoomDetails = () => {
         <>
             <Navbar />
             <div className="room-details-container">
-                <div className="slider">
-                    <img
-                        src={
-                            room.preView && room.preView.length > 0
-                                ? room.preView[currentIndex]
-                                : "https://via.placeholder.com/400x250?text=Sin+imagen"
-                        }
-                        alt={`Vista ${currentIndex + 1}`}
-                    />
-                    {room.preView.length > 1 && (
-                        <div className="slider-buttons">
-                            <button onClick={handlePrev}>&lt;</button>
-                            <button onClick={handleNext}>&gt;</button>
+                <div className="preview-section">
+                    <div>
+                        <div className="slider">
+                            <img
+                                src={
+                                    room.preView && room.preView.length > 0
+                                        ? room.preView[currentIndex]
+                                        : "https://via.placeholder.com/400x250?text=Sin+imagen"
+                                }
+                                alt={`Vista ${currentIndex + 1}`}
+                            />
+                            {room.preView.length > 1 && (
+                                <div className="slider-buttons">
+                                    <button onClick={handlePrev}>&lt;</button>
+                                    <button onClick={handleNext}>&gt;</button>
+                                </div>
+                            )}
                         </div>
-                    )}
+                        <div className="images-gallery">
+                            <img src={room.preView[(currentIndex + 1) % room.preView.length]} alt="" />
+                            <img src={room.preView[(currentIndex + 2) % room.preView.length]} alt="" />
+                            <img src={room.preView[(currentIndex + 3) % room.preView.length]} alt="" />
+                        </div>
+                    </div>
                 </div>
-                <div className="room-info">
-                    <h2>{room.name}</h2>
-                    <p><span>Número:</span> {room.number}</p>
-                    <p><span>Precio:</span> {room.price}</p>
-                    <p><span>Capacidad:</span> {room.capacity}</p>
-                    <p><span>Descripción:</span> {room.description}</p>
-                    <p className={room.status ? "availability" : "availability unavailable"}>
-                        <span>Estado:</span> {room.status ? "Disponible" : "No disponible"}
-                    </p>
-
-                    <div className="availability-section">
-                        <Calendary
-                            roomId={id}
-                            selectedDate={checkIn}
-                            onSelect={setCheckIn}
-                            label={"Fecha de Check-in"}
-                        />
-                    </div>
-
-                    <div className="availability-section">
-                        <Calendary
-                            roomId={id}
-                            selectedDate={checkOut}
-                            onSelect={setCheckOut}
-                            label={"Fecha de Check-out"}
-                        />
-                    </div>
-
-                    <button
-                        className="reserve-button"
-                        onClick={handleReservation}
-                        disabled={loadingReservation || !isFormValid()}
-                    >
-                        {loadingReservation ? "Reservando..." : "Reservar"}
-                    </button>
-                    {reservationUid && (
+                <div className="details-section">
+                    <div className="room-info">
+                        <h2>{room.name}</h2>
+                        <p><span>Número:</span> {room.number}</p>
+                        <p><span>Precio:</span> {room.price}</p>
+                        <p><span>Capacidad:</span> {room.capacity}</p>
+                        <p><span>Descripción:</span> {room.description}</p>
+                        <p className={room.status ? "availability" : "availability unavailable"}>
+                            <span>Estado:</span> {room.status ? "Disponible" : "No disponible"}
+                        </p>
+                        <div className="availability-section">
+                            <div className="calendary">
+                            <Calendary
+                                roomId={id}
+                                selectedDate={checkIn}
+                                onSelect={setCheckIn}
+                                label={"Fecha de Check-in"}
+                            />
+                        </div>
+                        <div className="calendary">
+                            <Calendary
+                                roomId={id}
+                                selectedDate={checkOut}
+                                onSelect={setCheckOut}
+                                label={"Fecha de Check-out"}
+                            />
+                        </div>
+                        </div>
                         <button
                             className="reserve-button"
-                            style={{ marginTop: "10px" }}
-                            onClick={() => downloadReceipt(reservationUid)}
-                            disabled={loadingReceipt}
+                            onClick={handleReservation}
+                            disabled={loadingReservation || !isFormValid()}
                         >
-                            {loadingReceipt ? "Descargando..." : "Recibo"}
+                            {loadingReservation ? "Reservando..." : "Reservar"}
                         </button>
-                    )}
+                        {reservationUid && (
+                            <button
+                                className="reserve-button"
+                                style={{ marginTop: "10px" }}
+                                onClick={() => downloadReceipt(reservationUid)}
+                                disabled={loadingReceipt}
+                            >
+                                {loadingReceipt ? "Descargando..." : "Recibo"}
+                            </button>
+                        )}
+                    </div>
                 </div>
             </div>
             <SimpleFooter />
