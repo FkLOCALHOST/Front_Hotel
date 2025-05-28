@@ -33,7 +33,7 @@ const ReservationCard = ({ reservation, onClick }) => {
                     <strong>Usuario ID:</strong> {user}
                 </p>
                 <p className="reservation-detail">
-                    <strong>Habitación ID:</strong> {room}
+                    <strong>Habitación ID:</strong> {' ' + room}
                 </p>
                 <p className="reservation-detail">
                     <strong>Fecha de entrada:</strong> {formatDate(checkIn)}
