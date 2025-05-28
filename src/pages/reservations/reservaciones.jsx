@@ -24,7 +24,7 @@ const ReservacionesPage = () => {
 
     const handleSearch = (value) => {
         setSearchTerm(value);
-        setCurrentPage(1); // Reinicia la página al buscar
+        setCurrentPage(1);
     };
 
     return (
