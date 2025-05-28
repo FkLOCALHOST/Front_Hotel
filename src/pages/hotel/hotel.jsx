@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Navbar } from "../../components/navbar.jsx";
 import SearchBar from "../../components/SearchBar.jsx";
 import SimpleFooter from "../../components/footer.jsx";
@@ -21,26 +21,30 @@ const HotelPage = () => {
   });
 
   const itemsPerPage = 8;
-  
-  const isFilterActive = searchTerm.trim() !== "" || 
-                        filters.category || 
-                        filters.department || 
-                        filters.maxPrice;
+
+  const isFilterActive =
+    searchTerm.trim() !== "" ||
+    filters.category ||
+    filters.department ||
+    filters.maxPrice;
+
+  const memoizedFilters = useMemo(() => filters, [filters]);
 
   const defaultResult = useHotels({ page: currentPage, limit: itemsPerPage });
 
   const searchResult = useSearchHotels({
     page: currentPage,
     limit: itemsPerPage,
-    category: filters.category,
-    maxPrice: filters.maxPrice,
-    department: filters.department,
+    category: memoizedFilters.category,
+    maxPrice: memoizedFilters.maxPrice,
+    department: memoizedFilters.department,
     search: searchTerm
   });
 
   const { hotels, totalItems, errorMessage } = isFilterActive
     ? searchResult
     : defaultResult;
+
   const loading = isFilterActive
     ? searchResult.loading
     : defaultResult.loading || false;
@@ -50,13 +54,22 @@ const HotelPage = () => {
   };
 
   const handleSearch = (value) => {
-    setSearchTerm(value);
-    setCurrentPage(1);
+    if (value !== searchTerm) {
+      setSearchTerm(value);
+      setCurrentPage(1);
+    }
   };
 
   const handleFilter = (filterValues) => {
-    setFilters(filterValues);
-    setCurrentPage(1);
+    const hasChanged =
+      filters.category !== filterValues.category ||
+      filters.department !== filterValues.department ||
+      filters.maxPrice !== filterValues.maxPrice;
+
+    if (hasChanged) {
+      setFilters(filterValues);
+      setCurrentPage(1);
+    }
   };
 
   const handleCardClick = (hotel) => {
@@ -72,12 +85,16 @@ const HotelPage = () => {
 
   return (
     <div>
-      <Navbar />
-      <div className="hotel-header">
-        <div className="filter-wrapper">
-          <SearchBar onSearch={handleSearch} />
-          <HotelFilters onFilter={handleFilter} />
-        </div>
+<div>
+    <Navbar />
+    <br />
+    <br />
+    <div className="hotel-header">
+      <div className="filter-wrapper">
+        <SearchBar onSearch={handleSearch} />
+        <HotelFilters onFilter={handleFilter} />
+      </div>
+    </div>
       </div>
 
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
@@ -87,7 +104,7 @@ const HotelPage = () => {
         {(hotels || []).map((hotel, idx) => (
           <HotelCard
             key={hotel.uid || `hotel-${idx}`}
-            id={hotel.uid} 
+            id={hotel.uid}
             hotelName={hotel.name}
             department={hotel.department}
             starts={parseInt(hotel.category)}
@@ -97,7 +114,7 @@ const HotelPage = () => {
           />
         ))}
       </div>
-      
+
       <Paginacion
         totalItems={totalItems}
         itemsPerPage={itemsPerPage}

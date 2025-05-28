@@ -60,7 +60,7 @@ const RoomForm = (props) => {
   const { addRoom, loading: loadingAdd, error: errorAdd } = useAddRooms();
   const { editRoom, loading: loadingEdit, error: errorEdit } = useEditRooms();
   const { hotels, loading: loadingHotels, error: errorHotels } = useGetHotel();
-  const { fetchAmenities, amenities, loading: loadingAmenities, error: errorAmenities } = useGetAmenities();  const toast = useToast();
+  const { fetchAmenities, amenities, loading: loadingAmenities, error: errorAmenities } = useGetAmenities(); const toast = useToast();
   useEffect(() => {
     if (!amenitiesFetched) {
       fetchAmenities();
@@ -71,7 +71,7 @@ const RoomForm = (props) => {
   // Función para validar un campo específico
   const validateField = (name, value) => {
     let error = "";
-    
+
     switch (name) {
       case "name":
         if (!validateRoomName(value)) {
@@ -111,7 +111,7 @@ const RoomForm = (props) => {
       default:
         break;
     }
-    
+
     setErrors(prev => ({ ...prev, [name]: error }));
     return error === "";
   };
@@ -129,15 +129,14 @@ const RoomForm = (props) => {
       });
       setOriginalImages(Array.isArray(room.preView) ? room.preView : [room.preView]);
     }
-  }, [editMode, room]);  const handleChange = (e) => {
+  }, [editMode, room]); const handleChange = (e) => {
     const { name, value, type, files } = e.target;
-    
+
     if (type === "file") {
       const fileArray = Array.from(files);
       setForm((prev) => ({ ...prev, [name]: fileArray }));
     } else {
       setForm((prev) => ({ ...prev, [name]: value }));
-      // Validar campo en tiempo real
       validateField(name, value);
     }
   };
@@ -156,17 +155,15 @@ const RoomForm = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validar todos los campos antes del envío
     const isNameValid = validateField("name", form.name);
     const isDescriptionValid = validateField("description", form.description);
     const isPriceValid = validateField("price", form.price);
     const isCapacityValid = validateField("capacity", form.capacity);
-    const isNumberValid = validateField("number", form.number);    const isHotelValid = validateField("hotel", form.hotel);
+    const isNumberValid = validateField("number", form.number); const isHotelValid = validateField("hotel", form.hotel);
     const isAmenityValid = validateField("amenity", form.amenity);
 
-    // Si hay errores, no enviar el formulario
-    if (!isNameValid || !isDescriptionValid || !isPriceValid || !isCapacityValid || 
-        !isNumberValid || !isHotelValid || !isAmenityValid) {
+    if (!isNameValid || !isDescriptionValid || !isPriceValid || !isCapacityValid ||
+      !isNumberValid || !isHotelValid || !isAmenityValid) {
       toast({
         title: "Por favor corrige los errores en el formulario",
         status: "error",
@@ -176,6 +173,7 @@ const RoomForm = (props) => {
       return;
     }
 
+    console.log(amenities)
     let result;
 
     if (editMode && room && room.uid) {
@@ -231,7 +229,7 @@ const RoomForm = (props) => {
       });
     }
   };
-  
+
   const removeImage = (index) => {
     setForm((prev) => {
       const newPreview = [...prev.preView];
@@ -251,69 +249,69 @@ const RoomForm = (props) => {
         </h2>        <form className="hotel-form" onSubmit={handleSubmit}>
           <div>
             <label>Nombre:</label>
-            <input 
-              type="text" 
-              name="name" 
-              value={form.name} 
-              onChange={handleChange} 
-              required 
+            <input
+              type="text"
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              required
               className={errors.name ? "input-error" : ""}
             />
             {errors.name && <span className="error-message">{errors.name}</span>}
           </div>
           <div>
             <label>Descripción:</label>
-            <textarea 
-              name="description" 
-              value={form.description} 
-              onChange={handleChange} 
-              required 
+            <textarea
+              name="description"
+              value={form.description}
+              onChange={handleChange}
+              required
               className={errors.description ? "input-error" : ""}
             />
             {errors.description && <span className="error-message">{errors.description}</span>}
           </div>
           <div>
             <label>Precio:</label>
-            <input 
-              type="number" 
-              name="price" 
-              value={form.price} 
-              onChange={handleChange} 
-              required 
+            <input
+              type="number"
+              name="price"
+              value={form.price}
+              onChange={handleChange}
+              required
               className={errors.price ? "input-error" : ""}
             />
             {errors.price && <span className="error-message">{errors.price}</span>}
           </div>
           <div>
             <label>Capacidad:</label>
-            <input 
-              type="number" 
-              name="capacity" 
-              value={form.capacity} 
-              onChange={handleChange} 
-              required 
+            <input
+              type="number"
+              name="capacity"
+              value={form.capacity}
+              onChange={handleChange}
+              required
               className={errors.capacity ? "input-error" : ""}
             />
             {errors.capacity && <span className="error-message">{errors.capacity}</span>}
           </div>
           <div>
             <label>Número:</label>
-            <input 
-              type="text" 
-              name="number" 
-              value={form.number} 
-              onChange={handleChange} 
-              required 
+            <input
+              type="text"
+              name="number"
+              value={form.number}
+              onChange={handleChange}
+              required
               className={errors.number ? "input-error" : ""}
             />
             {errors.number && <span className="error-message">{errors.number}</span>}
           </div>
           <div>
             <label>Hotel:</label>
-            <select 
-              name="hotel" 
-              value={form.hotel} 
-              onChange={handleChange} 
+            <select
+              name="hotel"
+              value={form.hotel}
+              onChange={handleChange}
               required
               className={errors.hotel ? "input-error" : ""}
             >
@@ -326,17 +324,22 @@ const RoomForm = (props) => {
           </div>
           <div>
             <label>Amenidad:</label>
-            <select 
-              name="amenity" 
-              value={form.amenity} 
-              onChange={handleChange} 
+            <select
+              name="amenity"
+              value={form.amenity}
+              onChange={handleChange}
               required
               className={errors.amenity ? "input-error" : ""}
             >
               <option value="">Selecciona un amenity</option>
-              {loadingAmenities ? <option>Cargando...</option> : errorAmenities ? <option>Error</option> : amenities.map((a) => (
-                <option key={a.uid} value={a.uid}>{a.name}</option>
-              ))}
+              {loadingAmenities
+                ? <option>Cargando...</option>
+                : errorAmenities
+                  ? <option disabled>Error: {errorAmenities.message || errorAmenities}</option>
+                  : amenities.map((a) => (
+                    <option key={a.uid} value={a.uid}>{a.name}</option>
+                  ))
+              }
             </select>
             {errors.amenity && <span className="error-message">{errors.amenity}</span>}
           </div>          <div>

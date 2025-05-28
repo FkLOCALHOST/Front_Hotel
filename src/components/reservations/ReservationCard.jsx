@@ -54,6 +54,7 @@ const ReservationCard = ({ reservation, onClick }) => {
                     }}
                     className="invoice-btn"
                     disabled={loadingReceipt}
+                    
                 >
                     {loadingReceipt ? "Descargando..." : "Recibo"}
                 </button>
