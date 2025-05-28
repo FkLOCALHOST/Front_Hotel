@@ -67,6 +67,8 @@ const EventDashboard = () => {
   return (
     <div>
       <Navbar />
+      <br />
+      <br />
       <div className="hotel-header">
         <div className="filter-wrapper">
           <SearchBar onSearch={handleSearch} />
