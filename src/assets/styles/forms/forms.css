@@ -3,7 +3,7 @@
   width: 100%;
   max-width: 430px;
   margin: 40px auto;
-  background: #181c23; /* fondo oscuro */
+  background: #181c23; /* fondo oscuro uniforme */
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(29, 53, 87, 0.18);
   padding: 32px 24px;
@@ -30,9 +30,13 @@
 }
 
 .event-form label,
-.hotel-form label {
+.hotel-form label,
+.event-form .chakra-form__label,
+.hotel-form .chakra-form__label,
+.event-form .chakra-form-label,
+.hotel-form .chakra-form-label {
   font-size: 1.05rem;
-  color: #ff611e; /* naranja */
+  color: #ff911e !important; /* naranja más suave */
   font-weight: 700;
   letter-spacing: 0.5px;
 }
@@ -93,7 +97,7 @@
 .event-form textarea:focus,
 .hotel-form textarea:focus {
   outline: none !important;
-  border: 2px solid #f77f00 !important; /* naranja */
+  border: 2px solid #ff911e !important; /* naranja suave */
 }
 
 .event-form textarea,
@@ -104,7 +108,7 @@
 
 .event-form button[type="submit"],
 .hotel-form button[type="submit"] {
-  background: #ff611e; /* naranja fijo */
+  background: #ff911e; /* naranja fijo */
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -119,13 +123,14 @@
 
 .event-form button[type="submit"]:hover,
 .hotel-form button[type="submit"]:hover {
-  background: #ff7f3f; /* naranja más claro al hacer hover */
+  background: #ffb347; /* naranja más claro al hacer hover */
 }
 
-.hotel-form button[type="button"] {
+.hotel-form button[type="button"],
+.event-form button[type="button"] {
   background: #232a34;
-  color: #f77f00;
-  border: 1.5px solid #f77f00;
+  color: #457b9d;
+  border: 1.5px solid #457b9d;
   border-radius: 6px;
   padding: 12px 0;
   font-size: 1.15rem;
@@ -137,13 +142,15 @@
   letter-spacing: 0.5px;
 }
 
-.hotel-form button[type="button"]:hover {
-  background: #f77f00;
+.hotel-form button[type="button"]:hover,
+.event-form button[type="button"]:hover {
+  background: #457b9d;
   color: #232a34;
-  border-color: #f77f00;
+  border-color: #457b9d;
 }
 
-.validation-error {
+.validation-error,
+.error-message {
   color: #e63946;
   font-size: 1em;
   font-weight: 700;
@@ -169,12 +176,16 @@
   background-color: #232a34;
   cursor: pointer;
   transition: border-color 0.2s;
-  color: #f77f00;
+  color: #ff911e;
   font-weight: 700;
 }
 
 .dropzone:hover {
-  border-color: #f77f00;
+  border-color: #ff911e;
+}
+
+.input-error {
+  border: 2px solid #e63946 !important;
 }
 
 @media (max-width: 500px) {
