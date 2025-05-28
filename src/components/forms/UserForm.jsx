@@ -87,11 +87,11 @@ const EditProfileForm = (props) => {
       });
     }
   }, [editMode, userData]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
-    
-    // Validation logic
+
     if (formState[name]) {
       let isValid = false;
       switch (name) {
@@ -111,7 +111,6 @@ const EditProfileForm = (props) => {
         default:
           break;
       }
-      
       setFormState((prevState) => ({
         ...prevState,
         [name]: {
@@ -119,19 +118,12 @@ const EditProfileForm = (props) => {
           value,
           isValid,
           showError: prevState[name].showError && !isValid,
-        },      }));
+        },
+      }));
     }
-  }
-
-
-  const handleProfileSubmit = (e) => {
-    e.preventDefault();
-    setPendingSubmit(true);
-    onOpen();
   };
 
-  const confirmUpdate = async () => {
-  const handleInputValidationOnBlur = (value, field) => {
+   const handleInputValidationOnBlur = (value, field) => {
     let isValid = false;
     switch (field) {
       case "name":
@@ -160,6 +152,53 @@ const EditProfileForm = (props) => {
     }));
   };
 
+
+   const handleProfileSubmit = (e) => {
+    e.preventDefault();
+    setPendingSubmit(true);
+    onOpen();
+  };
+
+  const confirmUpdate = async () => {
+    const isFormValid =
+      formState.name.isValid &&
+      formState.surname.isValid &&
+      formState.userName.isValid &&
+      formState.email.isValid &&
+      formState.phone.isValid;
+
+    if (!isFormValid) {
+      const newFormState = { ...formState };
+      Object.keys(newFormState).forEach(field => {
+        if (!newFormState[field].isValid) {
+          newFormState[field].showError = true;
+        }
+      });
+      setFormState(newFormState);
+      toast({
+        title: "Por favor corrige los errores en el formulario.",
+        status: "error",
+        duration: 2500,
+        isClosable: true,
+        position: "top",
+        containerStyle: { color: "#fff" },
+      });
+      setPendingSubmit(false);
+      return;
+    }
+
+    setPendingSubmit(false);
+    onClose();
+    toast({
+      title: "Perfil actualizado correctamente.",
+      status: "success",
+      duration: 2000,
+      isClosable: true,
+      position: "top",
+      containerStyle: { color: "#fff" },
+    });
+  };
+
   const handlePasswordChange = (e) => {
     const value = e.target.value;
     setNewPassword(value);
@@ -178,9 +217,6 @@ const EditProfileForm = (props) => {
       showError: !isValid,
     }));
   };
-  const handleProfileSubmit = async (e) => {
-    e.preventDefault();
-    
 
     const isFormValid = 
       formState.name.isValid &&
@@ -201,18 +237,20 @@ const EditProfileForm = (props) => {
       return;
     }
 
-
-    setPendingSubmit(false);
-  };
-
-  const handlePasswordSubmit = async (e) => {
+ const handlePasswordSubmit = async (e) => {
     e.preventDefault();
     if (!newPassword) return;
 
-    // Validate password
     if (!passwordState.isValid) {
       setPasswordState(prev => ({ ...prev, showError: true }));
-      alert("Por favor ingresa una contraseña válida.");
+      toast({
+        title: "Por favor ingresa una contraseña válida.",
+        status: "error",
+        duration: 2500,
+        isClosable: true,
+        position: "top",
+        containerStyle: { color: "#fff" },
+      });
       return;
     }
 
@@ -407,6 +445,5 @@ const EditProfileForm = (props) => {
       <SimpleFooter />
     </>
   )
-}
-}
+};
 export default EditProfileForm;

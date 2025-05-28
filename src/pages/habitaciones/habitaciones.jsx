@@ -123,7 +123,7 @@ const confirmDelete = async () => {
               preView={room.preView}
               status={room.status}
               onClick={() => handleCardClick(room._id || room.uid)}
-              onDelete={() => handleDeleteClick(room._id || room.uid)} // <--- usa handleDeleteClick
+              onDelete={() => handleDeleteClick(room._id || room.uid)} 
           />
           ))
         ) : !errorMessage && !loading ? (
