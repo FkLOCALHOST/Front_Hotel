@@ -372,12 +372,12 @@ const HotelForm = (props) => {
   return (
     <>
       <Navbar />
-      <div className="hotel-form-container" style={{ marginTop: "120px" }}>
-        <h2 className="hotel-form-title">
+      <div className="event-form-container" style={{ marginTop: "120px" }}>
+        <h2 className="event-form-title">
           {editMode ? "Editar Hotel" : "Crear Hotel"}
         </h2>
-        <form className="hotel-form" onSubmit={handleSubmit}>
-          {" "}
+        <form className="event-form" onSubmit={handleSubmit}>
+          {/* Cada campo en un <div> simple, sin estilos de centrado */}
           <div>
             <label>Nombre:</label>
             <input
@@ -447,7 +447,7 @@ const HotelForm = (props) => {
             {formState.address.showError && (
               <span className="validation-error">{validateAddressMessage}</span>
             )}
-          </div>{" "}
+          </div>
           <div>
             <label>Categoría:</label>
             <select
@@ -543,7 +543,7 @@ const HotelForm = (props) => {
                 className="hotel-image-preview"
               />
             )}
-          </div>{" "}
+          </div>
           <button
             type="submit"
             disabled={
@@ -568,7 +568,7 @@ const HotelForm = (props) => {
                 : "Editar Hotel"
               : loadingAdd
               ? "Creando..."
-              : "Crear Hotel"}{" "}
+              : "Crear Hotel"}
           </button>
           <button
             type="button"

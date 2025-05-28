@@ -286,8 +286,9 @@ const EditProfileForm = (props) => {
   return (
     <>
       <Navbar />
-      <div className="hotel-form-container" style={{ marginTop: "120px" }}>
-        <h2 className="hotel-form-title">Editar Perfil</h2>        <form className="hotel-form" onSubmit={handleProfileSubmit}>
+      <div className="event-form-container" style={{ marginTop: "120px" }}>
+        <h2 className="event-form-title">Editar Perfil</h2>
+        <form className="event-form" onSubmit={handleProfileSubmit}>
           <div>
             <label>Nombre:</label>
             <input
@@ -415,9 +416,10 @@ const EditProfileForm = (props) => {
           </AlertDialogOverlay>
         </AlertDialog>
 
-        <h2 className="hotel-form-title" style={{ marginTop: "50px" }}>
+        <h2 className="event-form-title" style={{ marginTop: "50px" }}>
           Cambiar Contraseña
-        </h2>        <form className="hotel-form" onSubmit={handlePasswordSubmit}>
+        </h2>
+        <form className="event-form" onSubmit={handlePasswordSubmit}>
           <div>
             <label>Nueva Contraseña:</label>
             <input
