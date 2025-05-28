@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { getReservation } from "../../../services/api.jsx";
 
-const useGetReservations = ({ page = 1, limit = 10 } = {}) => {
+
+const useGetReservations = ({ page = 1, limit = 10, search = "" } = {}) => {
     const [reservations, setReservations] = useState([]);
     const [totalItems, setTotalItems] = useState(0);
     const [errorMessage, setErrorMessage] = useState("");
@@ -11,19 +12,14 @@ const useGetReservations = ({ page = 1, limit = 10 } = {}) => {
         const fetchReservations = async () => {
             setLoading(true);
             try {
-                const response = await getReservation({ page, limit });
+                const response = await getReservation({ page, limit, search });
 
-                if (response?.data?.reservations && Array.isArray(response.data.reservations)) {
-                    setReservations(response.data.reservations);
-                    setTotalItems(response.data.total || response.data.reservations.length);
-                    setErrorMessage("");
-                } else {
-                    setReservations([]);
-                    setTotalItems(0);
-                    setErrorMessage("No se encontraron reservaciones");
-                }
+                let data = response?.data?.reservations || [];
+
+                setReservations(data);
+                setTotalItems(response?.data?.total || data.length);
+                setErrorMessage("");
             } catch (error) {
-                console.error("Error al obtener las reservaciones:", error);
                 setErrorMessage("Error al obtener las reservaciones");
                 setReservations([]);
                 setTotalItems(0);
@@ -32,8 +28,7 @@ const useGetReservations = ({ page = 1, limit = 10 } = {}) => {
         };
 
         fetchReservations();
-    }, [page, limit]);
-
+    }, [page, limit, search]);
     return {
         reservations,
         totalItems,
