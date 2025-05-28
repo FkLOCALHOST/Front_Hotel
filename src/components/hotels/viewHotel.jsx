@@ -1,5 +1,6 @@
 import React from "react";
 import { Star } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import "../../assets/styles/hotel/hotelMain2.css";
 
 const ViewHotel = ({
@@ -10,6 +11,8 @@ const ViewHotel = ({
   price,
   imageUrl,
 }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="hotel-card-horizontal">
       <img
@@ -39,7 +42,10 @@ const ViewHotel = ({
         <p className="hotel-detail-horizontal">
           <span className="bold-horizontal">Precio:</span> {price}
         </p>
-        <button className="button">
+        <button
+          className="button"
+          onClick={() => navigate("/habitaciones")}
+        >
           Habitaciones
         </button>
       </div>

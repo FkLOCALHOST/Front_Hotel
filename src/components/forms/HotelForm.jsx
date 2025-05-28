@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useToast } from "@chakra-ui/react";
+import "../../assets/styles/forms/forms.css";
 import "../../assets/styles/forms/hotelForms.css";
 import useAddHotel from "../../shared/hooks/useAddHotel";
 import useEditHotel from "../../shared/hooks/useEditHotel";
 import useHotelById from "../../shared/hooks/useHotelById";
 import Navbar from "../navbar";
 import SimpleFooter from "../footer";
+import { useToast } from "@chakra-ui/react";
 import {
   validateHotelName,
   validateHotelNameMessage,
@@ -29,18 +30,20 @@ import {
 const HotelForm = (props) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const toast = useToast();
   const editMode = props.editMode || location.state?.editMode || false;
   const hotelId = props.hotelId || location.state?.hotelId || null;
   const onSubmit = props.onSubmit || null;
   const onCancel = props.onCancel || null;
+  const toast = useToast();
 
-  const { hotel, loading: loadingHotel } = useHotelById(editMode ? hotelId : null);
+  const { hotel, loading: loadingHotel } = useHotelById(
+    editMode ? hotelId : null
+  );
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
-    address: "", 
+    address: "",
     category: "",
     price: "",
     description: "",
@@ -66,7 +69,7 @@ const HotelForm = (props) => {
         name: hotel.name || "",
         email: hotel.email || "",
         phone: hotel.phone || "",
-        address: hotel.address || "", 
+        address: hotel.address || "",
         category: hotel.category || "",
         price: hotel.price || "",
         description: hotel.description || "",
@@ -74,19 +77,50 @@ const HotelForm = (props) => {
         imageHotel: null,
       };
       setForm(newForm);
-      
 
       setFormState({
-        name: { value: newForm.name, isValid: validateHotelName(newForm.name), showError: false },
-        email: { value: newForm.email, isValid: validateEmail(newForm.email), showError: false },
-        phone: { value: newForm.phone, isValid: validatePhone(newForm.phone), showError: false },
-        address: { value: newForm.address, isValid: validateAddress(newForm.address), showError: false },
-        category: { value: newForm.category, isValid: validateCategory(newForm.category), showError: false },
-        price: { value: newForm.price, isValid: validatePrice(newForm.price), showError: false },
-        description: { value: newForm.description, isValid: validateDescription(newForm.description), showError: false },
-        department: { value: newForm.department, isValid: validateDepartment(newForm.department), showError: false },
+        name: {
+          value: newForm.name,
+          isValid: validateHotelName(newForm.name),
+          showError: false,
+        },
+        email: {
+          value: newForm.email,
+          isValid: validateEmail(newForm.email),
+          showError: false,
+        },
+        phone: {
+          value: newForm.phone,
+          isValid: validatePhone(newForm.phone),
+          showError: false,
+        },
+        address: {
+          value: newForm.address,
+          isValid: validateAddress(newForm.address),
+          showError: false,
+        },
+        category: {
+          value: newForm.category,
+          isValid: validateCategory(newForm.category),
+          showError: false,
+        },
+        price: {
+          value: newForm.price,
+          isValid: validatePrice(newForm.price),
+          showError: false,
+        },
+        description: {
+          value: newForm.description,
+          isValid: validateDescription(newForm.description),
+          showError: false,
+        },
+        department: {
+          value: newForm.department,
+          isValid: validateDepartment(newForm.department),
+          showError: false,
+        },
       });
-      
+
       setOriginalImage(hotel.imageHotel || null);
     }
   }, [editMode, hotel]);
@@ -108,14 +142,15 @@ const HotelForm = (props) => {
   useEffect(() => {
     if (errorEdit) {
       toast({
-        title: "Error al editar hotel", 
+        title: "Error al editar hotel",
         description: errorEdit,
         status: "error",
         duration: 5000,
         isClosable: true,
       });
     }
-  }, [errorEdit, toast]);const handleChange = (e) => {
+  }, [errorEdit, toast]);
+  const handleChange = (e) => {
     const { name, value, type, files } = e.target;
     if (type === "file") {
       setForm((prev) => ({ ...prev, [name]: files[0] }));
@@ -151,7 +186,7 @@ const HotelForm = (props) => {
           default:
             break;
         }
-        
+
         setFormState((prevState) => ({
           ...prevState,
           [name]: {
@@ -207,7 +242,7 @@ const HotelForm = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const isFormValid = 
+    const isFormValid =
       formState.name.isValid &&
       formState.email.isValid &&
       formState.phone.isValid &&
@@ -219,10 +254,11 @@ const HotelForm = (props) => {
 
     if (!isFormValid) {
       const newFormState = { ...formState };
-      Object.keys(newFormState).forEach(field => {
+      Object.keys(newFormState).forEach((field) => {
         if (!newFormState[field].isValid) {
           newFormState[field].showError = true;
-        }      });
+        }
+      });
       setFormState(newFormState);
       toast({
         title: "Errores en el formulario",
@@ -244,7 +280,7 @@ const HotelForm = (props) => {
         dataToSend.append("name", form.name || "");
         dataToSend.append("email", form.email || "");
         dataToSend.append("phone", form.phone || "");
-        dataToSend.append("address", form.address || "");  
+        dataToSend.append("address", form.address || "");
         dataToSend.append("category", form.category || "");
         dataToSend.append("price", priceValue);
         dataToSend.append("description", form.description || "");
@@ -256,20 +292,24 @@ const HotelForm = (props) => {
           price: priceValue,
           imageHotel: originalImage,
         };
-      }      result = await editHotel(hotel.uid, dataToSend);
+      }
+      result = await editHotel(hotel.uid, dataToSend);
       if (result) {
         if (onSubmit) onSubmit(result);
         toast({
           title: "Hotel editado exitosamente",
           status: "success",
-          duration: 3000,
+          duration: 2000,
           isClosable: true,
+          position: "top",
+          containerStyle: { color: "#fff" },
         });
         navigate("/hoteles");
       } else {
         toast({
           title: "Error al editar hotel",
-          description: "No se pudo editar el hotel. Por favor intenta de nuevo.",
+          description:
+            "No se pudo editar el hotel. Por favor intenta de nuevo.",
           status: "error",
           duration: 4000,
           isClosable: true,
@@ -279,13 +319,14 @@ const HotelForm = (props) => {
       const dataToSend = {
         ...form,
         price: priceValue,
-      };      result = await addHotel(dataToSend);
+      };
+      result = await addHotel(dataToSend);
       if (result) {
         setForm({
           name: "",
           email: "",
           phone: "",
-          address: "",  
+          address: "",
           category: "",
           price: "",
           description: "",
@@ -300,13 +341,16 @@ const HotelForm = (props) => {
           category: { value: "", isValid: false, showError: false },
           price: { value: "", isValid: false, showError: false },
           description: { value: "", isValid: false, showError: false },
-          department: { value: "", isValid: false, showError: false },        });
+          department: { value: "", isValid: false, showError: false },
+        });
         if (onSubmit) onSubmit(result);
         toast({
           title: "Hotel creado exitosamente",
           status: "success",
-          duration: 3000,
+          duration: 2000,
           isClosable: true,
+          position: "top",
+          containerStyle: { color: "#fff" },
         });
         navigate("/hoteles");
       } else {
@@ -328,20 +372,26 @@ const HotelForm = (props) => {
   return (
     <>
       <Navbar />
-      <div className="hotel-form-container" style={{ marginTop: "120px"}}>
-        <h2 className="hotel-form-title">
+      <div className="event-form-container" style={{ marginTop: "120px" }}>
+        <h2 className="event-form-title">
           {editMode ? "Editar Hotel" : "Crear Hotel"}
         </h2>
-        <form className="hotel-form" onSubmit={handleSubmit}>          <div>
+        <form className="event-form" onSubmit={handleSubmit}>
+          {/* Cada campo en un <div> simple, sin estilos de centrado */}
+          <div>
             <label>Nombre:</label>
             <input
               type="text"
               name="name"
               value={form.name}
               onChange={handleChange}
-              onBlur={(e) => handleInputValidationOnBlur(e.target.value, 'name')}
+              onBlur={(e) =>
+                handleInputValidationOnBlur(e.target.value, "name")
+              }
               required
-              disabled={editMode && loadingHotel}/>{formState.name.showError && (
+              disabled={editMode && loadingHotel}
+            />
+            {formState.name.showError && (
               <span className="validation-error">
                 {validateHotelNameMessage}
               </span>
@@ -354,12 +404,14 @@ const HotelForm = (props) => {
               name="email"
               value={form.email}
               onChange={handleChange}
-              onBlur={(e) => handleInputValidationOnBlur(e.target.value, 'email')}
+              onBlur={(e) =>
+                handleInputValidationOnBlur(e.target.value, "email")
+              }
               required
-              disabled={editMode && loadingHotel}/>{formState.email.showError && (
-              <span className="validation-error">
-                {validateEmailMessage}
-              </span>
+              disabled={editMode && loadingHotel}
+            />
+            {formState.email.showError && (
+              <span className="validation-error">{validateEmailMessage}</span>
             )}
           </div>
           <div>
@@ -369,37 +421,42 @@ const HotelForm = (props) => {
               name="phone"
               value={form.phone}
               onChange={handleChange}
-              onBlur={(e) => handleInputValidationOnBlur(e.target.value, 'phone')}
+              onBlur={(e) =>
+                handleInputValidationOnBlur(e.target.value, "phone")
+              }
               required
-              disabled={editMode && loadingHotel}/>
+              disabled={editMode && loadingHotel}
+            />
             {formState.phone.showError && (
-              <span className="validation-error">
-                {validatePhoneMessage}
-              </span>
+              <span className="validation-error">{validatePhoneMessage}</span>
             )}
           </div>
           <div>
             <label>Dirección:</label>
             <input
               type="text"
-              name="address"  
-              value={form.address}  
+              name="address"
+              value={form.address}
               onChange={handleChange}
-              onBlur={(e) => handleInputValidationOnBlur(e.target.value, 'address')}
+              onBlur={(e) =>
+                handleInputValidationOnBlur(e.target.value, "address")
+              }
               required
-              disabled={editMode && loadingHotel}/>
+              disabled={editMode && loadingHotel}
+            />
             {formState.address.showError && (
-              <span className="validation-error">
-                {validateAddressMessage}
-              </span>
+              <span className="validation-error">{validateAddressMessage}</span>
             )}
-          </div>          <div>
+          </div>
+          <div>
             <label>Categoría:</label>
             <select
               name="category"
               value={form.category}
               onChange={handleChange}
-              onBlur={(e) => handleInputValidationOnBlur(e.target.value, 'category')}
+              onBlur={(e) =>
+                handleInputValidationOnBlur(e.target.value, "category")
+              }
               required
               disabled={editMode && loadingHotel}
             >
@@ -408,7 +465,9 @@ const HotelForm = (props) => {
               <option value="2 STARS">2 Estrellas</option>
               <option value="3 STARS">3 Estrellas</option>
               <option value="4 STARS">4 Estrellas</option>
-              <option value="5 STARS">5 Estrellas</option></select>{formState.category.showError && (
+              <option value="5 STARS">5 Estrellas</option>
+            </select>
+            {formState.category.showError && (
               <span className="validation-error">
                 {validateCategoryMessage}
               </span>
@@ -421,13 +480,14 @@ const HotelForm = (props) => {
               name="price"
               value={form.price}
               onChange={handleChange}
-              onBlur={(e) => handleInputValidationOnBlur(e.target.value, 'price')}
+              onBlur={(e) =>
+                handleInputValidationOnBlur(e.target.value, "price")
+              }
               required
-              disabled={editMode && loadingHotel}/>
+              disabled={editMode && loadingHotel}
+            />
             {formState.price.showError && (
-              <span className="validation-error">
-                {validatePriceMessage}
-              </span>
+              <span className="validation-error">{validatePriceMessage}</span>
             )}
           </div>
           <div>
@@ -436,9 +496,12 @@ const HotelForm = (props) => {
               name="description"
               value={form.description}
               onChange={handleChange}
-              onBlur={(e) => handleInputValidationOnBlur(e.target.value, 'description')}
+              onBlur={(e) =>
+                handleInputValidationOnBlur(e.target.value, "description")
+              }
               required
-              disabled={editMode && loadingHotel}/>
+              disabled={editMode && loadingHotel}
+            />
             {formState.description.showError && (
               <span className="validation-error">
                 {validateDescriptionMessage}
@@ -452,9 +515,12 @@ const HotelForm = (props) => {
               name="department"
               value={form.department}
               onChange={handleChange}
-              onBlur={(e) => handleInputValidationOnBlur(e.target.value, 'department')}
+              onBlur={(e) =>
+                handleInputValidationOnBlur(e.target.value, "department")
+              }
               required
-              disabled={editMode && loadingHotel}/>
+              disabled={editMode && loadingHotel}
+            />
             {formState.department.showError && (
               <span className="validation-error">
                 {validateDepartmentMessage}
@@ -474,23 +540,26 @@ const HotelForm = (props) => {
               <img
                 src={originalImage}
                 alt="Imagen actual del hotel"
-                style={{ width: "120px", marginTop: "8px" }}
+                className="hotel-image-preview"
               />
             )}
-          </div>          <button
+          </div>
+          <button
             type="submit"
             disabled={
-              loadingAdd || 
-              loadingEdit || 
+              loadingAdd ||
+              loadingEdit ||
               (editMode && loadingHotel) ||
-              !(formState.name.isValid &&
+              !(
+                formState.name.isValid &&
                 formState.email.isValid &&
                 formState.phone.isValid &&
                 formState.address.isValid &&
                 formState.category.isValid &&
                 formState.price.isValid &&
                 formState.description.isValid &&
-                formState.department.isValid)
+                formState.department.isValid
+              )
             }
           >
             {editMode
@@ -498,11 +567,12 @@ const HotelForm = (props) => {
                 ? "Editando..."
                 : "Editar Hotel"
               : loadingAdd
-                ? "Creando..."
-                : "Crear Hotel"}          </button>
-          <button 
-            type="button" 
-            onClick={onCancel || (() => navigate("/hoteles"))} 
+              ? "Creando..."
+              : "Crear Hotel"}
+          </button>
+          <button
+            type="button"
+            onClick={onCancel || (() => navigate("/hoteles"))}
             style={{ marginLeft: 8 }}
           >
             Cancelar

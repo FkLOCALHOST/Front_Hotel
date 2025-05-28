@@ -6,7 +6,7 @@ import useGetHotel from "../../shared/hooks/useGetHotel";
 import Navbar from "../navbar";
 import SimpleFooter from "../footer";
 import Calendary from "../calendary/Calendary";
-import "../../assets/styles/forms/hotelForms.css";
+import "../../assets/styles/forms/forms.css";
 
 const ReservationForm = () => {
     const [form, setForm] = useState({
@@ -94,29 +94,32 @@ const ReservationForm = () => {
     return (
         <>
             <Navbar />
-            <div className="hotel-form-container" style={{ marginTop: "100px" }}>
-                <h1 className="hotel-form-title">Reservar Habitación</h1>
-                <form className="hotel-form" onSubmit={handleReservation}>
-                    <label>Hotel</label>
-                    <select name="hotel" value={form.hotel} onChange={handleChange} required>
-                        <option value="">Selecciona un hotel</option>
-                        {hotels.map((hotel) => (
-                            <option key={hotel._id} value={hotel.uid}>
-                                {hotel.name}
-                            </option>
-                        ))}
-                    </select>
-                    <label>Habitación</label>
-                    <select name="room" value={form.room} onChange={handleChange} required>
-                        <option value="">Selecciona una habitación</option>
-                        {filteredRooms.map((room) => (
-                            <option key={room._id} value={room.uid}>
-                                {room.name || `Habitación ${room.number}`}
-                            </option>
-                        ))}
-                    </select>
-
-                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "10px", marginBottom: "10px" }}>
+            <div className="event-form-container" style={{ marginTop: "100px" }}>
+                <h1 className="event-form-title">Reservar Habitación</h1>
+                <form className="event-form" onSubmit={handleReservation}>
+                    <div>
+                      <label>Hotel</label>
+                      <select name="hotel" value={form.hotel} onChange={handleChange} required>
+                          <option value="">Selecciona un hotel</option>
+                          {hotels.map((hotel) => (
+                              <option key={hotel._id} value={hotel.uid}>
+                                  {hotel.name}
+                              </option>
+                          ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label>Habitación</label>
+                      <select name="room" value={form.room} onChange={handleChange} required>
+                          <option value="">Selecciona una habitación</option>
+                          {filteredRooms.map((room) => (
+                              <option key={room._id} value={room.uid}>
+                                  {room.name || `Habitación ${room.number}`}
+                              </option>
+                          ))}
+                      </select>
+                    </div>
+                    <div style={{ marginTop: "10px", marginBottom: "10px" }}>
                         <Calendary
                             roomId={form.room}
                             selectedDate={form.checkIn}
@@ -124,8 +127,7 @@ const ReservationForm = () => {
                             label="Fecha de Check-in"
                         />
                     </div>
-
-                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "10px", marginBottom: "10px" }}>
+                    <div style={{ marginTop: "10px", marginBottom: "10px" }}>
                         <Calendary
                             roomId={form.room}
                             selectedDate={form.checkOut}
@@ -133,7 +135,6 @@ const ReservationForm = () => {
                             label="Fecha de Check-out"
                         />
                     </div>
-
                     <button type="submit" disabled={!isFormValid() || loading}>
                         {loading ? "Reservando..." : "Reservar"}
                     </button>

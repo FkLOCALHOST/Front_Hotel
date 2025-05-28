@@ -29,9 +29,6 @@ const ReservationCard = ({ reservation, onClick, onDelete }) => {
       day: "numeric",
     });
 
-
-
-
   const handleNext = (e) => {
     e.stopPropagation();
     setCurrentIndex((prev) => (prev + 1) % preView.length);

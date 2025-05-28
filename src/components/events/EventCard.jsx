@@ -1,9 +1,20 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useRef } from "react";
 import { Edit, Trash2 } from "lucide-react";
 import "../../assets/styles/hotel/hotelCard.css";
 import { useNavigate } from "react-router-dom";
 import useDeleteEvent from "../../shared/hooks/event/useDeleteEvent";
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  Button,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
 
 const EventCard = ({
   uid,
@@ -24,6 +35,7 @@ const EventCard = ({
     updatedAt,
     ...domSafeRest
   } = rest;
+  
 
   let isAdmin = false;
   try {
@@ -40,6 +52,9 @@ const EventCard = ({
 
   const navigate = useNavigate();
   const { removeEvent, loading } = useDeleteEvent();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef();
+  const toast = useToast();
 
   const handleEdit = (e) => {
     e.stopPropagation();
@@ -58,18 +73,35 @@ const EventCard = ({
     });
   };
 
-  const handleDelete = async (e) => {
+const handleDelete = async (e) => {
     e.stopPropagation();
     if (loading) return;
-    if (window.confirm("¿Seguro que deseas eliminar este evento?")) {
-      console.log("Eliminando evento con uid:", uid);
-      const ok = await removeEvent(uid);
-      if (ok) {
-        window.alert("Evento eliminado exitosamente");
-        window.location.reload();
-      } else {
-        window.alert("No se pudo eliminar el evento");
-      }
+    onOpen();
+  };
+
+  const confirmDelete = async () => {
+    const ok = await removeEvent(uid);
+    if (ok) {
+      toast({
+        title: "Evento eliminado exitosamente",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+        position: "top",
+        containerStyle: { color: "#fff" },
+      });
+      onClose();
+      setTimeout(() => window.location.reload(), 1200);
+    } else {
+      toast({
+        title: "No se pudo eliminar el evento",
+        status: "error",
+        duration: 2500,
+        isClosable: true,
+        position: "top",
+        containerStyle: { color: "#fff" },
+      });
+      onClose();
     }
   };
 
@@ -125,6 +157,31 @@ const EventCard = ({
           <strong>Precio:</strong>&nbsp;Q{price?.toFixed ? price.toFixed(2) : price}
         </p>
       </div>
+
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent bg="#232323" color="#fff">
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Eliminar evento
+            </AlertDialogHeader>
+            <AlertDialogBody>
+              ¿Seguro que deseas eliminar este evento?
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose} bg="#333" color="#fff" _hover={{ bg: "#444" }}>
+                Cancelar
+              </Button>
+              <Button colorScheme="red" onClick={confirmDelete} ml={3}>
+                Eliminar
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </div>
   );
 };

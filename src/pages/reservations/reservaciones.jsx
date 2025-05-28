@@ -28,6 +28,7 @@ const ReservacionesPage = () => {
     const handleSearch = (value) => {
         setSearchTerm(value);
         setCurrentPage(1);
+
     };
 
     const handleEdit = (reservation) => {

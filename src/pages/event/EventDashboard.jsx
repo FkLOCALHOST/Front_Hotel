@@ -4,6 +4,7 @@ import SearchBar from "../../components/SearchBar.jsx";
 import SimpleFooter from "../../components/footer.jsx";
 import EventCard from "../../components/events/EventCard.jsx";
 import EventFilter from "../../components/events/EventFilter.jsx";
+import ViewEvent from "../../components/events/viewEvent.jsx";
 import useEvents from "../../shared/hooks/event/useGetEvent.jsx";
 import useSearchEvent from "../../shared/hooks/event/useSearchEvent.jsx";
 import Paginacion from "../../components/paginacion.jsx";
@@ -67,6 +68,8 @@ const EventDashboard = () => {
   return (
     <div>
       <Navbar />
+      <br />
+      <br />
       <div className="hotel-header">
         <div className="filter-wrapper">
           <SearchBar onSearch={handleSearch} />
@@ -104,39 +107,24 @@ const EventDashboard = () => {
         onPageChange={handlePageChange}
       />
 
-      <SimpleFooter />
-
-      {selectedEvent && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 2000,
-          }}
-          onClick={handleCloseModal}
-        >
-          <div onClick={(e) => e.stopPropagation()}>
-            <button
-              style={{
-                position: "absolute",
-                top: 20,
-                right: 40,
-                zIndex: 1001,
-                background: "transparent",
-                border: "none",
-                fontSize: 64,
-                cursor: "pointer",
-              }}
-              onClick={handleCloseModal}
-            >
-              &times;
-            </button>
+      <SimpleFooter />      {selectedEvent && (
+        <div className="hotel-modal-overlay" onClick={handleCloseModal}>
+          <button className="hotel-modal-close" onClick={handleCloseModal}>
+            &times;
+          </button>
+          <div
+            className="hotel-modal-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <ViewEvent
+              name={selectedEvent.name}
+              description={selectedEvent.description}
+              price={selectedEvent.price}
+              date={selectedEvent.date}
+              place={selectedEvent.place}
+              image={selectedEvent.image}
+              type={selectedEvent.type}
+            />
           </div>
         </div>
       )}

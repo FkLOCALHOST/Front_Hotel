@@ -1,16 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Navbar } from "../../components/navbar.jsx";
 import SimpleFooter from "../../components/footer.jsx";
 import RoomCard from "../../components/rooms/RoomCard.jsx";
 import useRooms from "../../shared/hooks/rooms/useRooms.jsx";
 import useSearchRooms from "../../shared/hooks/rooms/useSearchRooms.jsx";
+import useDeleteRooms from "../../shared/hooks/rooms/useDeleteRooms.jsx";
 import Paginacion from "../../components/paginacion.jsx";
 import SearchBar from "../../components/SearchBar.jsx";
 import { useNavigate } from "react-router-dom";
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  Button,
+  useDisclosure,
+} from "@chakra-ui/react";
 import BedroomFilter from "../../components/rooms/BedroomFilter.jsx"
+
 
 const HabitacionesPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const {removeRoom} = useDeleteRooms();
   const [searchTerm, setSearchTerm] = useState("");
   const [filters, setFilters] = useState({
     capacity: "",
@@ -18,6 +31,9 @@ const HabitacionesPage = () => {
   });
   const itemsPerPage = 10;
   const navigate = useNavigate();
+  const [roomToDelete, setRoomToDelete] = useState(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef();
 
   const isSearch = searchTerm.trim() !== "" || 
                   filters.capacity || 
@@ -41,7 +57,6 @@ const HabitacionesPage = () => {
     totalItems,
     errorMessage,
     loading,
-    refetch,
   } = isSearch ? searchResult : defaultResult;
 
   const handlePageChange = (page) => {
@@ -62,16 +77,27 @@ const HabitacionesPage = () => {
     navigate(`/habitaciones/${roomId}`);
   };
 
-  const handleDelete = async (roomId) => {
-    if (window.confirm("¿Estás seguro de que deseas eliminar esta habitación?")) {
-      try {
-        console.log("Eliminar habitación", roomId);
-        refetch();
-      } catch (error) {
-        console.error("Error al eliminar habitación:", error);
+  const handleDeleteClick = (roomId) => {
+  setRoomToDelete(roomId);
+  onOpen();
+};
+
+const confirmDelete = async () => {
+  if (roomToDelete) {
+    try {
+      const ok = await removeRoom(roomToDelete);
+      if (ok?.data?.success === true) {
+        setRoomToDelete(null);
+        onClose();
+        window.location.reload();
+      } else {
+        alert("Error al ejecutar la operación");
       }
+    } catch (error) {
+      console.error("Error al eliminar habitación:", error);
     }
-  };
+  }
+};
 
   return (
     <div>
@@ -90,15 +116,17 @@ const HabitacionesPage = () => {
             <RoomCard
               key={room.uid || room._id || room.number}
               id={room._id || room.uid}
+              name={room.name}
               number={room.number}
+              hotel={room.hotel}
               price={room.price}
               description={room.description}
               capacity={room.capacity}
               preView={room.preView}
               status={room.status}
               onClick={() => handleCardClick(room._id || room.uid)}
-              onDelete={() => handleDelete(room._id || room.uid)}
-            />
+              onDelete={() => handleDeleteClick(room._id || room.uid)} 
+          />
           ))
         ) : !errorMessage && !loading ? (
           <p>No hay habitaciones disponibles.</p>
@@ -111,6 +139,31 @@ const HabitacionesPage = () => {
         onPageChange={handlePageChange}
       />
       <SimpleFooter />
+
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent bg="#232323" color="#fff">
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Eliminar habitación
+            </AlertDialogHeader>
+            <AlertDialogBody>
+              ¿Estás seguro de que deseas eliminar esta habitación?
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose} bg="#333" color="#fff" _hover={{ bg: "#444" }}>
+                Cancelar
+              </Button>
+              <Button colorScheme="red" onClick={confirmDelete} ml={3}>
+                Eliminar
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </div>
   );
 };

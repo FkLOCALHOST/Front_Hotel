@@ -2,7 +2,7 @@ import axios from "axios";
 
 const apiHotel = axios.create({
   baseURL: "http://127.0.0.1:3005/hotelManagerSystem/v1",
-  timeout: 3000,
+  timeout: 9000,
 });
 
 apiHotel.interceptors.request.use(
@@ -53,7 +53,10 @@ apiHotel.interceptors.request.use(
 
 export const register = async (data) => {
   try {
-    return await apiHotel.post("/auth/register", data);
+    // Si data es FormData, axios lo maneja automáticamente
+    return await apiHotel.post("/auth/register", data, {
+      headers: data instanceof FormData ? { "Content-Type": "multipart/form-data" } : {},
+    });
   } catch (e) {
     return { error: true, e };
   }
@@ -162,14 +165,14 @@ export const searchEvent = async ({
   try {
     const desde = (page - 1) * limit;
     const params = new URLSearchParams();
-    
+
     params.append("search", search);
     if (place) params.append("place", place);
     if (maxPrice) params.append("maxPrice", maxPrice);
     if (date) params.append("date", date);
     params.append("desde", desde.toString());
     params.append("limite", limit.toString());
-    
+
     return await apiHotel.get(`/event/searchEvent?${params.toString()}`);
   } catch (error) {
     return { error: true, message: error.message };
@@ -426,7 +429,12 @@ export const getReservationReceipt = async (uid) => {
     return await apiHotel.get(`/reservation/getReservationReceipt/${uid}`, {
       responseType: "blob",
     });
-  } catch (error) {}
+  } catch (error) {
+    return {
+      error: true,
+      message: error.message,
+    };
+  }
 };
 
 export const updateReservation = async (uid, data) => {

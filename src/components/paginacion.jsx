@@ -43,6 +43,7 @@ const Paginacion = ({
             className={`paginacion-btn${page === currentPage ? " active" : ""}`}
             onClick={() => handlePageClick(page)}
             disabled={page === currentPage}
+            aria-current={page === currentPage ? "page" : undefined}
           >
             {page}
           </button>
