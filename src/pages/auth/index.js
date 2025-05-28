@@ -1,0 +1,1 @@
+export {authPage} from "./authPage.jsx"

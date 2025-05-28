@@ -1,0 +1,62 @@
+.contenedorNav {
+  background-color: #121212;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  color: white;
+  width: 100%;
+  height: 80px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  transition: top 0.3s ease-in-out;
+}
+
+.logoNav {
+  background-color: #ff2929;
+  height: 150px;
+  width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 3%;
+  border-radius: 0;
+  padding: 0; 
+}
+
+.logoNav img {
+  margin-top: 50px;
+  height: 100%;
+  width: auto;
+  object-fit: cover;
+}
+
+.rutasNav {
+  display: flex;
+  gap: 1.5rem;
+  margin-right: 10%;
+  size: 50px;
+}
+
+.rutasNav div {
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.rutasNav div:hover {
+  color: #ff2929;
+}
+
+.rutasNav .nav-link {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  font: inherit;
+}
+
+.rutasNav .nav-link:hover {
+  color: #ff2929;
+}
