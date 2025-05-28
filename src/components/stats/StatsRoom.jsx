@@ -22,8 +22,8 @@ const RoomStatsBarChart = () => {
                 <XAxis dataKey="name" />
                 <YAxis allowDecimals={false} />
                 <Tooltip />
-                <Bar dataKey="popularidad" fill="#8884d8" name="Popularidad" />
-                <Bar dataKey="reservaciones" fill="#82ca9d" name="Reservaciones" />
+                <Bar dataKey="popularidad" fill="#1d3557" name="Popularidad" />
+                <Bar dataKey="reservaciones" fill="#457b9d" name="Reservaciones" />
             </BarChart>
         </ResponsiveContainer>
     );
