@@ -1,7 +1,7 @@
 .event-form-container,
 .hotel-form-container {
   width: 100%;
-  max-width: 430px;
+  max-width: 600px;
   margin: 40px auto;
   background: #181c23; /* fondo oscuro uniforme */
   border-radius: 12px;
