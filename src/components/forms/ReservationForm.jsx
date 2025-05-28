@@ -7,6 +7,7 @@ import Navbar from "../navbar";
 import SimpleFooter from "../footer";
 import Calendary from "../calendary/Calendary";
 import "../../assets/styles/forms/forms.css";
+import "../../assets/styles/room/roomDetails.css";
 
 const ReservationForm = () => {
     const [form, setForm] = useState({
@@ -119,41 +120,31 @@ const ReservationForm = () => {
                           ))}
                       </select>
                     </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        gap: "2rem",
-                        margin: "18px 0",
-                        flexWrap: "wrap"
-                      }}
-                    >
-                        <div style={{ minWidth: 200, flex: "0 1 220px" }}>
-                            <Calendary
-                                roomId={form.room}
-                                selectedDate={form.checkIn}
-                                onSelect={(date) => setForm((prev) => ({ ...prev, checkIn: date }))}
-                                label={
-                                  <span style={{ fontSize: "0.98rem", fontWeight: 500}}>
-                                    Fecha de Check-in
-                                  </span>
-                                }
-                            />
-                        </div>
-                        <div style={{ minWidth: 200, flex: "0 1 220px" }}>
-                            <Calendary
-                                roomId={form.room}
-                                selectedDate={form.checkOut}
-                                onSelect={(date) => setForm((prev) => ({ ...prev, checkOut: date }))}
-                                label={
-                                  <span style={{ fontSize: "0.98rem", fontWeight: 500 }}>
-                                    Fecha de Check-out
-                                  </span>
-                                }
-                            />
-                        </div>
+                    <div className="availability-section">
+                      <div className="calendary">
+                        <Calendary
+                            roomId={form.room}
+                            selectedDate={form.checkIn}
+                            onSelect={(date) => setForm((prev) => ({ ...prev, checkIn: date }))}
+                            label={
+                              <span style={{ fontSize: "0.98rem", fontWeight: 500}}>
+                                Fecha de Check-in
+                              </span>
+                            }
+                        />
+                      </div>
+                      <div className="calendary">
+                        <Calendary
+                            roomId={form.room}
+                            selectedDate={form.checkOut}
+                            onSelect={(date) => setForm((prev) => ({ ...prev, checkOut: date }))}
+                            label={
+                              <span style={{ fontSize: "0.98rem", fontWeight: 500 }}>
+                                Fecha de Check-out
+                              </span>
+                            }
+                        />
+                      </div>
                     </div>
                     <button type="submit" disabled={!isFormValid() || loading}>
                         {loading ? "Reservando..." : "Reservar"}
