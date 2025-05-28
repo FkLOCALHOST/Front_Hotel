@@ -85,12 +85,16 @@ const HotelPage = () => {
 
   return (
     <div>
-      <Navbar />
-      <div className="hotel-header">
-        <div className="filter-wrapper">
-          <SearchBar onSearch={handleSearch} />
-          <HotelFilters onFilter={handleFilter} />
-        </div>
+<div>
+    <Navbar />
+    <br />
+    <br />
+    <div className="hotel-header">
+      <div className="filter-wrapper">
+        <SearchBar onSearch={handleSearch} />
+        <HotelFilters onFilter={handleFilter} />
+      </div>
+    </div>
       </div>
 
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
