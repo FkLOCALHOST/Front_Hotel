@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useToast } from "@chakra-ui/react";
 import "../../assets/styles/forms/hotelForms.css";
 import useAddHotel from "../../shared/hooks/useAddHotel";
 import useEditHotel from "../../shared/hooks/useEditHotel";
@@ -30,7 +29,6 @@ import {
 const HotelForm = (props) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const toast = useToast();
   const editMode = props.editMode || location.state?.editMode || false;
   const hotelId = props.hotelId || location.state?.hotelId || null;
   const onSubmit = props.onSubmit || null;

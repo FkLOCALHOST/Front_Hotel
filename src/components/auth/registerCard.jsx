@@ -153,16 +153,6 @@ const Register = () => {
     if (!isSubmitDisabled) {
       setIsLoading(true);
       
-      const response = await register({
-        name: formState.name.value,
-        surname: formState.surname.value,
-        userName: formState.userName.value,
-        profilePicture,
-        email: formState.email.value,
-        password: formState.password.value,
-        phone: formState.phone.value
-      });
-      
     const formData = new FormData();
     formData.append('name', name);
     formData.append('surname', surname);
@@ -243,7 +233,8 @@ const Register = () => {
                 </div>
               )}
             </FormControl>
-          </div>          <div className="form-row">
+          </Flex>          
+          <div className="form-row">
             <FormControl>
               <InputGroup>
                 <Input

@@ -16,6 +16,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
+import {
   validateName,
   validateNameMessage,
   validateUsername,
@@ -203,9 +204,6 @@ const EditProfileForm = (props) => {
 
     setPendingSubmit(false);
   };
-
-
-  
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
@@ -410,5 +408,5 @@ const EditProfileForm = (props) => {
     </>
   )
 }
-
+}
 export default EditProfileForm;
