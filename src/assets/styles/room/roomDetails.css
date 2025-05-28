@@ -9,7 +9,7 @@
   border-radius: 12px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   display: flex;
-  gap: 0; /* Eliminamos el gap para que no haya margen entre los contenedores */
+  gap: 0;
 }
 
 .preview-section {
