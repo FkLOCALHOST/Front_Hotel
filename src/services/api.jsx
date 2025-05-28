@@ -165,14 +165,14 @@ export const searchEvent = async ({
   try {
     const desde = (page - 1) * limit;
     const params = new URLSearchParams();
-    
+
     params.append("search", search);
     if (place) params.append("place", place);
     if (maxPrice) params.append("maxPrice", maxPrice);
     if (date) params.append("date", date);
     params.append("desde", desde.toString());
     params.append("limite", limit.toString());
-    
+
     return await apiHotel.get(`/event/searchEvent?${params.toString()}`);
   } catch (error) {
     return { error: true, message: error.message };
@@ -429,5 +429,32 @@ export const getReservationReceipt = async (uid) => {
     return await apiHotel.get(`/reservation/getReservationReceipt/${uid}`, {
       responseType: "blob",
     });
-  } catch (error) {}
+  } catch (error) {
+    return {
+      error: true,
+      message: error.message,
+    };
+  }
 };
+
+export const cancelReservation = async (uid) => {
+  try {
+    return await apiHotel.patch(`/reservation/deleteReservation/${uid}`)
+  } catch (error) {
+    return {
+      error: true,
+      message: error.message
+    }
+  }
+}
+
+export const updateReservation = async (uid) => {
+  try {
+    return await apiHotel.patch(`/reservation/updateReservation/${uid}`)
+  } catch (error) {
+    return {
+      error: true,
+      message: error.message
+    }
+  }
+}
