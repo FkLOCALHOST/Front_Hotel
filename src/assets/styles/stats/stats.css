@@ -1,0 +1,55 @@
+.stats-container {
+    margin-top: 120px;
+    text-align: center;
+    background: #fff;
+    min-height: 80vh;
+}
+
+.stats-container h1 {
+    color: #383737; /* más oscuro */
+    margin-bottom: 10px;
+}
+
+.stats-tabs {
+    margin-bottom: 50px;
+}
+
+.stats-tab-btn {
+    margin-right: 10px;
+    padding: 10px 20px;
+    background-color: #222831; /* negro oscuro */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s, color 0.2s;
+    outline: none;
+}
+
+.stats-tab-btn:last-child {
+    margin-right: 0;
+}
+
+.stats-tab-btn.active {
+    background-color: #e63946; /* rojo */
+    color: #fff;
+    border: 2px solid #1d3557; /* azul oscuro */
+}
+
+.stats-tab-btn:not(.active):hover {
+    background-color: #1d3557; /* azul oscuro */
+    color: #fff;
+}
+
+.stats-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    min-height: 420px;
+    box-shadow: 0 2px 8px rgba(29, 53, 87, 0.08);
+}

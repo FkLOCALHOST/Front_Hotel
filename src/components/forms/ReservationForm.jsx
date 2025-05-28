@@ -6,7 +6,7 @@ import useGetHotel from "../../shared/hooks/useGetHotel";
 import Navbar from "../navbar";
 import SimpleFooter from "../footer";
 import Calendary from "../calendary/Calendary";
-import "../../assets/styles/forms/hotelForms.css";
+import "../../assets/styles/forms/forms.css";
 
 const ReservationForm = () => {
     const [form, setForm] = useState({
