@@ -243,10 +243,12 @@ const RoomForm = (props) => {
   return (
     <>
       <Navbar />
-      <div className="hotel-form-container" style={{ marginTop: "120px" }}>
-        <h2 className="hotel-form-title">
+      <div className="event-form-container" style={{ marginTop: "120px" }}>
+        <h2 className="event-form-title">
           {editMode ? "Editar Habitación" : "Registrar Habitación"}
-        </h2>        <form className="hotel-form" onSubmit={handleSubmit}>
+        </h2>
+        <form className="event-form" onSubmit={handleSubmit}>
+          {/* Cada campo en un <div> simple, sin estilos de centrado */}
           <div>
             <label>Nombre:</label>
             <input
@@ -342,7 +344,8 @@ const RoomForm = (props) => {
               }
             </select>
             {errors.amenity && <span className="error-message">{errors.amenity}</span>}
-          </div>          <div>
+          </div>
+          <div>
             <label>Imágenes:</label>
             <input
               type="file"

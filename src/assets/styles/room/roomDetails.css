@@ -28,6 +28,11 @@
     align-items: center;
 }
 
+.room-info-card{
+    display: grid;
+    background-color: #1a1a1a;
+}
+
 .availability-section{
     flex: 1;
     margin: 10px, auto, 10px;

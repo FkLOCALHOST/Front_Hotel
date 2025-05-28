@@ -7,8 +7,10 @@ import "../../assets/styles/room/roomCard.css";
 const RoomCard = ({
   id,
   number,
+  name,
   price,
   description,
+  hotel,
   capacity,
   preView = [],
   status,
@@ -93,8 +95,8 @@ const RoomCard = ({
         )}
       </div>
 
-      <div className="room-info">
-        <h2 className="room-name">Habitación {number}</h2>
+      <div className="room-info-card">
+        <h2 className="room-name">{name}</h2>
         <p className="room-detail">
           <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
             Precio:
@@ -110,6 +112,9 @@ const RoomCard = ({
         <p className="room-detail">
           <span style={{ fontWeight: "bold" , marginLeft: "10px"}}>Estado:</span>{" "}
           {status ? "Disponible" : "No disponible"}
+        </p>
+        <p className="room-detail">
+          <span style={{ fontWeight: "bold" , marginLeft: "10px"}}>Hotel:</span>{hotel}
         </p>
       </div>
     </div>
