@@ -158,7 +158,6 @@ const EditProfileForm = (props) => {
     setPendingSubmit(true);
     onOpen();
   };
-
   const confirmUpdate = async () => {
     const isFormValid =
       formState.name.isValid &&
@@ -184,19 +183,45 @@ const EditProfileForm = (props) => {
         containerStyle: { color: "#fff" },
       });
       setPendingSubmit(false);
-      return;
+      onClose();
+      return;    }
+
+    const updateData = {
+      name: form.name,
+      surname: form.surname,
+      userName: form.userName,
+      email: form.email,
+      phone: form.phone,
+    };
+
+    const success = await editUser(userData?.uid, updateData);
+
+    if (success) {
+      toast({
+        title: "Perfil actualizado correctamente.",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+        position: "top",
+        containerStyle: { color: "#fff" },
+      });
+      
+      if (onSubmit) {
+        onSubmit(updateData);
+      }
+    } else {
+      toast({
+        title: "No se pudo actualizar el perfil.",
+        status: "error",
+        duration: 2500,
+        isClosable: true,
+        position: "top",
+        containerStyle: { color: "#fff" },
+      });
     }
 
     setPendingSubmit(false);
     onClose();
-    toast({
-      title: "Perfil actualizado correctamente.",
-      status: "success",
-      duration: 2000,
-      isClosable: true,
-      position: "top",
-      containerStyle: { color: "#fff" },
-    });
   };
 
   const handlePasswordChange = (e) => {
@@ -215,27 +240,7 @@ const EditProfileForm = (props) => {
       ...prevState,
       isValid,
       showError: !isValid,
-    }));
-  };
-
-    const isFormValid = 
-      formState.name.isValid &&
-      formState.surname.isValid &&
-      formState.userName.isValid &&
-      formState.email.isValid &&
-      formState.phone.isValid;
-
-    if (!isFormValid) {
-      const newFormState = { ...formState };
-      Object.keys(newFormState).forEach(field => {
-        if (!newFormState[field].isValid) {
-          newFormState[field].showError = true;
-        }
-      });
-      setFormState(newFormState);
-      alert("Por favor corrige los errores en el formulario.");
-      return;
-    }
+    }));  };
 
  const handlePasswordSubmit = async (e) => {
     e.preventDefault();
@@ -286,9 +291,8 @@ const EditProfileForm = (props) => {
   return (
     <>
       <Navbar />
-      <div className="event-form-container" style={{ marginTop: "120px" }}>
-        <h2 className="event-form-title">Editar Perfil</h2>
-        <form className="event-form" onSubmit={handleProfileSubmit}>
+      <div className="hotel-form-container" style={{ marginTop: "120px" }}>
+        <h2 className="hotel-form-title">Editar Perfil</h2>        <form className="hotel-form" onSubmit={handleProfileSubmit}>
           <div>
             <label>Nombre:</label>
             <input
@@ -378,15 +382,16 @@ const EditProfileForm = (props) => {
                 formState.userName.isValid &&
                 formState.email.isValid &&
                 formState.phone.isValid)
-            }
-          >
+            }          >
             {loadingUpdate ? "Guardando..." : "Guardar Cambios"}
           </button>
-          {onCancel && (
-            <button type="button" onClick={onCancel} style={{ marginLeft: 8 }}>
-              Cancelar
-            </button>
-          )}
+          <button 
+            type="button" 
+            onClick={onCancel || (() => navigate("/perfil"))} 
+            style={{ marginLeft: 8 }}
+          >
+            Cancelar
+          </button>
         </form>
         <AlertDialog
           isOpen={isOpen}
@@ -416,10 +421,9 @@ const EditProfileForm = (props) => {
           </AlertDialogOverlay>
         </AlertDialog>
 
-        <h2 className="event-form-title" style={{ marginTop: "50px" }}>
+        <h2 className="hotel-form-title" style={{ marginTop: "50px" }}>
           Cambiar Contraseña
-        </h2>
-        <form className="event-form" onSubmit={handlePasswordSubmit}>
+        </h2>        <form className="hotel-form" onSubmit={handlePasswordSubmit}>
           <div>
             <label>Nueva Contraseña:</label>
             <input
