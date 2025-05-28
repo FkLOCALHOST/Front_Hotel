@@ -8,6 +8,7 @@ import {
   Stack,
   FormControl,
   Avatar,
+  Box
 } from '@chakra-ui/react';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { register } from '../../services/api';
@@ -31,6 +32,7 @@ import {
 const Register = () => {
   const navigate = useNavigate();
   const [profilePicture, setProfilePicture] = useState(null);
+  const [profilePreview, setProfilePreview] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -40,6 +42,7 @@ const Register = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  
 
   const [formState, setFormState] = useState({
     name: {
@@ -154,12 +157,12 @@ const Register = () => {
       setIsLoading(true);
       
     const formData = new FormData();
-    formData.append('name', name);
-    formData.append('surname', surname);
-    formData.append('userName', userName);
-    formData.append('email', email);
-    formData.append('password', password);
-    formData.append('phone', phone);
+    formData.append('name', formState.name.value);
+    formData.append('surname', formState.surname.value);
+    formData.append('userName', formState.userName.value);
+    formData.append('email', formState.email.value);
+    formData.append('password', formState.password.value);
+    formData.append('phone', formState.phone.value);
     if (profilePicture) {
       formData.append('profilePicture', profilePicture); 
     }
