@@ -14,6 +14,7 @@ import Perfil from "./pages/user/Perfil"
 import EditProfileForm from "./components/forms/UserForm"
 import ReservationForm from "./components/forms/ReservationForm";
 import Stats from "./pages/stats/Stats";
+import EditRecervationForm from "./components/forms/EditRecervationForm";
 
 export const routes = [
   {
@@ -79,5 +80,9 @@ export const routes = [
   {
     path: "/reportes",
     element: <Stats />,
+  },
+  {
+    path: "/reservaciones/edit",
+    element: <EditRecervationForm />,
   }
 ];
