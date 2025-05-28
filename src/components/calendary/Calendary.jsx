@@ -36,7 +36,7 @@ const Calendary = ({ roomId, selectedDate, onSelect, label}) => {
             >
                 {selectedDate
                     ? format(selectedDate, "PPP", { locale: es })
-                    : "Selecciona una fecha"}
+                    : "Fecha"}
             </Button>
             {isOpen && (
                 <Box
