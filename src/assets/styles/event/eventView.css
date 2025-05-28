@@ -1,0 +1,226 @@
+.event-card-horizontal {
+  display: flex;
+  flex-direction: row;
+  border-radius: 22px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1a1a1a, #0f0f0f); 
+  box-shadow: 0 16px 48px rgba(255, 41, 41, 0.08); 
+  max-width: 960px;
+  margin: 10px auto;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  position: relative;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 41, 41, 0.1);
+}
+
+.event-card-horizontal:hover {
+  transform: scale(1.03);
+  box-shadow: 0 20px 60px rgba(255, 41, 41, 0.25); 
+  border-color: rgba(255, 41, 41, 0.3);
+}
+
+.event-image-horizontal {
+  width: 320px;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.35s ease, filter 0.35s ease;
+  filter: brightness(0.92);
+  border-right: 1px solid rgba(255, 41, 41, 0.1);
+}
+
+.event-card-horizontal:hover .event-image-horizontal {
+  transform: scale(1.07);
+  filter: brightness(1);
+}
+
+.event-info-horizontal {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 36px 38px;
+  background: rgba(24, 24, 24, 0.85); 
+  color: #f4f4f4; 
+  backdrop-filter: blur(12px);
+  position: relative;
+}
+
+.event-name-horizontal {
+  font-size: 28px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.8px;
+  color: #ffffff;
+  margin-bottom: 18px;
+  text-shadow: 0 1px 4px rgba(255, 41, 41, 0.3); 
+}
+
+.event-detail-horizontal {
+  font-size: 16px;
+  color: #ccc; 
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  line-height: 1.6;
+}
+
+.event-bold-horizontal {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.event-icon-horizontal {
+  color: #ff2929; 
+  font-size: 18px;
+  filter: drop-shadow(0 0 3px #ff2929);
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.event-text-horizontal {
+  font-size: 15px;
+  color: #f4f4f4; 
+  margin-left: 4px;
+}
+
+.event-description-text {
+  font-size: 14px;
+  color: #bbb;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+.event-type-public {
+  color: #28A745;
+  font-weight: 600;
+}
+
+.event-type-private {
+  color: #FFA500;
+  font-weight: 600;
+}
+
+.event-date-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.event-date-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  margin-left: 8px;
+}
+
+.event-date-day {
+  font-size: 14px;
+  color: #bbb;
+  font-weight: 600;
+  text-transform: capitalize;
+  line-height: 1;
+}
+
+.event-date-time {
+  font-size: 12px;
+  color: #ff2929;
+  font-weight: 700;
+  background: rgba(255, 41, 41, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+  width: fit-content;
+  line-height: 1;
+}
+
+.event-button {
+  display: inline-block;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, #ff2929, #e02020);
+  color: #fff; 
+  border: none;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(255, 41, 41, 0.3);
+}
+
+.event-button:hover {
+  background: linear-gradient(135deg, #e02020, #cc1d1d);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 41, 41, 0.4);
+}
+
+.event-card-horizontal:hover .event-icon-horizontal {
+  transform: rotate(-6deg) scale(1.15);
+}
+
+.event-icon-users {
+  color: #ff2929;
+}
+
+.event-icon-map {
+  color: #28A745;
+}
+
+.event-icon-calendar {
+  color: #FFA500;
+}
+
+.event-icon-price {
+  color: #ff2929;
+}
+
+@media (max-width: 768px) {
+  .event-card-horizontal {
+    flex-direction: column;
+    max-width: 90%;
+  }
+
+  .event-image-horizontal {
+    width: 100%;
+    height: 240px;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 41, 41, 0.1);
+  }
+
+  .event-info-horizontal {
+    padding: 28px 26px;
+  }
+
+  .event-name-horizontal {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  .event-detail-horizontal {
+    font-size: 14px;
+    margin: 6px 0;
+  }
+
+  .event-button {
+    padding: 12px 24px;
+    font-size: 14px;
+    margin-top: 16px;
+  }
+  .event-date-day {
+    font-size: 13px;
+  }
+
+  .event-date-time {
+    font-size: 11px;
+    padding: 1px 5px;
+  }
+
+  .event-date-info {
+    gap: 6px;
+  }
+}
