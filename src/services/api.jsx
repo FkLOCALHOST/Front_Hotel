@@ -428,3 +428,19 @@ export const getReservationReceipt = async (uid) => {
     });
   } catch (error) {}
 };
+
+export const updateReservation = async (uid, data) => {
+  try {
+    return await apiHotel.patch(`/reservation/updateReservation/${uid}`, data);
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+}
+
+export const getReservationById = async (uid) => {
+  try {
+    return await apiHotel.get(`/reservation/getReservationById/${uid}`);
+  } catch (error) {
+    return { error: true, message: error.message };
+  }
+}
