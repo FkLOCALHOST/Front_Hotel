@@ -14,22 +14,25 @@ const SideBar = ({ open, onClose }) => {
   const navigate = useNavigate();
   const isUserLoggedIn = localStorage.getItem("User"); 
 
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/dashboard");
+    window.location.reload(); 
+  };
+
   return (
     <div className={`sidebar-overlay ${open ? "open" : ""}`} onClick={onClose}>
       <div className="sidebar" onClick={e => e.stopPropagation()}>
         {!isUserLoggedIn ? (
-          <div className="sidebar-item">
+          <div className="sidebar-item" onClick={() => navigate("/auth/login")}>
             <User size={20} />
-            <span onClick={() => window.location.href = "/auth/login"}>
-              Iniciar Sesión
-            </span>
+            <span>Iniciar Sesión</span>
           </div>
-        ) : (          <>
-            <div className="sidebar-item">
+        ) : (
+          <>
+            <div className="sidebar-item" onClick={() => navigate("/favoritos")}>
               <Star size={20} />
-              <span onClick={() => window.location.href= "/favoritos"}>
-                Favoritos
-              </span>
+              <span>Favoritos</span>
             </div>
             <div className="sidebar-item" onClick={() => navigate("/reservaciones")}>
               <CalendarCheck size={20} />
@@ -39,16 +42,9 @@ const SideBar = ({ open, onClose }) => {
               <Edit size={20} />
               <span>Editar Perfil</span>
             </div>
-            <div className="sidebar-item">
+            <div className="sidebar-item" onClick={handleLogout}>
               <LogOut size={20} />
-              <span
-                onClick={() => {
-                  localStorage.clear();
-                  window.location.href = "/auth/login";
-                }}
-              >
-                Salir
-              </span>
+              <span>Salir</span>
             </div>
           </>
         )}
