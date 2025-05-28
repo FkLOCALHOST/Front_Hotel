@@ -116,7 +116,9 @@ const confirmDelete = async () => {
             <RoomCard
               key={room.uid || room._id || room.number}
               id={room._id || room.uid}
+              name={room.name}
               number={room.number}
+              hotel={room.hotel}
               price={room.price}
               description={room.description}
               capacity={room.capacity}
