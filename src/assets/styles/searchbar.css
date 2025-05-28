@@ -1,0 +1,50 @@
+.search-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 12px 20px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin: 60px 16px 32px auto;
+  width: 50%;
+  max-width: 600px;
+  z-index: 1001;
+  gap: 8px;
+}
+.search-bar input::-webkit-input-placeholder,
+.search-bar input::-moz-placeholder,
+.search-bar input:-ms-input-placeholder,
+.search-bar input::placeholder {
+  color: #000;
+}
+.search-bar input,
+.search-bar .chakra-button {
+  color: #000;
+}
+.search-bar button {
+  background-color: #FF2929 !important;
+  color: #fff !important;
+}
+
+/* increase input/button size */
+.search-bar input {
+  font-size: 1rem;
+  height: 40px;
+}
+.search-bar button {
+  height: 40px;
+  padding: 0 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .search-bar {
+    width: 100% !important;
+    margin: 100px auto 16px;
+    justify-content: center;
+  }
+  .search-bar > * {
+    width: auto !important;
+  }
+}
