@@ -12,39 +12,46 @@ import { useNavigate } from "react-router-dom";
 
 const SideBar = ({ open, onClose }) => {
   const navigate = useNavigate();
+  const isUserLoggedIn = localStorage.getItem("User"); 
+
   return (
     <div className={`sidebar-overlay ${open ? "open" : ""}`} onClick={onClose}>
       <div className="sidebar" onClick={e => e.stopPropagation()}>
-        <div className="sidebar-item">
-          <User size={20} />
-          <span onClick={() => window.location.href = "/auth/login"}>
-            Iniciar Sesion
-          </span>
-        </div>
-        <div className="sidebar-item">
-          <Star size={20} />
-          <span onClick={() => window.location.href= "/favoritos"}>
-            Favoritos</span>
-        </div>
-        <div className="sidebar-item" onClick={() => navigate("/reservaciones")}>
-          <CalendarCheck size={20} />
-          <span>Mis Reservaciones</span>
-        </div>
-        <div className="sidebar-item" onClick={() => navigate("/perfil")}>
-          <Edit size={20} />
-          <span>Editar Perfil</span>
-        </div>
-        <div className="sidebar-item">
-          <LogOut size={20} />
-          <span
-            onClick={() => {
-              localStorage.clear();
-              window.location.href = "/auth/login";
-            }}
-          >
-            Salir
-          </span>
-        </div>
+        {!isUserLoggedIn ? (
+          <div className="sidebar-item">
+            <User size={20} />
+            <span onClick={() => window.location.href = "/auth/login"}>
+              Iniciar Sesión
+            </span>
+          </div>
+        ) : (          <>
+            <div className="sidebar-item">
+              <Star size={20} />
+              <span onClick={() => window.location.href= "/favoritos"}>
+                Favoritos
+              </span>
+            </div>
+            <div className="sidebar-item" onClick={() => navigate("/reservaciones")}>
+              <CalendarCheck size={20} />
+              <span>Mis Reservaciones</span>
+            </div>
+            <div className="sidebar-item" onClick={() => navigate("/perfil")}>
+              <Edit size={20} />
+              <span>Editar Perfil</span>
+            </div>
+            <div className="sidebar-item">
+              <LogOut size={20} />
+              <span
+                onClick={() => {
+                  localStorage.clear();
+                  window.location.href = "/auth/login";
+                }}
+              >
+                Salir
+              </span>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
