@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { Star, Edit, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import useGetHotel from "../../shared/hooks/useGetHotel";
 import "../../assets/styles/room/roomCard.css";
 
 const RoomCard = ({
@@ -19,6 +20,7 @@ const RoomCard = ({
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const navigate = useNavigate();
+  const { hotels } = useGetHotel();
 
   let isAdmin = false;
   try {
@@ -31,6 +33,15 @@ const RoomCard = ({
   } catch (e) {
     isAdmin = false;
     console.log(e);
+  }
+
+  // Buscar el nombre del hotel usando el hook
+  let hotelName = "";
+  if (hotel && typeof hotel === "object" && hotel.name) {
+    hotelName = hotel.name;
+  } else if (hotel && hotels && Array.isArray(hotels)) {
+    const found = hotels.find((h) => h.uid === hotel || h._id === hotel);
+    hotelName = found ? found.name : hotel;
   }
 
   const handleNext = (e) => {
@@ -114,7 +125,8 @@ const RoomCard = ({
           {status ? "Disponible" : "No disponible"}
         </p>
         <p className="room-detail">
-          <span style={{ fontWeight: "bold" , marginLeft: "10px"}}>Hotel:</span>{hotel}
+          <span style={{ fontWeight: "bold" , marginLeft: "10px"}}>Hotel:</span>
+          {hotelName}
         </p>
       </div>
     </div>
