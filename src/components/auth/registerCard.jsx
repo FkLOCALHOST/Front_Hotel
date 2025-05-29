@@ -183,9 +183,7 @@ const Register = () => {
           phone: { value: "", isValid: false, showError: false },
         });
         setProfilePicture(null);
-        setTimeout(() => {
-          navigate("/auth/login");
-        }, 1500);
+        navigate("/auth/login");
       }
     }
   };
