@@ -48,14 +48,6 @@ const HotelFilters = ({ onFilter }) => {
         value={filters.department}
         onChange={handleInputChange}
       />
-
-      <input
-        type="number"
-        name="maxPrice"
-        placeholder="Precio máximo..."
-        value={filters.maxPrice}
-        onChange={handleInputChange}
-      />
     </div>
   );
 };

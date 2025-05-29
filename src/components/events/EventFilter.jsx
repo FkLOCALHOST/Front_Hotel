@@ -37,15 +37,6 @@ const EventFilter = ({ onFilter }) => {
       />
 
       <input
-        type="number"
-        name="maxPrice"
-        placeholder="Precio máximo..."
-        value={filters.maxPrice}
-        onChange={handleInputChange}
-        min="0"
-      />
-
-      <input
         type="date"
         name="date"
         placeholder="Fecha del evento..."
